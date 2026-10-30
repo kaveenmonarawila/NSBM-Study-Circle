@@ -101,7 +101,7 @@ Follow these steps to run the project locally.
 * A modern web browser.
 * Git (optional, for cloning the repository).
 
-### Step 1: Clone the Repository
+### Step 1: Clone The Repository
 
 ```bash
 git clone https://github.com/YOUR-USERNAME/NSBM-StudyCircle.git

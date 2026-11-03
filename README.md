@@ -6,7 +6,7 @@ NSBM StudyCircle is a web-based student collaboration platform designed to help 
 
 ## 📌 Project Overview
 
-University students often face difficulties finding study materials, sharing lecture notes, and collaborating with other students in one place. NSBM StudyCircle aims to address these challenges by providing an organized and user-friendly platform for academic collaboration.
+University Students often face difficulties finding study materials, sharing lecture notes, and collaborating with other students in one place. NSBM StudyCircle aims to address these challenges by providing an organized and user-friendly platform for academic collaboration.
 
 ### 🎯 Project Objectives
 

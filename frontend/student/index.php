@@ -427,7 +427,10 @@ if (empty($recentActivities)) {
                             <div class="student-card-eyebrow">NEXT UP</div>
                             <h3 class="student-card-title">Upcoming study sessions</h3>
                         </div>
-                        <a href="schedule.php" class="student-card-link">Full schedule</a>
+                        <div class="d-flex align-items-center gap-3">
+                            <a href="schedule.php?view=calendar" class="student-card-link"><i class="bi bi-calendar3 me-1"></i>Calendar</a>
+                            <a href="schedule.php" class="student-card-link">Full schedule</a>
+                        </div>
                     </div>
 
                     <?php if (!empty($upcomingSessions)): ?>

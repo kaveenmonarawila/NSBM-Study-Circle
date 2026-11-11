@@ -6,6 +6,26 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+require_once __DIR__ . '/../backend/config/db_config.php';
+
+$liveSessions = [];
+if (isset($conn) && $conn && !$conn->connect_error) {
+    try {
+        $q = $conn->query("
+            SELECT ss.*, COALESCE(u.name, 'NSBM Contributor') AS host_name
+            FROM study_sessions ss
+            LEFT JOIN users u ON ss.host_id = u.id
+            WHERE ss.status IN ('Scheduled', 'Completed')
+            ORDER BY ss.session_date ASC
+        ");
+        if ($q) {
+            while ($row = $q->fetch_assoc()) {
+                $liveSessions[] = $row;
+            }
+        }
+    } catch (Throwable $e) {}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -133,43 +153,66 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
             </div>
 
-            <!-- Horizontal Weekly Calendar Strip (PDF Page 1 & 2) -->
-            <div class="weekly-calendar-strip">
-                <div class="calendar-day-col" data-date="19">
-                    <span class="cal-day-label">MON</span>
-                    <span class="cal-date-number">19</span>
-                    <span class="cal-active-dot"></span>
+            <!-- Interactive Real-Time Calendar Component -->
+            <div class="calendar-component-wrapper mt-4">
+                <!-- Navigation & View Switcher Bar -->
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <h4 class="fw-bold mb-0 text-dark" id="publicCalMonthYear" style="font-size: 1.2rem;">November 2026</h4>
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-outline-secondary" id="pubCalPrevBtn" title="Previous"><i class="bi bi-chevron-left"></i></button>
+                            <button type="button" class="btn btn-outline-secondary px-3" id="pubCalTodayBtn">Today</button>
+                            <button type="button" class="btn btn-outline-secondary" id="pubCalNextBtn" title="Next"><i class="bi bi-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" class="btn btn-outline-secondary active" id="pubViewWeekBtn">
+                                <i class="bi bi-calendar-week me-1"></i> Week
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" id="pubViewMonthBtn">
+                                <i class="bi bi-calendar3 me-1"></i> Month
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="calendar-day-col" data-date="20">
-                    <span class="cal-day-label">TUE</span>
-                    <span class="cal-date-number">20</span>
-                    <span class="cal-active-dot"></span>
+
+                <!-- 1. Horizontal Weekly Calendar Strip (Dynamic) -->
+                <div class="weekly-calendar-strip" id="publicWeeklyStrip">
+                    <!-- Populated dynamically by sessions.js -->
                 </div>
-                <div class="calendar-day-col" data-date="21">
-                    <span class="cal-day-label">WED</span>
-                    <span class="cal-date-number">21</span>
-                    <span class="cal-active-dot"></span>
+
+                <!-- 2. Interactive Monthly Calendar Grid (Toggled) -->
+                <div id="publicMonthlyCalendarContainer" class="d-none mt-2">
+                    <div class="table-responsive bg-white rounded-3 p-3 border" style="box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);">
+                        <table class="calendar-month-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Mon</th>
+                                    <th>Tue</th>
+                                    <th>Wed</th>
+                                    <th>Thu</th>
+                                    <th>Fri</th>
+                                    <th>Sat</th>
+                                    <th>Sun</th>
+                                </tr>
+                            </thead>
+                            <tbody id="publicCalendarGridBody">
+                                <!-- Populated dynamically by sessions.js -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="calendar-day-col" data-date="22">
-                    <span class="cal-day-label">THU</span>
-                    <span class="cal-date-number">22</span>
-                    <span class="cal-active-dot"></span>
-                </div>
-                <div class="calendar-day-col" data-date="23">
-                    <span class="cal-day-label">FRI</span>
-                    <span class="cal-date-number">23</span>
-                    <span class="cal-active-dot"></span>
-                </div>
-                <!-- Selected Date (Saturday 24th from PDF Screenshot 1 & 2) -->
-                <div class="calendar-day-col selected" data-date="24">
-                    <span class="cal-day-label">SAT</span>
-                    <span class="cal-date-number">24</span>
-                    <span class="cal-active-dot"></span>
-                </div>
-                <div class="calendar-day-col" data-date="25">
-                    <span class="cal-day-label">SUN</span>
-                    <span class="cal-date-number">25</span>
-                    <span class="cal-active-dot"></span>
+
+                <!-- Selected Day Filter Indicator -->
+                <div id="publicSelectedDateBar" class="d-flex align-items-center justify-content-between p-2 px-3 mt-3 rounded-3" style="background: rgba(0, 185, 120, 0.08); border: 1px solid rgba(0, 185, 120, 0.25);">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-calendar2-check-fill text-success"></i>
+                        <span class="small">Filter: <strong id="publicSelectedDateLabel">All Upcoming Sessions</strong></span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-link text-decoration-none fw-bold p-0 text-success small" id="pubResetFilterBtn">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>Show All Upcoming
+                    </button>
                 </div>
             </div>
         </div>
@@ -181,9 +224,59 @@ if (session_status() === PHP_SESSION_NONE) {
     <main class="sessions-list-container">
         <div class="container-xl" id="sessionsListContainer">
 
+            <?php if (!empty($liveSessions)): ?>
+                <?php foreach ($liveSessions as $idx => $s): 
+                    $dt = new DateTime($s['session_date']);
+                    $dateKey = $dt->format('Y-m-d');
+                    $dayNum = $dt->format('d');
+                    $monthShort = strtoupper($dt->format('M'));
+                    $timeFormatted = $dt->format('g:i A');
+                    $isFirst = ($idx === 0);
+                    $facLower = strtolower($s['faculty'] ?: 'computing');
+                    $pillClass = 'subject-pill-computing';
+                    if (strpos($facLower, 'bus') !== false) $pillClass = 'subject-pill-business';
+                    elseif (strpos($facLower, 'sci') !== false) $pillClass = 'subject-pill-science';
+                    elseif (strpos($facLower, 'eng') !== false) $pillClass = 'subject-pill-engineering';
+                    elseif (strpos($facLower, 'acad') !== false) $pillClass = 'subject-pill-academicskills';
+                    $isThisWeek = (date('W', strtotime($s['session_date'])) === date('W'));
+                    $seatsLeft = (int)$s['capacity'] - (int)$s['enrolled_count'];
+                    $seatsText = $seatsLeft <= 5 ? "{$seatsLeft} seats left" : "Seats available";
+                    $seatsClass = $seatsLeft <= 5 ? "seats-status-text warning" : "seats-status-text";
+                ?>
+                <article class="session-card-item" 
+                         data-id="<?= (int)$s['id'] ?>"
+                         data-date="<?= $dateKey ?>"
+                         data-day="<?= (int)$dayNum ?>"
+                         data-category="<?= htmlspecialchars($s['faculty']) ?>"
+                         data-format="<?= htmlspecialchars($s['format_type'] ?: 'Online') ?>"
+                         data-this-week="<?= $isThisWeek ? 'true' : 'false' ?>">
+                    <div class="session-card-left">
+                        <div class="session-date-box <?= $isFirst ? '' : 'date-light' ?>">
+                            <span class="date-box-number"><?= $dayNum ?></span>
+                            <span class="date-box-month"><?= $monthShort ?></span>
+                        </div>
+                        <div>
+                            <span class="subject-pill-badge <?= $pillClass ?>"><?= htmlspecialchars($s['faculty']) ?></span>
+                            <h2 class="session-item-title"><?= htmlspecialchars($s['title']) ?></h2>
+                            <div class="session-item-meta">
+                                <span><i class="bi bi-clock me-1"></i> <?= $timeFormatted ?></span>
+                                <span><i class="bi bi-people me-1"></i> <?= (int)$s['enrolled_count'] ?> attending</span>
+                                <span><?= htmlspecialchars($s['location_details'] ?: ($s['format_type'] ?: 'Online')) ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="session-card-right">
+                        <span class="<?= $seatsClass ?>"><?= $seatsText ?></span>
+                        <a href="session-details.php?id=<?= (int)$s['id'] ?>" class="btn-session-view-details">View details</a>
+                    </div>
+                </article>
+                <?php endforeach; ?>
+            <?php else: ?>
+
             <!-- Card 1: Algorithms: Final Exam Problem Solving (PDF Page 2) -->
             <article class="session-card-item" 
                      data-id="1"
+                     data-date="2026-05-24"
                      data-day="24"
                      data-category="Computing"
                      data-format="Online"
@@ -212,6 +305,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Card 2: Marketing Strategy Case Review (PDF Page 2) -->
             <article class="session-card-item" 
                      data-id="2"
+                     data-date="2026-05-26"
                      data-day="26"
                      data-category="Business"
                      data-format="Physical"
@@ -240,6 +334,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Card 3: Laboratory Report Review (PDF Page 2) -->
             <article class="session-card-item" 
                      data-id="3"
+                     data-date="2026-05-28"
                      data-day="28"
                      data-category="Science"
                      data-format="Physical"
@@ -268,6 +363,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Card 4: Research Proposal Writing Lab (PDF Page 3) -->
             <article class="session-card-item" 
                      data-id="4"
+                     data-date="2026-05-30"
                      data-day="30"
                      data-category="Academic Skills"
                      data-format="Online"
@@ -292,6 +388,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <a href="session-details.php?id=4" class="btn-session-view-details">View details</a>
                 </div>
             </article>
+            <?php endif; ?>
 
         </div>
     </main>

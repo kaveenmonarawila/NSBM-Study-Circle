@@ -56,7 +56,7 @@ $page_title = 'My schedule';
             <!-- ========================================================= -->
             <div id="panelUpcoming" class="schedule-tab-panel">
                 <!-- Weekly Calendar Strip -->
-                <div class="student-week-selector">
+                <div class="student-week-selector" id="studentWeekSelector">
                     <div class="student-day-pill active" data-day="19">
                         <span class="day-name">MON</span>
                         <span class="day-number">19</span>

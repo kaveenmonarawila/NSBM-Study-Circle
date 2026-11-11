@@ -818,6 +818,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (targetTab === 'calendar') {
                 const calPanel = document.getElementById('panelCalendar');
                 if (calPanel) calPanel.classList.remove('d-none');
+                if (window.renderStudentCalendar) {
+                    window.renderStudentCalendar();
+                }
             } else if (targetTab === 'past') {
                 const pastPanel = document.getElementById('panelPast');
                 if (pastPanel) pastPanel.classList.remove('d-none');
@@ -851,7 +854,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             if (matched === 0) {
-                showStudentToast(`No study sessions scheduled for ${dayPill.querySelector('.day-name')?.textContent || ''} ${dayNum} May. Click 'Create session' to schedule one!`, 'primary');
+                showStudentToast(`No study sessions scheduled for ${dayPill.querySelector('.day-name')?.textContent || ''} ${dayNum}. Click 'Create session' to schedule one!`, 'primary');
                 setTimeout(() => {
                     cards.forEach(c => c.style.display = '');
                 }, 2800);
@@ -859,26 +862,39 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // E4. Calendar Grid Cell Quick-Schedule
-        const calCell = e.target.closest('.calendar-day-cell:not(.other-month)');
-        if (calCell && !e.target.closest('.calendar-event-chip')) {
-            const dateStr = calCell.getAttribute('data-date');
+        // E4. Interactive Calendar Cell Click (Select date & inspect day-specific schedule)
+        const studentCalCell = e.target.closest('#studentCalendarGridBody .calendar-day-cell:not(.other-month)');
+        if (studentCalCell && !e.target.closest('.calendar-event-chip')) {
+            const dateStr = studentCalCell.getAttribute('data-date');
             if (dateStr) {
-                const dateInput = document.getElementById('csDate');
-                if (dateInput) dateInput.value = dateStr;
-                const modalEl = document.getElementById('createSessionModal');
-                if (modalEl && window.bootstrap) {
-                    const modal = new bootstrap.Modal(modalEl);
-                    modal.show();
+                document.querySelectorAll('#studentCalendarGridBody .calendar-day-cell').forEach(c => c.classList.remove('selected-day'));
+                studentCalCell.classList.add('selected-day');
+                if (window.renderStudentDaySchedule) {
+                    window.renderStudentDaySchedule(dateStr);
                 }
             }
             return;
         }
 
-        // E5. Calendar Controls
-        if (e.target.closest('#calPrevBtn, #calNextBtn, #calTodayBtn')) {
+        // E5. Interactive Calendar Controls (Prev, Next, Today)
+        if (e.target.closest('#calPrevBtn')) {
             e.preventDefault();
-            showStudentToast('Displaying May 2025 (Current Academic Semester)', 'primary');
+            if (window.navigateStudentCalendar) window.navigateStudentCalendar(-1);
+            return;
+        }
+        if (e.target.closest('#calNextBtn')) {
+            e.preventDefault();
+            if (window.navigateStudentCalendar) window.navigateStudentCalendar(1);
+            return;
+        }
+        if (e.target.closest('#calTodayBtn')) {
+            e.preventDefault();
+            if (window.jumpStudentCalendarToday) window.jumpStudentCalendarToday();
+            return;
+        }
+        if (e.target.closest('#btnScheduleForSelectedDate')) {
+            e.preventDefault();
+            if (window.openScheduleForCurrentSelectedDate) window.openScheduleForCurrentSelectedDate();
             return;
         }
 
@@ -1534,6 +1550,266 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetBtn) {
             targetBtn.click();
         }
+    }
+
+    // =========================================================================
+    // 9B. DYNAMIC REAL-TIME STUDENT CALENDAR ENGINE
+    // =========================================================================
+    const studentCalMonthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const nowCalDate = new Date();
+    let studentCalYear = nowCalDate.getFullYear();
+    let studentCalMonth = nowCalDate.getMonth() + 1; // 1 - 12
+    let studentCalTodayKey = `${nowCalDate.getFullYear()}-${String(nowCalDate.getMonth() + 1).padStart(2, '0')}-${String(nowCalDate.getDate()).padStart(2, '0')}`;
+    let studentSelectedDateKey = studentCalTodayKey;
+    let studentMonthEventsCache = {};
+
+    window.navigateStudentCalendar = function(delta) {
+        studentCalMonth += delta;
+        if (studentCalMonth < 1) {
+            studentCalMonth = 12;
+            studentCalYear--;
+        } else if (studentCalMonth > 12) {
+            studentCalMonth = 1;
+            studentCalYear++;
+        }
+        window.renderStudentCalendar(studentCalYear, studentCalMonth);
+    };
+
+    window.jumpStudentCalendarToday = function() {
+        const n = new Date();
+        studentCalYear = n.getFullYear();
+        studentCalMonth = n.getMonth() + 1;
+        studentSelectedDateKey = studentCalTodayKey;
+        window.renderStudentCalendar(studentCalYear, studentCalMonth, studentCalTodayKey);
+    };
+
+    window.openScheduleForCurrentSelectedDate = function() {
+        const dateInput = document.getElementById('csDate');
+        if (dateInput && studentSelectedDateKey) {
+            dateInput.value = studentSelectedDateKey;
+        }
+        const modalEl = document.getElementById('createSessionModal');
+        if (modalEl && window.bootstrap) {
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+    };
+
+    window.quickScheduleForDate = function(dateStr) {
+        studentSelectedDateKey = dateStr;
+        window.openScheduleForCurrentSelectedDate();
+    };
+
+    window.renderStudentDaySchedule = function(dateStr) {
+        const eventsListEl = document.getElementById('studentSelectedDateEventsList');
+        const titleEl = document.getElementById('studentSelectedDateTitle');
+        const badgeEl = document.getElementById('studentSelectedDateBadge');
+        if (!eventsListEl) return;
+
+        const dParts = dateStr.split('-');
+        const dateObj = new Date(parseInt(dParts[0], 10), parseInt(dParts[1], 10) - 1, parseInt(dParts[2], 10));
+        const formattedDate = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+        const isToday = (dateStr === studentCalTodayKey);
+
+        if (titleEl) titleEl.textContent = formattedDate;
+        if (badgeEl) {
+            badgeEl.textContent = isToday ? 'Today' : dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            badgeEl.className = isToday ? 'badge bg-primary text-white rounded-pill px-2 py-1' : 'badge bg-secondary-subtle text-secondary rounded-pill px-2 py-1';
+        }
+
+        const cacheKey = `${studentCalYear}-${studentCalMonth}`;
+        const dayEvents = (studentMonthEventsCache[cacheKey] && studentMonthEventsCache[cacheKey][dateStr]) || [];
+
+        if (dayEvents.length === 0) {
+            eventsListEl.innerHTML = `
+                <div class="text-center py-4 text-muted bg-body-tertiary rounded-3 p-3">
+                    <i class="bi bi-calendar-check fs-2 text-muted mb-2 d-block"></i>
+                    <p class="mb-2">No study sessions scheduled for ${formattedDate}.</p>
+                    <button type="button" class="btn btn-sm btn-outline-success fw-semibold" onclick="window.quickScheduleForDate('${dateStr}')">
+                        <i class="bi bi-plus-lg me-1"></i> Schedule a study session on this day
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        dayEvents.forEach(ev => {
+            const facClass = ev.faculty_meta?.badge || 'student-badge-computing';
+            const facName = ev.faculty || 'Computing';
+            const dayNum = String(dateObj.getDate()).padStart(2, '0');
+            const monthStr = dateObj.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+
+            html += `
+                <div class="cal-schedule-entry">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="student-date-badge student-date-dark" style="min-width: 46px;">
+                            <span class="student-date-num">${dayNum}</span>
+                            <span class="student-date-month">${monthStr}</span>
+                        </div>
+                        <div>
+                            <span class="${facClass}">${facName}</span>
+                            <h5 class="fw-bold text-dark mt-1 mb-0" style="font-size: 0.95rem;">${ev.title}</h5>
+                            <p class="text-secondary small mb-0">
+                                <i class="bi bi-clock me-1"></i>${ev.time} (${ev.duration}) &bull; 
+                                <i class="bi bi-geo-alt me-1"></i>${ev.location} &bull; 
+                                <i class="bi bi-person me-1"></i>Host: ${ev.host_name}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="student-btn-outline py-1 px-3 open-session-modal" data-session-id="${ev.id}" style="font-size: 0.82rem;">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        eventsListEl.innerHTML = html;
+    };
+
+    window.renderStudentCalendar = async function(year = studentCalYear, month = studentCalMonth, selectDate = studentSelectedDateKey) {
+        const gridBody = document.getElementById('studentCalendarGridBody');
+        const headerEl = document.getElementById('studentCalMonthYear');
+        if (!gridBody) return;
+
+        studentCalYear = year;
+        studentCalMonth = month;
+        if (selectDate) studentSelectedDateKey = selectDate;
+
+        if (headerEl) {
+            headerEl.textContent = `${studentCalMonthNames[studentCalMonth - 1]} ${studentCalYear}`;
+        }
+
+        // Fetch events
+        const cacheKey = `${studentCalYear}-${studentCalMonth}`;
+        let eventsMap = studentMonthEventsCache[cacheKey];
+        if (!eventsMap) {
+            try {
+                const res = await fetch(`../../backend/controllers/calendar_controller.php?action=get_events&year=${studentCalYear}&month=${studentCalMonth}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.success) {
+                        eventsMap = data.events_by_date || {};
+                        studentMonthEventsCache[cacheKey] = eventsMap;
+                    }
+                }
+            } catch (err) {
+                eventsMap = {};
+            }
+        }
+        if (!eventsMap) eventsMap = {};
+
+        const firstDay = new Date(studentCalYear, studentCalMonth - 1, 1);
+        const lastDay = new Date(studentCalYear, studentCalMonth, 0);
+        const daysInMonth = lastDay.getDate();
+        const startDayIndex = (firstDay.getDay() + 6) % 7; // Mon = 0, Sun = 6
+        const prevMonthLastDay = new Date(studentCalYear, studentCalMonth - 1, 0).getDate();
+
+        gridBody.innerHTML = '';
+        let currentWeekTr = document.createElement('tr');
+        let nextMonthDay = 1;
+
+        // Trailing cells
+        for (let i = 0; i < startDayIndex; i++) {
+            const td = document.createElement('td');
+            td.className = 'calendar-day-cell other-month';
+            const num = prevMonthLastDay - startDayIndex + 1 + i;
+            td.innerHTML = `<span class="calendar-day-num">${num}</span>`;
+            currentWeekTr.appendChild(td);
+        }
+
+        // Month cells
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateStr = `${studentCalYear}-${String(studentCalMonth).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            const isToday = (dateStr === studentCalTodayKey);
+            const isSelected = (dateStr === studentSelectedDateKey);
+            const dayEvents = eventsMap[dateStr] || [];
+
+            const td = document.createElement('td');
+            td.className = `calendar-day-cell ${isToday ? 'today' : ''} ${isSelected ? 'selected-day' : ''} ${dayEvents.length > 0 ? 'has-event' : ''}`;
+            td.setAttribute('data-date', dateStr);
+
+            let chipsHtml = '';
+            dayEvents.slice(0, 2).forEach(ev => {
+                const chipClass = ev.faculty_meta?.chip || 'chip-blue';
+                chipsHtml += `
+                    <a href="javascript:void(0)" class="calendar-event-chip ${chipClass} open-session-modal" data-session-id="${ev.id}" title="${ev.title}">
+                        ${ev.time} ${ev.title}
+                    </a>
+                `;
+            });
+            if (dayEvents.length > 2) {
+                chipsHtml += `<span class="badge bg-secondary-subtle text-secondary small py-0" style="font-size:0.6rem;">+${dayEvents.length - 2} more</span>`;
+            }
+
+            td.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="calendar-day-num">${d}</span>
+                    ${isToday ? '<span class="badge bg-primary text-white rounded-pill px-1" style="font-size:0.55rem;">TODAY</span>' : ''}
+                </div>
+                ${chipsHtml}
+            `;
+
+            currentWeekTr.appendChild(td);
+
+            if ((startDayIndex + d) % 7 === 0 || d === daysInMonth) {
+                if (d === daysInMonth && (startDayIndex + d) % 7 !== 0) {
+                    const remaining = 7 - ((startDayIndex + d) % 7);
+                    for (let r = 0; r < remaining; r++) {
+                        const tdNext = document.createElement('td');
+                        tdNext.className = 'calendar-day-cell other-month';
+                        tdNext.innerHTML = `<span class="calendar-day-num">${nextMonthDay++}</span>`;
+                        currentWeekTr.appendChild(tdNext);
+                    }
+                }
+                gridBody.appendChild(currentWeekTr);
+                currentWeekTr = document.createElement('tr');
+            }
+        }
+
+        window.renderStudentDaySchedule(studentSelectedDateKey);
+    };
+
+    // Render Dynamic Weekly Strip for Upcoming Sessions tab
+    function renderStudentDynamicWeekSelector() {
+        const selector = document.getElementById('studentWeekSelector');
+        if (!selector) return;
+
+        const cur = new Date();
+        const dayOfWeek = (cur.getDay() + 6) % 7;
+        const monday = new Date(cur);
+        monday.setDate(cur.getDate() - dayOfWeek);
+
+        selector.innerHTML = '';
+        const dayLabels = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(monday);
+            d.setDate(monday.getDate() + i);
+            const dayNum = d.getDate();
+            const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+            const isToday = (dateStr === studentCalTodayKey);
+
+            const pill = document.createElement('div');
+            pill.className = `student-day-pill ${isToday ? 'active' : ''}`;
+            pill.setAttribute('data-day', dayNum);
+            pill.setAttribute('data-date', dateStr);
+
+            pill.innerHTML = `
+                <span class="day-name">${dayLabels[i]}</span>
+                <span class="day-number">${dayNum}</span>
+                ${isToday ? '<div style="width: 4px; height: 4px; background: var(--nsbm-green); border-radius: 50%; margin: 3px auto 0;"></div>' : ''}
+            `;
+
+            selector.appendChild(pill);
+        }
+    }
+
+    // Auto-init on page load if elements are present
+    if (document.getElementById('studentCalendarGridBody')) {
+        window.renderStudentCalendar();
+        renderStudentDynamicWeekSelector();
     }
 
     // =========================================================================

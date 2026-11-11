@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Sessions - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+        <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg"><link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- ====================================================================
+         1. SHARED PREMIUM ANIMATED NAVBAR
+         ==================================================================== -->
+    <!-- ====================================================================
+         1. FLOATING PILL GLASSMORPHISM ANIMATED HEADER
+         ==================================================================== -->
+    <!-- Official Clean Floating Pill Header -->
+    <header class="floating-header-wrapper site-header" id="mainSiteHeader">
+        <nav class="navbar navbar-expand-lg floating-navbar site-navbar" id="mainFloatingHeader">
+            <div class="container-fluid px-0">
+                <!-- Left Branding: Custom NSBM Study Circle Logo + Brand Title + Tagline -->
+                <a class="brand-logo-container" href="index.html" aria-label="NSBM Study Circle Home">
+                    <div class="brand-logo-wrapper">
+                        <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text-group">
+                        <span class="brand-title">NSBM Study Circle</span>
+                        <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                    </div>
+                </a>
+
+                <!-- Mobile Animated Hamburger -->
+                <button class="navbar-toggler custom-hamburger-btn border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStudyCircle" aria-controls="navbarStudyCircle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+
+                <!-- Center Nav Links + Right Actions -->
+                <div class="collapse navbar-collapse" id="navbarStudyCircle">
+                    <ul class="navbar-nav mb-2 mb-lg-0 header-nav-list">
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="resources.html">Explore Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="discussions.html">Discussions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="study-groups.html">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link active" href="sessions.html">Study Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+
+                    <div class="header-actions-group d-flex align-items-center gap-2">
+                        <a href="login.html" class="btn-header-login">
+                            <i class="bi bi-person-fill me-1"></i> Log in
+                        </a>
+                        <a href="signup.html" class="btn-header-join">
+                            <i class="bi bi-people-fill me-1"></i> Join NSBM Study Circle <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                        <div class="theme-toggle-container position-relative">
+                            <button type="button" class="btn-header-theme" id="themeToggleBtn" aria-label="Toggle theme" title="Switch Theme">
+                                <i class="bi bi-moon-stars" id="themeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ====================================================================
+         2. HERO SECTION (Exact Match to PDF Page 1)
+         ==================================================================== -->
+    <header class="sessions-hero">
+        <div class="container-xl">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-8">
+                    <span class="sessions-hero-label">COLLABORATIVE LEARNING</span>
+                    <h1 class="sessions-hero-title">Put focused study time on your calendar</h1>
+                    <p class="sessions-hero-desc">
+                        Join structured sessions led by students who want to prepare, practise, and progress together.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                    <button type="button" class="btn-create-session" data-bs-toggle="modal" data-bs-target="#createSessionModal">
+                        Create a session
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         3. SESSIONS FILTER & WEEKLY CALENDAR (Exact Match to PDF Page 1, 8)
+         ==================================================================== -->
+    <section class="sessions-filter-section">
+        <div class="container-xl">
+            <!-- Filter Bar: Tabs & Subject Dropdown -->
+            <div class="filter-bar-row">
+                <!-- Left Tabs: Upcoming, This week, Online -->
+                <div class="filter-tabs-pills" role="tablist">
+                    <button type="button" class="filter-tab-pill active" data-tab="upcoming">Upcoming</button>
+                    <button type="button" class="filter-tab-pill" data-tab="this-week">This week</button>
+                    <button type="button" class="filter-tab-pill" data-tab="online">Online</button>
+                </div>
+
+                <!-- Right Subject Filter Dropdown (PDF Page 8) -->
+                <div class="subject-dropdown-wrap">
+                    <button type="button" class="subject-dropdown-btn" id="subjectDropdownBtn">
+                        <span id="selectedSubjectLabel">All subjects</span>
+                        <i class="bi bi-chevron-down ms-1" style="font-size: 0.8rem;"></i>
+                    </button>
+                    
+                    <div class="subject-dropdown-menu-custom" id="subjectDropdownMenu">
+                        <a href="#" class="subject-item-link selected" data-subject="all">All subjects</a>
+                        
+                        <!-- Computing -->
+                        <div class="subject-group-header">Computing</div>
+                        <a href="#" class="subject-item-link" data-subject="Computing">All Computing subjects</a>
+                        <a href="#" class="subject-item-link" data-subject="Introduction to Computer Science">Introduction to Computer Science</a>
+                        <a href="#" class="subject-item-link" data-subject="Programming Fundamentals">Programming Fundamentals</a>
+                        <a href="#" class="subject-item-link" data-subject="Mathematics for Computing">Mathematics for Computing</a>
+                        <a href="#" class="subject-item-link" data-subject="Computer Systems">Computer Systems</a>
+                        <a href="#" class="subject-item-link" data-subject="Web Application Development">Web Application Development</a>
+                        <a href="#" class="subject-item-link" data-subject="Database Management Systems">Database Management Systems</a>
+
+                        <!-- Business -->
+                        <div class="subject-group-header">Business</div>
+                        <a href="#" class="subject-item-link" data-subject="Business">All Business subjects</a>
+                        <a href="#" class="subject-item-link" data-subject="Principles of Management">Principles of Management</a>
+                        <a href="#" class="subject-item-link" data-subject="Financial Accounting">Financial Accounting</a>
+                        <a href="#" class="subject-item-link" data-subject="Business Economics">Business Economics</a>
+                        <a href="#" class="subject-item-link" data-subject="Business Mathematics">Business Mathematics</a>
+                        <a href="#" class="subject-item-link" data-subject="Marketing Management">Marketing Management</a>
+                        <a href="#" class="subject-item-link" data-subject="Business Communication">Business Communication</a>
+
+                        <!-- Science -->
+                        <div class="subject-group-header">Science</div>
+                        <a href="#" class="subject-item-link" data-subject="Science">All Science subjects</a>
+                        <a href="#" class="subject-item-link" data-subject="Biology for Computing">Biology for Computing</a>
+                        <a href="#" class="subject-item-link" data-subject="Physics">Physics</a>
+                        <a href="#" class="subject-item-link" data-subject="Chemistry">Chemistry</a>
+
+                        <!-- Mathematics -->
+                        <div class="subject-group-header">Mathematics</div>
+                        <a href="#" class="subject-item-link" data-subject="Mathematics">All Mathematics</a>
+                        <a href="#" class="subject-item-link" data-subject="Discrete Mathematics">Discrete Mathematics</a>
+                        <a href="#" class="subject-item-link" data-subject="Linear Algebra">Linear Algebra</a>
+                        <a href="#" class="subject-item-link" data-subject="Calculus">Calculus</a>
+
+                        <!-- Academic Skills -->
+                        <div class="subject-group-header">Academic Skills</div>
+                        <a href="#" class="subject-item-link" data-subject="Academic Skills">All Academic Skills</a>
+                        <a href="#" class="subject-item-link" data-subject="Academic Writing">Academic Writing</a>
+                        <a href="#" class="subject-item-link" data-subject="Research Methods">Research Methods</a>
+                        <a href="#" class="subject-item-link" data-subject="Presentation Skills">Presentation Skills</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Horizontal Weekly Calendar Strip (PDF Page 1 & 2) -->
+            <div class="weekly-calendar-strip">
+                <div class="calendar-day-col" data-date="19">
+                    <span class="cal-day-label">MON</span>
+                    <span class="cal-date-number">19</span>
+                    <span class="cal-active-dot"></span>
+                </div>
+                <div class="calendar-day-col" data-date="20">
+                    <span class="cal-day-label">TUE</span>
+                    <span class="cal-date-number">20</span>
+                    <span class="cal-active-dot"></span>
+                </div>
+                <div class="calendar-day-col" data-date="21">
+                    <span class="cal-day-label">WED</span>
+                    <span class="cal-date-number">21</span>
+                    <span class="cal-active-dot"></span>
+                </div>
+                <div class="calendar-day-col" data-date="22">
+                    <span class="cal-day-label">THU</span>
+                    <span class="cal-date-number">22</span>
+                    <span class="cal-active-dot"></span>
+                </div>
+                <div class="calendar-day-col" data-date="23">
+                    <span class="cal-day-label">FRI</span>
+                    <span class="cal-date-number">23</span>
+                    <span class="cal-active-dot"></span>
+                </div>
+                <!-- Selected Date (Saturday 24th from PDF Screenshot 1 & 2) -->
+                <div class="calendar-day-col selected" data-date="24">
+                    <span class="cal-day-label">SAT</span>
+                    <span class="cal-date-number">24</span>
+                    <span class="cal-active-dot"></span>
+                </div>
+                <div class="calendar-day-col" data-date="25">
+                    <span class="cal-day-label">SUN</span>
+                    <span class="cal-date-number">25</span>
+                    <span class="cal-active-dot"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         4. VERTICAL SESSION CARDS LIST (Exact Match to PDF Pages 2 & 3)
+         ==================================================================== -->
+    <main class="sessions-list-container">
+        <div class="container-xl" id="sessionsListContainer">
+
+            <!-- Card 1: Algorithms: Final Exam Problem Solving (PDF Page 2) -->
+            <article class="session-card-item" 
+                     data-id="1"
+                     data-day="24"
+                     data-category="Computing"
+                     data-format="Online"
+                     data-this-week="true">
+                <div class="session-card-left">
+                    <div class="session-date-box">
+                        <span class="date-box-number">24</span>
+                        <span class="date-box-month">MAY</span>
+                    </div>
+                    <div>
+                        <span class="subject-pill-badge subject-pill-computing">Computing</span>
+                        <h2 class="session-item-title">Algorithms: Final Exam Problem Solving</h2>
+                        <div class="session-item-meta">
+                            <span><i class="bi bi-clock me-1"></i> 6:30 PM – 8:00 PM</span>
+                            <span><i class="bi bi-people me-1"></i> 18 attending</span>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="session-card-right">
+                    <span class="seats-status-text">Seats available</span>
+                    <a href="session-details.html?id=1" class="btn-session-view-details">View details</a>
+                </div>
+            </article>
+
+            <!-- Card 2: Marketing Strategy Case Review (PDF Page 2) -->
+            <article class="session-card-item" 
+                     data-id="2"
+                     data-day="26"
+                     data-category="Business"
+                     data-format="Physical"
+                     data-this-week="true">
+                <div class="session-card-left">
+                    <div class="session-date-box date-light">
+                        <span class="date-box-number">26</span>
+                        <span class="date-box-month">MAY</span>
+                    </div>
+                    <div>
+                        <span class="subject-pill-badge subject-pill-business">Business</span>
+                        <h2 class="session-item-title">Marketing Strategy Case Review</h2>
+                        <div class="session-item-meta">
+                            <span><i class="bi bi-clock me-1"></i> 4:00 PM – 5:30 PM</span>
+                            <span><i class="bi bi-people me-1"></i> 14 attending</span>
+                            <span>Learning Commons</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="session-card-right">
+                    <span class="seats-status-text">Seats available</span>
+                    <a href="session-details.html?id=2" class="btn-session-view-details">View details</a>
+                </div>
+            </article>
+
+            <!-- Card 3: Laboratory Report Review (PDF Page 2) -->
+            <article class="session-card-item" 
+                     data-id="3"
+                     data-day="28"
+                     data-category="Science"
+                     data-format="Physical"
+                     data-this-week="true">
+                <div class="session-card-left">
+                    <div class="session-date-box date-light">
+                        <span class="date-box-number">28</span>
+                        <span class="date-box-month">MAY</span>
+                    </div>
+                    <div>
+                        <span class="subject-pill-badge subject-pill-science">Science</span>
+                        <h2 class="session-item-title">Laboratory Report Review</h2>
+                        <div class="session-item-meta">
+                            <span><i class="bi bi-clock me-1"></i> 5:30 PM – 7:00 PM</span>
+                            <span><i class="bi bi-people me-1"></i> 12 attending</span>
+                            <span>Science Laboratory</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="session-card-right">
+                    <span class="seats-status-text warning">4 seats left</span>
+                    <a href="session-details.html?id=3" class="btn-session-view-details">View details</a>
+                </div>
+            </article>
+
+            <!-- Card 4: Research Proposal Writing Lab (PDF Page 3) -->
+            <article class="session-card-item" 
+                     data-id="4"
+                     data-day="30"
+                     data-category="Academic Skills"
+                     data-format="Online"
+                     data-this-week="false">
+                <div class="session-card-left">
+                    <div class="session-date-box date-light">
+                        <span class="date-box-number">30</span>
+                        <span class="date-box-month">MAY</span>
+                    </div>
+                    <div>
+                        <span class="subject-pill-badge subject-pill-academicskills">Academic Skills</span>
+                        <h2 class="session-item-title">Research Proposal Writing Lab</h2>
+                        <div class="session-item-meta">
+                            <span><i class="bi bi-clock me-1"></i> 3:00 PM – 4:30 PM</span>
+                            <span><i class="bi bi-people me-1"></i> 21 attending</span>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="session-card-right">
+                    <span class="seats-status-text">Seats available</span>
+                    <a href="session-details.html?id=4" class="btn-session-view-details">View details</a>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <!-- ====================================================================
+         5. CREATE SESSION MODAL
+         ==================================================================== -->
+    <div class="modal fade" id="createSessionModal" tabindex="-1" aria-labelledby="createSessionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 18px;">
+                <div class="modal-header border-bottom px-4 pt-4 pb-3">
+                    <div>
+                        <h5 class="modal-title fw-bold text-dark mb-1" id="createSessionModalLabel">Create a Study Session</h5>
+                        <p class="text-muted small mb-0">Organize a focused revision or problem-solving session for peers.</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="createSessionForm">
+                    <div class="modal-body px-4 py-3">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Session Title *</label>
+                            <input type="text" name="title" class="form-control" placeholder="e.g. Graph Traversal & Dynamic Programming" required>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-secondary">Faculty / Domain *</label>
+                                <select name="faculty" class="form-select" required>
+                                    <option value="Computing" selected>Computing</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Science">Science</option>
+                                    <option value="Academic Skills">Academic Skills</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-secondary">Format *</label>
+                                <select name="format" class="form-select" required>
+                                    <option value="Online" selected>Online (Teams/Zoom)</option>
+                                    <option value="Physical">Physical (Campus Commons)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-secondary">Date *</label>
+                                <input type="date" name="session_date" class="form-control" value="2026-05-24" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-secondary">Time *</label>
+                                <input type="text" name="session_time" class="form-control" placeholder="6:30 PM - 8:00 PM" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Location / Meeting Link Details *</label>
+                            <input type="text" name="location_details" class="form-control" placeholder="e.g. Online · Meeting link after registration" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Max Capacity (Seats)</label>
+                            <input type="number" name="capacity" class="form-control" value="24" min="5" max="100">
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold text-secondary">Session Description</label>
+                            <textarea name="description" class="form-control" rows="3" placeholder="Brief outline of the revision agenda and problems to tackle..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top px-4 py-3 bg-light" style="border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;">
+                        <button type="button" class="btn btn-outline-secondary btn-sm fw-semibold" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success btn-sm fw-bold px-3">Schedule Session</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         6. FOOTER (Exact Match to Figma / PDF Reference)
+         ==================================================================== -->
+    <footer class="figma-footer">
+        <div class="container-xl">
+            <div class="row g-4 justify-content-between">
+                <!-- Col 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.html" class="brand-logo-container mb-3 text-decoration-none">
+                        <div class="brand-logo-wrapper">
+                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                        </div>
+                        <div class="brand-text-group">
+                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                        </div>
+                    </a>
+                    <p class="text-muted small" style="max-width: 320px;">
+                        A focused academic community for sharing knowledge, finding support, and learning better together.
+                    </p>
+                </div>
+
+                <!-- Col 2: Platform -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>PLATFORM</h6>
+                    <a href="resources.html">Study materials</a>
+                    <a href="discussions.html">Discussions</a>
+                    <a href="study-groups.html">Study groups</a>
+                    <a href="sessions.html">Study sessions</a>
+                </div>
+
+                <!-- Col 3: Community -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>COMMUNITY</h6>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Community guide</a>
+                    <a href="contact.html">Contact &amp; help</a>
+                </div>
+
+                <!-- Col 4: Account -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>ACCOUNT</h6>
+                    <a href="login.html">Log in</a>
+                    <a href="signup.html">Create account</a>
+                    <a href="student/index.html">Student dashboard</a>
+                    <a href="admin/index.html">Admin console</a>
+                </div>
+            </div>
+
+            <!-- Bottom Line -->
+            <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div class="d-flex gap-3">
+                    <a href="contact.html" class="text-muted text-decoration-none">Privacy</a>
+                    <a href="contact.html" class="text-muted text-decoration-none">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Sessions JS -->
+    <script src="assets/js/sessions.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
+

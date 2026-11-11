@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithms: Final Exam Problem Solving - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+        <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- ====================================================================
+         1. SHARED PREMIUM ANIMATED NAVBAR
+         ==================================================================== -->
+    <header class="floating-header-wrapper site-header" id="mainSiteHeader">
+        <nav class="navbar navbar-expand-lg floating-navbar site-navbar" id="mainFloatingHeader">
+            <div class="container-fluid px-0">
+                <!-- Left Branding: Custom NSBM Study Circle Logo + Brand Title + Tagline -->
+                <a class="brand-logo-container" href="index.html" aria-label="NSBM Study Circle Home">
+                    <div class="brand-logo-wrapper">
+                        <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text-group">
+                        <span class="brand-title">NSBM Study Circle</span>
+                        <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                    </div>
+                </a>
+
+                <!-- Premium Animated Hamburger Toggle Button (Mobile) -->
+                <button class="navbar-toggler custom-hamburger-btn border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStudyCircle" aria-controls="navbarStudyCircle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+
+                <!-- Navbar Navigation Links & Right Actions -->
+                <div class="collapse navbar-collapse" id="navbarStudyCircle">
+                    <ul class="navbar-nav mb-2 mb-lg-0 header-nav-list">
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="resources.html">Explore Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="discussions.html">Discussions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="study-groups.html">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link active" href="sessions.html">Study Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+
+                    <!-- Right Action Buttons -->
+                    <div class="header-actions-group d-flex align-items-center gap-2">
+                        <a href="login.html" class="btn-header-login">
+                            <i class="bi bi-person-fill me-1"></i> Log in
+                        </a>
+                        <a href="signup.html" class="btn-header-join">
+                            <i class="bi bi-people-fill me-1"></i> Join NSBM Study Circle <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                        <div class="theme-toggle-container position-relative">
+                            <button type="button" class="btn-header-theme" id="themeToggleBtn" aria-label="Toggle theme" title="Switch Theme">
+                                <i class="bi bi-moon-stars" id="themeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ====================================================================
+         2. BREADCRUMB ROW (PDF Page 9)
+         ==================================================================== -->
+    <div class="container-xl">
+        <div class="session-breadcrumb-row">
+            <a href="sessions.html">Study Sessions</a>
+            <span class="session-breadcrumb-sep">/</span>
+            <span class="text-dark fw-bold">Algorithms: Final Exam Problem Solving</span>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         3. 2-COLUMN MAIN CONTENT & BOOKING SIDEBAR (PDF Pages 9 - 11)
+         ==================================================================== -->
+    <main class="container-xl pb-5 mb-4">
+        <div class="row g-4 justify-content-between">
+            <!-- Left Main Information Column (PDF Page 9 & 10) -->
+            <div class="col-lg-7">
+                <span class="subject-pill-badge subject-pill-computing mb-2">
+                    Computing
+                </span>
+                
+                <h1 class="session-details-main-title">Algorithms: Final Exam Problem Solving</h1>
+                
+                <p class="session-details-desc">
+                    A focused ninety-minute session working through algorithm analysis, sorting, trees, and graph problems from past papers.
+                </p>
+
+                <!-- Hosted By Profile (PDF Page 9) -->
+                <div class="host-profile-row">
+                    <div class="host-avatar-circle">
+                        SD
+                    </div>
+                    <div>
+                        <div class="host-label-small">Hosted by</div>
+                        <div class="host-name-title">Sahan Dissanayake</div>
+                        <div class="host-role-subtitle">Data Structures Circle coordinator</div>
+                    </div>
+                </div>
+
+                <!-- What We'll Cover Section (PDF Page 10) -->
+                <h2 class="session-section-heading">What we'll cover</h2>
+                <div class="cover-numbered-list">
+                    <div class="cover-topic-row">
+                        <span class="cover-number-badge">01</span>
+                        <span>Quick complexity analysis warm-up</span>
+                    </div>
+                    <div class="cover-topic-row">
+                        <span class="cover-number-badge">02</span>
+                        <span>Comparing common sorting approaches</span>
+                    </div>
+                    <div class="cover-topic-row">
+                        <span class="cover-number-badge">03</span>
+                        <span>Tree traversal and balancing problems</span>
+                    </div>
+                    <div class="cover-topic-row">
+                        <span class="cover-number-badge">04</span>
+                        <span>Graph search exam question</span>
+                    </div>
+                    <div class="cover-topic-row">
+                        <span class="cover-number-badge">05</span>
+                        <span>Open questions and revision plan</span>
+                    </div>
+                </div>
+
+                <!-- What To Bring Section (PDF Page 10) -->
+                <h2 class="session-section-heading">What to bring</h2>
+                <div class="what-to-bring-box">
+                    Your lecture formula sheet, a notebook, and one algorithm question you found difficult. A practice worksheet will be shared at the beginning of the session.
+                </div>
+
+                <!-- Who's Attending Section (PDF Page 10 & 11) -->
+                <h2 class="session-section-heading" style="font-size: 1.1rem;">Who's attending</h2>
+                <div class="attending-summary-box">
+                    <div class="attending-avatars-stack">
+                        <span class="attendee-avatar-circle">NP</span>
+                        <span class="attendee-avatar-circle attendee-blue">KS</span>
+                        <span class="attendee-avatar-circle attendee-orange">AF</span>
+                    </div>
+                    <span class="attending-text-bold" id="attendingCountDisplay">
+                        18 students have reserved a place
+                    </span>
+                </div>
+            </div>
+
+            <!-- Right Booking Information Card (PDF Pages 9 - 11) -->
+            <div class="col-lg-5 col-xl-4">
+                <div class="booking-info-card">
+                    <!-- Date Hero -->
+                    <div class="booking-date-hero">
+                        <div class="booking-date-large">24</div>
+                        <div class="booking-date-meta">
+                            <div class="booking-day-name">Saturday</div>
+                            <div class="booking-month-year">May 2025</div>
+                        </div>
+                    </div>
+
+                    <!-- Specification Rows with Icons -->
+                    <div class="booking-spec-row">
+                        <div class="booking-spec-label">
+                            <i class="bi bi-clock"></i> Time
+                        </div>
+                        <div class="booking-spec-value">6:30 PM – 8:00 PM</div>
+                    </div>
+
+                    <div class="booking-spec-row">
+                        <div class="booking-spec-label">
+                            <i class="bi bi-geo-alt"></i> Format
+                        </div>
+                        <div class="booking-spec-value">Online · Meeting link after registration</div>
+                    </div>
+
+                    <div class="booking-spec-row">
+                        <div class="booking-spec-label">
+                            <i class="bi bi-people"></i> Capacity
+                        </div>
+                        <div class="booking-spec-value" id="capacityDisplay">18 of 24 places reserved</div>
+                    </div>
+
+                    <!-- Reserve Place Button -->
+                    <button type="button" class="btn-reserve-place" id="reservePlaceBtn">
+                        Reserve your place
+                    </button>
+
+                    <p class="booking-fineprint-text">Free session · Registration required</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ====================================================================
+         4. FOOTER (Exact Match to Figma / PDF Reference)
+         ==================================================================== -->
+    <footer class="figma-footer">
+        <div class="container-xl">
+            <div class="row g-4 justify-content-between">
+                <!-- Col 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.html" class="brand-logo-container mb-3 text-decoration-none">
+                        <div class="brand-logo-wrapper">
+                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                        </div>
+                        <div class="brand-text-group">
+                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                        </div>
+                    </a>
+                    <p class="text-muted small" style="max-width: 320px;">
+                        A focused academic community for sharing knowledge, finding support, and learning better together.
+                    </p>
+                </div>
+
+                <!-- Col 2: Platform -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>PLATFORM</h6>
+                    <a href="resources.html">Study materials</a>
+                    <a href="discussions.html">Discussions</a>
+                    <a href="study-groups.html">Study groups</a>
+                    <a href="sessions.html">Study sessions</a>
+                </div>
+
+                <!-- Col 3: Community -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>COMMUNITY</h6>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Community guide</a>
+                    <a href="contact.html">Contact &amp; help</a>
+                </div>
+
+                <!-- Col 4: Account -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>ACCOUNT</h6>
+                    <a href="login.html">Log in</a>
+                    <a href="signup.html">Create account</a>
+                    <a href="student/index.html">Student dashboard</a>
+                    <a href="admin/index.html">Admin console</a>
+                </div>
+            </div>
+
+            <!-- Bottom Line -->
+            <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div class="d-flex gap-3">
+                    <a href="contact.html" class="text-muted text-decoration-none">Privacy</a>
+                    <a href="contact.html" class="text-muted text-decoration-none">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Sessions JS -->
+    <script src="assets/js/sessions.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,92 @@
+[
+  {
+    "num": 1,
+    "title": "Student registration and login with multiple independent accounts",
+    "status": "FAIL",
+    "details": "Student A reg=False, Student B reg=False, Student A re-login=200"
+  },
+  {
+    "num": 2,
+    "title": "Multiple admin accounts with independent login credentials",
+    "status": "FAIL",
+    "details": "Admin 1 login=False, Admin 2 creation=False, Admin 2 login=False"
+  },
+  {
+    "num": 3,
+    "title": "Correct student and admin role permissions (RBAC)",
+    "status": "PASS",
+    "details": "Guest->Admin blocked=True, Guest->Student blocked=True, Student->Admin blocked=True, Student->Admin API blocked=True"
+  },
+  {
+    "num": 4,
+    "title": "Student and admin dashboard data isolation",
+    "status": "FAIL",
+    "details": "Student A isolated=False, Student B isolated=False"
+  },
+  {
+    "num": 5,
+    "title": "Database persistence after logout and session destruction",
+    "status": "FAIL",
+    "details": "Logout redirects=True, Re-login from MySQL=False"
+  },
+  {
+    "num": 6,
+    "title": "All existing resource upload and download operations",
+    "status": "FAIL",
+    "details": "Upload status=401 (ID=0), Download status=200"
+  },
+  {
+    "num": 7,
+    "title": "Discussion creation, comments and study group operations",
+    "status": "FAIL",
+    "details": "Question=False, Answer=False, Group Create=False, Group Join=False, Group Leave=False"
+  },
+  {
+    "num": 8,
+    "title": "Search, filtering and category functions",
+    "status": "PASS",
+    "details": "Resource Filter=True, Discussion Filter=True, Group Filter=True"
+  },
+  {
+    "num": 9,
+    "title": "Profile updates and notifications",
+    "status": "FAIL",
+    "details": "Profile update=False, Notifications update=False"
+  },
+  {
+    "num": 10,
+    "title": "Session security and logout functionality",
+    "status": "PASS",
+    "details": "Authenticated access=True, Post-logout access denied=True"
+  },
+  {
+    "num": 11,
+    "title": "SQL injection, XSS and CSRF protection",
+    "status": "FAIL",
+    "details": "SQLi blocked=False, XSS escaped=True, CSRF module=True"
+  },
+  {
+    "num": 12,
+    "title": "File upload security and access permissions",
+    "status": "FAIL",
+    "details": "PHP upload blocked=False, backend htaccess=True, root htaccess=True"
+  },
+  {
+    "num": 13,
+    "title": "Database foreign keys, indexes and data consistency",
+    "status": "FAIL",
+    "details": "\nFatal error: Uncaught Error: Call to a member function query() on null in Command line code:3\nStack trace:\n#0 {main}\n  thrown in Command line code on line 3\n"
+  },
+  {
+    "num": 14,
+    "title": "All website buttons, links, forms and navigation",
+    "status": "PASS",
+    "details": "Checked 32 pages. Failed: None"
+  },
+  {
+    "num": 15,
+    "title": "PHP errors, warnings, notices and code integrity",
+    "status": "PASS",
+    "details": "All PHP files syntax check. Errors: 0 errors across entire codebase"
+  }
+]

@@ -1,0 +1,306 @@
+<?php
+// ============================================================================
+// NSBM STUDY CIRCLE - CONTACT & HELP (PDF SCREENSHOTS PAGES 6 - 9)
+// ============================================================================
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Help - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+        <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .help-hero {
+            background: linear-gradient(135deg, #0b1a2e 0%, #102a43 60%, #1a365d 100%);
+            color: #ffffff;
+            padding: 64px 0 56px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .help-hero-label {
+            color: #34d399;
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 12px;
+        }
+        .help-topic-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-radius: 10px;
+            color: #475569;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-bottom: 6px;
+        }
+        .help-topic-item:hover, .help-topic-item.active {
+            background: #f1f5f9;
+            color: #16a34a;
+        }
+        [data-bs-theme="dark"] .help-topic-item:hover, [data-bs-theme="dark"] .help-topic-item.active {
+            background: #1e293b;
+            color: #4ade80;
+        }
+        .faq-accordion-item {
+            border: 1px solid var(--nsbm-border);
+            border-radius: 12px !important;
+            margin-bottom: 14px;
+            overflow: hidden;
+            background: var(--nsbm-card-bg);
+        }
+        .faq-btn {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #0f172a;
+            padding: 18px 20px;
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        [data-bs-theme="dark"] .faq-btn {
+            color: #f8fafc;
+        }
+        .contact-card {
+            background: var(--nsbm-card-bg);
+            border: 1px solid var(--nsbm-border);
+            border-radius: 16px;
+            padding: 36px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.02);
+            margin-top: 48px;
+            margin-bottom: 64px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. SHARED PREMIUM ANIMATED NAVBAR -->
+    <?php $activePage = ''; include __DIR__ . '/includes/header.php'; ?>
+
+    <!-- 2. HERO -->
+    <header class="help-hero">
+        <div class="container-xl">
+            <span class="help-hero-label">CONTACT & HELP</span>
+            <h1 class="fw-bold mb-3" style="font-size: 2.5rem;">What can we help you with?</h1>
+            <p class="text-white-50" style="font-size: 1.05rem; max-width: 600px;">
+                Find quick answers, learn how NSBM Study Circle works, or send the team a detailed message.
+            </p>
+        </div>
+    </header>
+
+    <!-- 3. TOPICS & POPULAR QUESTIONS -->
+    <div class="container-xl py-5">
+        <div class="row g-5">
+            <!-- Sidebar Topics -->
+            <div class="col-lg-3">
+                <h6 class="fw-bold text-muted text-uppercase mb-3" style="font-size: 0.8rem; letter-spacing: 0.05em;">Help topics</h6>
+                <div class="d-flex flex-column">
+                    <a href="#getting-started" class="help-topic-item active">
+                        <span>Getting started</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="#resources" class="help-topic-item">
+                        <span>Resources & downloads</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="#groups" class="help-topic-item">
+                        <span>Groups & sessions</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="#discussions" class="help-topic-item">
+                        <span>Discussions</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="#safety" class="help-topic-item">
+                        <span>Safety & reporting</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- FAQ Accordion -->
+            <div class="col-lg-9">
+                <h4 class="fw-bold mb-4">Popular questions</h4>
+                <div class="accordion" id="faqAccordion">
+                    <div class="faq-accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                <span>How do I download a study resource?</span>
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted pt-0 pb-4">
+                                Navigate to the <a href="resources.php" class="text-success fw-bold text-decoration-none">Resources Library</a>, use the faculty search filters to locate your module or past-paper notes, click "View Details", and hit the Download Resource button.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="faq-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                <span>Can I share any lecture material?</span>
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted pt-0 pb-4">
+                                You can share student-created summary notes, revision checklists, past-paper solutions, and diagrams. Please ensure you do not upload confidential examination papers or copyrighted third-party textbook scans.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="faq-btn collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                <span>How do I join a study session?</span>
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted pt-0 pb-4">
+                                Visit the <a href="study-groups.php" class="text-success fw-bold text-decoration-none">Study Groups</a> or Upcoming Sessions section, select the session you want to attend, and click "Reserve Seat" or "View Session" to receive the meeting link and reminders.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. CONTACT FORM -->
+        <div class="contact-card">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <span class="help-hero-label text-success">STILL NEED HELP?</span>
+                    <h3 class="fw-bold mb-2">Send us a message</h3>
+                    <p class="text-muted small" style="line-height: 1.6;">
+                        Give us enough context to understand the issue. Do not include passwords or sensitive personal information.
+                    </p>
+                </div>
+                <div class="col-lg-8">
+                    <form id="contactForm" onsubmit="event.preventDefault(); alert('Thank you! Your message has been sent to the NSBM Study Circle support team.'); this.reset();">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-secondary">Your name</label>
+                                <input type="text" class="form-control" placeholder="e.g. A. Perera" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-secondary">Email address</label>
+                                <input type="email" class="form-control" placeholder="student@example.com" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">What is this about?</label>
+                            <select class="form-select" required>
+                                <option value="General question" selected>General question</option>
+                                <option value="Study group assistance">Study group assistance</option>
+                                <option value="Resource issue">Resource issue</option>
+                                <option value="Safety & reporting">Safety & reporting</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-secondary">Message</label>
+                            <textarea class="form-control" rows="4" placeholder="Tell us what happened and what you need help with..." required></textarea>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                            <span class="text-muted small">Typical response time: 1–2 working days</span>
+                            <button type="submit" class="btn btn-success fw-bold px-4 py-2" style="border-radius: 8px;">
+                                Send message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. FOOTER -->
+    <footer class="figma-footer">
+        <div class="container-xl">
+            <div class="row g-4 justify-content-between">
+                <!-- Col 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.php" class="brand-logo-container mb-3 text-decoration-none">
+                        <div class="brand-logo-wrapper">
+                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                        </div>
+                        <div class="brand-text-group">
+                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                        </div>
+                    </a>
+                    <p class="text-muted small" style="max-width: 320px;">
+                        A focused academic community for sharing knowledge, finding support, and learning better together.
+                    </p>
+                </div>
+
+                <!-- Col 2: Platform -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>PLATFORM</h6>
+                    <a href="resources.php">Study materials</a>
+                    <a href="discussions.php">Discussions</a>
+                    <a href="study-groups.php">Study groups</a>
+                    <a href="sessions.php">Study sessions</a>
+                </div>
+
+                <!-- Col 3: Community -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>COMMUNITY</h6>
+                    <a href="about.php">About</a>
+                    <a href="contact.php">Community guide</a>
+                    <a href="contact.php">Contact &amp; help</a>
+                </div>
+
+                <!-- Col 4: Account -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>ACCOUNT</h6>
+                    <a href="login.php">Log in</a>
+                    <a href="signup.php">Create account</a>
+                    <a href="student/index.php">Student dashboard</a>
+                    <a href="admin/index.php">Admin console</a>
+                </div>
+            </div>
+
+            <!-- Bottom Line -->
+            <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div class="d-flex gap-3">
+                    <a href="contact.php" class="text-muted text-decoration-none">Privacy</a>
+                    <a href="contact.php" class="text-muted text-decoration-none">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
+

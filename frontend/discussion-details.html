@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discussion Details - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+        <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons 1.11.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="discussion-page-bg">
+
+    <!-- ====================================================================
+         1. SHARED PREMIUM ANIMATED NAVBAR
+         ==================================================================== -->
+    <header class="floating-header-wrapper site-header" id="mainSiteHeader">
+        <nav class="navbar navbar-expand-lg floating-navbar site-navbar" id="mainFloatingHeader">
+            <div class="container-fluid px-0">
+                <!-- Left Branding: Custom NSBM Study Circle Logo + Brand Title + Tagline -->
+                <a class="brand-logo-container" href="index.html" aria-label="NSBM Study Circle Home">
+                    <div class="brand-logo-wrapper">
+                        <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text-group">
+                        <span class="brand-title">NSBM Study Circle</span>
+                        <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                    </div>
+                </a>
+
+                <!-- Premium Animated Hamburger Toggle Button (Mobile) -->
+                <button class="navbar-toggler custom-hamburger-btn border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStudyCircle" aria-controls="navbarStudyCircle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+
+                <!-- Navbar Navigation Links & Right Actions -->
+                <div class="collapse navbar-collapse" id="navbarStudyCircle">
+                    <ul class="navbar-nav mb-2 mb-lg-0 header-nav-list">
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="resources.html">Explore Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link active" href="discussions.html">Discussions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="study-groups.html">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="sessions.html">Study Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+
+                    <!-- Right Action Buttons -->
+                    <div class="header-actions-group d-flex align-items-center gap-2">
+                        <a href="login.html" class="btn-header-login">
+                            <i class="bi bi-person-fill me-1"></i> Log in
+                        </a>
+                        <a href="signup.html" class="btn-header-join">
+                            <i class="bi bi-people-fill me-1"></i> Join NSBM Study Circle <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                        <div class="theme-toggle-container position-relative">
+                            <button type="button" class="btn-header-theme" id="themeToggleBtn" aria-label="Toggle theme" title="Switch Theme">
+                                <i class="bi bi-moon-stars" id="themeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ====================================================================
+         2. BREADCRUMB (Exact PDF Page 5)
+         ==================================================================== -->
+    <div class="py-3 border-bottom" style="background: transparent;">
+        <div class="container-xl">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-custom mb-0">
+                    <li class="breadcrumb-item"><a href="discussions.html" class="text-decoration-none text-muted">Discussions</a></li>
+                    <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">Question</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         3. QUESTION DETAIL & ANSWERS (PDF Pages 5 - 8)
+         ==================================================================== -->
+    <main class="py-4" id="discussionDetailContainer">
+        <div class="container-xl">
+            <div class="row g-4">
+                
+                <!-- Main Question Column -->
+                <div class="col-lg-8">
+                    
+                    <!-- Question Card (PDF Page 5) -->
+                    <div class="question-detail-card">
+                        <!-- Upvote Box -->
+                        <div class="question-upvote-box">
+                            <button class="btn-vote-up" id="questionUpvoteBtn" title="Vote this question as helpful">
+                                <i class="bi bi-arrow-up"></i>
+                            </button>
+                            <span class="question-vote-count" id="questionUpvoteCount">18</span>
+                            <span class="question-vote-label">helpful</span>
+                        </div>
+
+                        <!-- Question Content -->
+                        <div class="flex-grow-1">
+                            <span class="discussion-category-pill category-computing" id="detailCategoryBadge">Computing</span>
+                            <h1 class="question-detail-title" id="detailQuestionTitle">
+                                How do you choose between merge sort and quicksort in practice?
+                            </h1>
+                            
+                            <div class="question-author-meta">
+                                <div class="author-circle-avatar" id="detailAuthorInitials">AP</div>
+                                <span>Asked by <strong class="text-dark" id="detailAuthorName">Akila Perera</strong> · <span id="detailTimeAgo">2 hours ago</span></span>
+                            </div>
+
+                            <div class="question-detail-body" id="detailQuestionBody">
+                                I understand that both have average O(n log n) time complexity, while quicksort can degrade to O(n²). But when building an actual application, how should memory constraints, data order, and stability influence the choice?
+                            </div>
+
+                            <!-- Tags -->
+                            <div class="d-flex flex-wrap gap-2 pt-2" id="detailTagsContainer">
+                                <a href="#" class="tag-badge">algorithms</a>
+                                <a href="#" class="tag-badge">sorting</a>
+                                <a href="#" class="tag-badge">complexity</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Answers Header -->
+                    <div class="answers-section-header">
+                        <h2 class="answers-count-title" id="answersCountHeader">3 Answers</h2>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="small text-muted fw-semibold">Sort by:</span>
+                            <select class="form-select form-select-sm" style="width: auto; font-size: 0.85rem; font-weight: 600;">
+                                <option value="helpful">Most helpful</option>
+                                <option value="newest">Newest first</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Answers List (PDF Pages 6 & 7) -->
+                    <div id="answersListContainer">
+                        
+                        <!-- Answer 1 (Best Answer) -->
+                        <div class="answer-card highlight-solution">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="author-circle-avatar" style="background:#0284c7;">SD</div>
+                                    <div>
+                                        <div class="answer-author-name">Sahan Dissanayake</div>
+                                        <div class="answer-author-role">Top contributor · 1h ago</div>
+                                    </div>
+                                </div>
+                                <span class="most-helpful-badge"><i class="bi bi-check2"></i> Most helpful</span>
+                            </div>
+
+                            <div class="answer-body-text">
+                                In most application code, start with the language's standard sort because it is heavily optimized. If you need stability or predictable worst-case behavior, merge sort is easier to reason about. Quicksort is attractive for arrays because it is cache-friendly and usually works in-place.
+                            </div>
+
+                            <div class="answer-actions-bar">
+                                <button class="btn-answer-helpful" type="button"><i class="bi bi-arrow-up"></i> Helpful (12)</button>
+                                <button class="btn-answer-reply" type="button">Reply</button>
+                            </div>
+                        </div>
+
+                        <!-- Answer 2 -->
+                        <div class="answer-card">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <div class="author-circle-avatar" style="background:#10b981;">NM</div>
+                                <div>
+                                    <div class="answer-author-name">Nimali Madushani</div>
+                                    <div class="answer-author-role">Student member · 2h ago</div>
+                                </div>
+                            </div>
+
+                            <div class="answer-body-text">
+                                Memory is the clearest trade-off: classic merge sort needs additional O(n) storage, whereas quicksort can use O(log n) stack space on average. For linked lists, merge sort is often the natural choice because splitting and merging do not require array copies.
+                            </div>
+
+                            <div class="answer-actions-bar">
+                                <button class="btn-answer-helpful" type="button"><i class="bi bi-arrow-up"></i> Helpful (9)</button>
+                                <button class="btn-answer-reply" type="button">Reply</button>
+                            </div>
+                        </div>
+
+                        <!-- Answer 3 -->
+                        <div class="answer-card">
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                <div class="author-circle-avatar" style="background:#64748b;">SM</div>
+                                <div>
+                                    <div class="answer-author-name">Student member</div>
+                                    <div class="answer-author-role">Student member · 3h ago</div>
+                                </div>
+                            </div>
+
+                            <div class="answer-body-text">
+                                Also consider whether equal items must preserve their original order. That stability requirement often matters when sorting records by multiple fields.
+                            </div>
+
+                            <div class="answer-actions-bar">
+                                <button class="btn-answer-helpful" type="button"><i class="bi bi-arrow-up"></i> Helpful (6)</button>
+                                <button class="btn-answer-reply" type="button">Reply</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Post Answer Form Section (Exact PDF Pages 7 & 8) -->
+                    <div class="post-answer-card" id="postAnswerCardSection">
+                        <h3 class="post-answer-title">Your answer</h3>
+                        <form id="postAnswerForm">
+                            <div class="mb-3">
+                                <textarea class="post-answer-textarea" id="answerTextarea" name="body" placeholder="Explain your reasoning clearly and respectfully..." required></textarea>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="char-counter-text" id="charCounter">0/2000 characters</span>
+                                <button type="submit" class="btn-post-answer">
+                                    Post answer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+                <!-- Right Sidebar Column -->
+                <div class="col-lg-4">
+                    
+                    <!-- Question Activity Card (PDF Page 5) -->
+                    <div class="sidebar-section-card">
+                        <h3 class="sidebar-title-header">Question activity</h3>
+                        <div class="activity-stat-row">
+                            <i class="bi bi-eye text-muted"></i>
+                            <span id="detailViewsCount">126 views</span>
+                        </div>
+                        <div class="activity-stat-row">
+                            <i class="bi bi-chat-left-text text-muted"></i>
+                            <span id="detailAnswersCount">3 answers</span>
+                        </div>
+                        <div class="activity-stat-row mb-0">
+                            <i class="bi bi-hand-thumbs-up text-muted"></i>
+                            <span id="detailVotesCount">18 helpful votes</span>
+                        </div>
+                    </div>
+
+                    <!-- Related Questions Card (PDF Page 5) -->
+                    <div class="sidebar-section-card">
+                        <h3 class="sidebar-title-header">Related questions</h3>
+                        <a href="discussion-details.html?id=6" class="related-question-link">
+                            When should I use a heap sort?
+                        </a>
+                        <a href="discussion-details.html?id=4" class="related-question-link">
+                            Understanding Big O in nested loops
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ====================================================================
+         4. FOOTER (Exact Website Footer Match)
+         ==================================================================== -->
+    <footer class="figma-footer">
+        <div class="container-xl">
+            <div class="row g-4 justify-content-between">
+                <!-- Col 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.html" class="brand-logo-container mb-3 text-decoration-none">
+                        <div class="brand-logo-wrapper">
+                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                        </div>
+                        <div class="brand-text-group">
+                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                        </div>
+                    </a>
+                    <p class="text-muted small" style="max-width: 320px;">
+                        A focused academic community for sharing knowledge, finding support, and learning better together.
+                    </p>
+                </div>
+
+                <!-- Col 2: Platform -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>PLATFORM</h6>
+                    <a href="resources.html">Study materials</a>
+                    <a href="discussions.html">Discussions</a>
+                    <a href="study-groups.html">Study groups</a>
+                    <a href="sessions.html">Study sessions</a>
+                </div>
+
+                <!-- Col 3: Community -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>COMMUNITY</h6>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Community guide</a>
+                    <a href="contact.html">Contact &amp; help</a>
+                </div>
+
+                <!-- Col 4: Account -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>ACCOUNT</h6>
+                    <a href="login.html">Log in</a>
+                    <a href="signup.html">Create account</a>
+                    <a href="student/index.html">Student dashboard</a>
+                    <a href="admin/index.html">Admin console</a>
+                </div>
+            </div>
+
+            <!-- Bottom Line -->
+            <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div class="d-flex gap-3">
+                    <a href="contact.html" class="text-muted text-decoration-none">Privacy</a>
+                    <a href="contact.html" class="text-muted text-decoration-none">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Global Interactions & Stability JS -->
+    <script src="assets/js/main.js"></script>
+
+    <!-- Discussions Script -->
+    <script src="assets/js/discussions.js"></script>
+</body>
+</html>
+

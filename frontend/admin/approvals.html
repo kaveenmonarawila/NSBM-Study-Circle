@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Approvals - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+    <link rel="alternate icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Admin Console Dark Navy Sidebar -->
+<aside class="admin-sidebar" id="adminSidebar">
+    <a href="index.html" class="admin-sidebar-brand">
+        <div class="admin-brand-icon">
+            <img src="../assets/images/logo.svg" alt="NSBM Study Circle" onerror="this.onerror=null; this.src='../assets/images/logo.jpg';">
+        </div>
+        <div>
+            <h6 class="admin-brand-title">NSBM Study Circle</h6>
+            <p class="admin-brand-tagline">ADMIN CONSOLE</p>
+        </div>
+    </a>
+
+    <div class="admin-sidebar-scroll">
+        <!-- OVERVIEW -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">OVERVIEW</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="index.html" class="admin-nav-link ">
+                        <i class="bi bi-grid"></i>
+                        <span>Admin Dashboard</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- PEOPLE -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">PEOPLE</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="users.html" class="admin-nav-link ">
+                        <i class="bi bi-people"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ACADEMIC CONTENT -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">ACADEMIC CONTENT</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="approvals.html" class="admin-nav-link active">
+                        <i class="bi bi-check2"></i>
+                        <span>Resource Approvals</span>
+                        <span class="admin-nav-badge" id="sidebarApprovalBadge">7</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="resources.html" class="admin-nav-link ">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>Resource Management</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="academic-areas.html" class="admin-nav-link ">
+                        <i class="bi bi-book"></i>
+                        <span>Academic Areas</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="subjects.html" class="admin-nav-link ">
+                        <i class="bi bi-journal-text"></i>
+                        <span>First-Year Subjects</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- COMMUNITY -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">COMMUNITY</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="discussions.html" class="admin-nav-link ">
+                        <i class="bi bi-chat-left-text"></i>
+                        <span>Discussion Moderation</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="groups.html" class="admin-nav-link ">
+                        <i class="bi bi-people"></i>
+                        <span>Study Groups</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="sessions.html" class="admin-nav-link ">
+                        <i class="bi bi-calendar-event"></i>
+                        <span>Study Sessions</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- SYSTEM -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">SYSTEM</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="reports.html" class="admin-nav-link ">
+                        <i class="bi bi-bar-chart-line"></i>
+                        <span>Reports &amp; Analytics</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="settings.html" class="admin-nav-link ">
+                        <i class="bi bi-gear"></i>
+                        <span>Admin Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bottom System Status Box (PDF Pages 4, 26, 27) -->
+    <div class="admin-sidebar-footer">
+        <div class="admin-system-status-card">
+            <span class="status-dot"></span>
+            <div>
+                <div class="status-title">All systems operational</div>
+                <div class="status-subtitle">Last checked 2 min ago</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+        <div class="admin-main-wrapper">
+            <!-- Admin Console Topbar -->
+<header class="admin-topbar">
+    <!-- Left Search Input -->
+    <div class="admin-topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="text" id="adminGlobalSearch" placeholder="Search users, resources, or records..." aria-label="Search">
+    </div>
+
+    <!-- Right Actions & Admin User Profile -->
+    <div class="admin-topbar-actions">
+        <button type="button" class="admin-icon-btn" id="adminThemeToggle" title="Toggle theme" aria-label="Toggle theme">
+            <i class="bi bi-moon"></i>
+        </button>
+
+        <button type="button" class="admin-icon-btn" id="adminNotificationBtn" title="Notifications" aria-label="Notifications">
+            <i class="bi bi-bell"></i>
+        </button>
+
+        <div class="dropdown">
+            <div class="admin-profile-trigger" data-bs-toggle="dropdown" aria-expanded="false" role="button" tabindex="0">
+                <div class="admin-avatar-badge">AD</div>
+                <div class="admin-user-meta">
+                    <div class="admin-user-name">Admin User</div>
+                    <div class="admin-user-role">Super administrator</div>
+                </div>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-end admin-profile-dropdown-menu">
+                <li><a class="dropdown-item" href="settings.html">Admin settings</a></li>
+                <li><a class="dropdown-item" href="../index.html">Return to website</a></li>
+                <li><a class="dropdown-item" href="logout.php">Sign out</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+            <main class="admin-content">
+                <!-- Page Header -->
+                <div class="admin-page-header">
+                    <div>
+                        <h1 class="admin-page-title">Resource approvals</h1>
+                        <p class="admin-page-subtitle">Review submitted study materials before publication.</p>
+                    </div>
+                    <span class="admin-last-updated">Last updated just now</span>
+                </div>
+
+                <!-- 2-Column Split Layout (PDF Pages 5 & 6) -->
+                <div class="row g-4 align-items-start">
+                    <!-- Left Queue Column -->
+                    <div class="col-lg-4">
+                        <div class="approval-queue-card">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <span class="fw-bold text-dark" style="font-size:0.9rem;">Pending review</span>
+                                <span class="status-pill pill-amber">7 items</span>
+                            </div>
+
+                            <div class="approval-queue-item active">
+                                <div class="table-item-icon mt-1"><i class="bi bi-file-earmark-text"></i></div>
+                                <div class="approval-item-body">
+                                    <div class="approval-item-title">Data Structures — Complete Revision Guide</div>
+                                    <div class="approval-item-meta">Nethmi Perera · Computing</div>
+                                    <div class="approval-item-time">2 hours ago</div>
+                                </div>
+                            </div>
+
+                            <div class="approval-queue-item">
+                                <div class="table-item-icon mt-1"><i class="bi bi-file-earmark-text"></i></div>
+                                <div class="approval-item-body">
+                                    <div class="approval-item-title">Financial Accounting Formula Book</div>
+                                    <div class="approval-item-meta">Kavindu Silva · Business</div>
+                                    <div class="approval-item-time">5 hours ago</div>
+                                </div>
+                            </div>
+
+                            <div class="approval-queue-item">
+                                <div class="table-item-icon mt-1"><i class="bi bi-file-earmark-text"></i></div>
+                                <div class="approval-item-body">
+                                    <div class="approval-item-title">Engineering Mechanics — First-Year Guide</div>
+                                    <div class="approval-item-meta">Ravindu Mendis · Engineering</div>
+                                    <div class="approval-item-time">Yesterday</div>
+                                </div>
+                            </div>
+
+                            <div class="approval-queue-item">
+                                <div class="table-item-icon mt-1"><i class="bi bi-file-earmark-text"></i></div>
+                                <div class="approval-item-body">
+                                    <div class="approval-item-title">Laboratory Skills Handbook</div>
+                                    <div class="approval-item-meta">Dinara Jayasinghe · Science</div>
+                                    <div class="approval-item-time">Yesterday</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Detail & Preview Panel -->
+                    <div class="col-lg-8">
+                        <div class="admin-card overflow-hidden">
+                            <!-- Top Resource Header -->
+                            <div class="d-flex align-items-start justify-content-between gap-3">
+                                <div class="d-flex align-items-start gap-3 min-w-0 flex-grow-1">
+                                    <div class="admin-kpi-icon kpi-icon-blue" style="width:42px;height:42px;font-size:1.15rem;">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                    </div>
+                                    <div class="min-w-0 flex-grow-1">
+                                        <span class="status-pill pill-blue mb-2" id="approvalDetailFacultyBadge">Computing</span>
+                                        <h2 class="fw-bold text-dark mb-1" style="font-size:1.15rem;overflow-wrap:break-word;" id="approvalDetailTitle">Data Structures — Complete Revision Guide</h2>
+                                        <p class="text-secondary mb-0" style="font-size:0.8rem;overflow-wrap:break-word;" id="approvalDetailMeta">Submitted by Nethmi Perera · PDF · 5.8 MB</p>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-row-dots flex-shrink-0" title="More options"><i class="bi bi-three-dots"></i></button>
+                            </div>
+
+                            <!-- 4 Verification Check Cards -->
+                            <div class="approval-check-grid">
+                                <div class="approval-check-box">
+                                    <div class="approval-check-title">
+                                        <i class="bi bi-check2"></i>
+                                        <span>Ownership declaration</span>
+                                    </div>
+                                    <div class="approval-check-sub">Confirmed</div>
+                                </div>
+
+                                <div class="approval-check-box">
+                                    <div class="approval-check-title">
+                                        <i class="bi bi-check2"></i>
+                                        <span>File scan</span>
+                                    </div>
+                                    <div class="approval-check-sub">No threats detected</div>
+                                </div>
+
+                                <div class="approval-check-box">
+                                    <div class="approval-check-title">
+                                        <i class="bi bi-check2"></i>
+                                        <span>Duplicate check</span>
+                                    </div>
+                                    <div class="approval-check-sub">No close matches</div>
+                                </div>
+
+                                <div class="approval-check-box">
+                                    <div class="approval-check-title">
+                                        <i class="bi bi-check2"></i>
+                                        <span>Required fields</span>
+                                    </div>
+                                    <div class="approval-check-sub">Complete</div>
+                                </div>
+                            </div>
+
+                            <!-- Document Preview Box -->
+                            <div class="approval-preview-wrapper">
+                                <div class="approval-preview-topbar">
+                                    <span id="approvalPreviewPages">Preview · Page 1 of 42</span>
+                                    <a href="#" class="text-decoration-none fw-bold d-inline-flex align-items-center gap-1" style="color:#0284C7;" onclick="event.preventDefault(); window.showAdminToast('Opened full-screen document preview.');">
+                                        <i class="bi bi-eye"></i> Full screen
+                                    </a>
+                                </div>
+
+                                <div class="approval-preview-sheet">
+                                    <div class="sheet-tag">STUDYCIRCLE NOTES</div>
+                                    <div class="sheet-title" id="approvalSheetTitle">Data Structures — Complete<br>Revision Guide</div>
+                                    <div class="sheet-divider"></div>
+                                    <p class="sheet-desc">A structured academic resource with clear explanations, worked examples, and revision prompts.</p>
+                                </div>
+                            </div>
+
+                            <!-- Resource Metadata (PDF Page 6) -->
+                            <div class="mb-4">
+                                <h3 class="fw-bold text-dark mb-3" style="font-size:0.86rem;">Resource metadata</h3>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-6 col-md-3">
+                                        <div class="fw-bold text-dark" style="font-size:0.78rem;">Subject</div>
+                                        <div class="text-secondary" style="font-size:0.82rem;" id="approvalMetaSubject">Computing</div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="fw-bold text-dark" style="font-size:0.78rem;">Module</div>
+                                        <div class="text-secondary" style="font-size:0.82rem;" id="approvalMetaModule">CS2102</div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="fw-bold text-dark" style="font-size:0.78rem;">Academic year</div>
+                                        <div class="text-secondary" style="font-size:0.82rem;" id="approvalMetaYear">Year 2</div>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="fw-bold text-dark" style="font-size:0.78rem;">Language</div>
+                                        <div class="text-secondary" style="font-size:0.82rem;">English</div>
+                                    </div>
+                                </div>
+
+                                <div class="fw-bold text-dark mb-1" style="font-size:0.78rem;">Description</div>
+                                <p class="text-secondary mb-0" style="font-size:0.82rem;" id="approvalMetaDesc">
+                                    Comprehensive module-aligned notes prepared for revision, including diagrams, examples, and a final exam checklist.
+                                </p>
+                            </div>
+
+                            <!-- Action Buttons Row -->
+                            <div class="d-flex align-items-center justify-content-end gap-2 pt-3 border-top">
+                                <button type="button" class="btn-admin-outline" id="btnRequestChanges">Request changes</button>
+                                <button type="button" class="btn-admin-reject" id="btnRejectResource">Reject</button>
+                                <button type="button" class="btn-admin-green" id="btnApproveResource">Approve resource</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/admin.js"></script>
+</body>
+</html>

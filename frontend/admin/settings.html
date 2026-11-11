@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+    <link rel="alternate icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Admin Console Dark Navy Sidebar -->
+<aside class="admin-sidebar" id="adminSidebar">
+    <a href="index.html" class="admin-sidebar-brand">
+        <div class="admin-brand-icon">
+            <img src="../assets/images/logo.svg" alt="NSBM Study Circle" onerror="this.onerror=null; this.src='../assets/images/logo.jpg';">
+        </div>
+        <div>
+            <h6 class="admin-brand-title">NSBM Study Circle</h6>
+            <p class="admin-brand-tagline">ADMIN CONSOLE</p>
+        </div>
+    </a>
+
+    <div class="admin-sidebar-scroll">
+        <!-- OVERVIEW -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">OVERVIEW</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="index.html" class="admin-nav-link ">
+                        <i class="bi bi-grid"></i>
+                        <span>Admin Dashboard</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- PEOPLE -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">PEOPLE</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="users.html" class="admin-nav-link ">
+                        <i class="bi bi-people"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ACADEMIC CONTENT -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">ACADEMIC CONTENT</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="approvals.html" class="admin-nav-link ">
+                        <i class="bi bi-check2"></i>
+                        <span>Resource Approvals</span>
+                        <span class="admin-nav-badge" id="sidebarApprovalBadge">7</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="resources.html" class="admin-nav-link ">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>Resource Management</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="academic-areas.html" class="admin-nav-link ">
+                        <i class="bi bi-book"></i>
+                        <span>Academic Areas</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="subjects.html" class="admin-nav-link ">
+                        <i class="bi bi-journal-text"></i>
+                        <span>First-Year Subjects</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- COMMUNITY -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">COMMUNITY</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="discussions.html" class="admin-nav-link ">
+                        <i class="bi bi-chat-left-text"></i>
+                        <span>Discussion Moderation</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="groups.html" class="admin-nav-link ">
+                        <i class="bi bi-people"></i>
+                        <span>Study Groups</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="sessions.html" class="admin-nav-link ">
+                        <i class="bi bi-calendar-event"></i>
+                        <span>Study Sessions</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- SYSTEM -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">SYSTEM</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="reports.html" class="admin-nav-link ">
+                        <i class="bi bi-bar-chart-line"></i>
+                        <span>Reports &amp; Analytics</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="settings.html" class="admin-nav-link active">
+                        <i class="bi bi-gear"></i>
+                        <span>Admin Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bottom System Status Box (PDF Pages 4, 26, 27) -->
+    <div class="admin-sidebar-footer">
+        <div class="admin-system-status-card">
+            <span class="status-dot"></span>
+            <div>
+                <div class="status-title">All systems operational</div>
+                <div class="status-subtitle">Last checked 2 min ago</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+        <div class="admin-main-wrapper">
+            <!-- Admin Console Topbar -->
+<header class="admin-topbar">
+    <!-- Left Search Input -->
+    <div class="admin-topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="text" id="adminGlobalSearch" placeholder="Search users, resources, or records..." aria-label="Search">
+    </div>
+
+    <!-- Right Actions & Admin User Profile -->
+    <div class="admin-topbar-actions">
+        <button type="button" class="admin-icon-btn" id="adminThemeToggle" title="Toggle theme" aria-label="Toggle theme">
+            <i class="bi bi-moon"></i>
+        </button>
+
+        <button type="button" class="admin-icon-btn" id="adminNotificationBtn" title="Notifications" aria-label="Notifications">
+            <i class="bi bi-bell"></i>
+        </button>
+
+        <div class="dropdown">
+            <div class="admin-profile-trigger" data-bs-toggle="dropdown" aria-expanded="false" role="button" tabindex="0">
+                <div class="admin-avatar-badge">AD</div>
+                <div class="admin-user-meta">
+                    <div class="admin-user-name">Admin User</div>
+                    <div class="admin-user-role">Super administrator</div>
+                </div>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-end admin-profile-dropdown-menu">
+                <li><a class="dropdown-item" href="settings.html">Admin settings</a></li>
+                <li><a class="dropdown-item" href="../index.html">Return to website</a></li>
+                <li><a class="dropdown-item" href="logout.php">Sign out</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+            <main class="admin-content">
+                <!-- Page Header -->
+                <div class="admin-page-header">
+                    <div>
+                        <h1 class="admin-page-title">Admin settings</h1>
+                        <p class="admin-page-subtitle">Configure moderation, platform rules, and administrator access.</p>
+                    </div>
+                    <span class="admin-last-updated">Last updated just now</span>
+                </div>
+
+                <!-- 2-Column Settings Layout (PDF Pages 23 - 27) -->
+                <div class="row g-4 align-items-start">
+                    <!-- Left Sub-Navigation -->
+                    <div class="col-lg-3">
+                        <ul class="settings-subnav">
+                            <li><a href="#settingsGeneral" class="settings-subnav-link active">General</a></li>
+                            <li><a href="#settingsModeration" class="settings-subnav-link">Moderation</a></li>
+                            <li><a href="#settingsUploads" class="settings-subnav-link">Uploads</a></li>
+                            <li><a href="#settingsAdministrators" class="settings-subnav-link">Administrators</a></li>
+                            <li><a href="#settingsAdministrators" class="settings-subnav-link">Audit log</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Stacked Settings Cards -->
+                    <div class="col-lg-9">
+                        <!-- Card 1: General Platform Settings (PDF Page 23) -->
+                        <div class="admin-card mb-4" id="settingsGeneral">
+                            <div class="mb-3">
+                                <h2 class="admin-card-title">General platform settings</h2>
+                                <p class="admin-card-subtitle">Configure organization-wide labels and support information.</p>
+                            </div>
+
+                            <form id="generalSettingsForm">
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="admin-form-label" for="platformNameInput">Platform name</label>
+                                        <input type="text" id="platformNameInput" class="admin-form-control" value="NSBM Study Circle">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="admin-form-label" for="supportEmailInput">Support email</label>
+                                        <input type="email" id="supportEmailInput" class="admin-form-control" value="support@example.com">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="admin-form-label" for="defaultLangSelect">Default language</label>
+                                        <select id="defaultLangSelect" class="admin-select w-100" style="height:40px;background-color:var(--admin-input-bg);">
+                                            <option selected>English</option>
+                                            <option>Sinhala</option>
+                                            <option>Tamil</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="admin-form-label" for="timeZoneSelect">Time zone</label>
+                                        <select id="timeZoneSelect" class="admin-select w-100" style="height:40px;background-color:var(--admin-input-bg);">
+                                            <option selected>Asia/Colombo</option>
+                                            <option>UTC</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn-admin-green">Save changes</button>
+                            </form>
+                        </div>
+
+                        <!-- Card 2: Moderation Rules (PDF Page 24) -->
+                        <div class="admin-card mb-4" id="settingsModeration">
+                            <div class="mb-2">
+                                <h2 class="admin-card-title">Moderation rules</h2>
+                                <p class="admin-card-subtitle">Set review behavior for public content.</p>
+                            </div>
+
+                            <div>
+                                <div class="moderation-toggle-row">
+                                    <span>Require approval for all resource uploads</span>
+                                    <label class="admin-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="admin-switch-slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="moderation-toggle-row">
+                                    <span>Automatically hide content after 5 reports</span>
+                                    <label class="admin-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="admin-switch-slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="moderation-toggle-row">
+                                    <span>Allow moderators to suspend users</span>
+                                    <label class="admin-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="admin-switch-slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="moderation-toggle-row">
+                                    <span>Email administrators for high-priority reports</span>
+                                    <label class="admin-switch">
+                                        <input type="checkbox">
+                                        <span class="admin-switch-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Upload Policy (PDF Pages 24 & 25) -->
+                        <div class="admin-card mb-4" id="settingsUploads">
+                            <div class="mb-3">
+                                <h2 class="admin-card-title">Upload policy</h2>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="admin-form-label" for="maxFileSizeSelect">Maximum file size</label>
+                                    <select id="maxFileSizeSelect" class="admin-select w-100" style="height:40px;background-color:var(--admin-input-bg);">
+                                        <option selected>25 MB</option>
+                                        <option>50 MB</option>
+                                        <option>100 MB</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="admin-form-label" for="allowedFormatsInput">Allowed file formats</label>
+                                    <input type="text" id="allowedFormatsInput" class="admin-form-control" value="PDF, DOCX, PPTX">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4: Administrator Access (PDF Pages 25, 26, 27) -->
+                        <div class="admin-card" id="settingsAdministrators">
+                            <div class="admin-card-header mb-2">
+                                <div>
+                                    <h2 class="admin-card-title">Administrator access</h2>
+                                    <p class="admin-card-subtitle">People with permission to manage the platform.</p>
+                                </div>
+                                <button type="button" class="btn-admin-green" id="btnInviteAdmin">Invite administrator</button>
+                            </div>
+
+                            <div>
+                                <div class="d-flex align-items-center justify-content-between py-3 border-bottom" style="border-color:var(--admin-divider) !important;">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="admin-avatar-badge">AD</div>
+                                        <div>
+                                            <div class="fw-bold text-dark" style="font-size:0.85rem;">Admin User</div>
+                                            <div class="text-secondary" style="font-size:0.76rem;">Super administrator</div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-row-dots" title="Manage access"><i class="bi bi-three-dots"></i></button>
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-between py-3 border-bottom" style="border-color:var(--admin-divider) !important;">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="admin-avatar-badge">MK</div>
+                                        <div>
+                                            <div class="fw-bold text-dark" style="font-size:0.85rem;">Malith Karunaratne</div>
+                                            <div class="text-secondary" style="font-size:0.76rem;">Content moderator</div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-row-dots" title="Manage access"><i class="bi bi-three-dots"></i></button>
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-between pt-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="admin-avatar-badge">SN</div>
+                                        <div>
+                                            <div class="fw-bold text-dark" style="font-size:0.85rem;">Shalini Nadarajah</div>
+                                            <div class="text-secondary" style="font-size:0.76rem;">Community moderator</div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-row-dots" title="Manage access"><i class="bi bi-three-dots"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/admin.js"></script>
+</body>
+</html>

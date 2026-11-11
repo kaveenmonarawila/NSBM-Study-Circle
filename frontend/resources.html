@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Library - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+        <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg"><link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons 1.11.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- ====================================================================
+         1. FLOATING PILL GLASSMORPHISM ANIMATED HEADER
+         ==================================================================== -->
+    <!-- Official Clean Floating Pill Header -->
+    <header class="floating-header-wrapper site-header" id="mainSiteHeader">
+        <nav class="navbar navbar-expand-lg floating-navbar site-navbar" id="mainFloatingHeader">
+            <div class="container-fluid px-0">
+                <!-- Left Branding: Custom NSBM Study Circle Logo + Brand Title + Tagline -->
+                <a class="brand-logo-container" href="index.html" aria-label="NSBM Study Circle Home">
+                    <div class="brand-logo-wrapper">
+                        <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text-group">
+                        <span class="brand-title">NSBM Study Circle</span>
+                        <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                    </div>
+                </a>
+
+                <!-- Mobile Animated Hamburger -->
+                <button class="navbar-toggler custom-hamburger-btn border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStudyCircle" aria-controls="navbarStudyCircle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+
+                <!-- Center Nav Links + Right Actions -->
+                <div class="collapse navbar-collapse" id="navbarStudyCircle">
+                    <ul class="navbar-nav mb-2 mb-lg-0 header-nav-list">
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link active" href="resources.html">Explore Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="discussions.html">Discussions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="study-groups.html">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="sessions.html">Study Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+
+                    <div class="header-actions-group d-flex align-items-center gap-2">
+                        <a href="login.html" class="btn-header-login">
+                            <i class="bi bi-person-fill me-1"></i> Log in
+                        </a>
+                        <a href="signup.html" class="btn-header-join">
+                            <i class="bi bi-people-fill me-1"></i> Join NSBM Study Circle <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                        <div class="theme-toggle-container position-relative">
+                            <button type="button" class="btn-header-theme" id="themeToggleBtn" aria-label="Toggle theme" title="Switch Theme">
+                                <i class="bi bi-moon-stars" id="themeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ====================================================================
+         2. RESOURCE LIBRARY HERO SECTION (Exact Visual Reference)
+         ==================================================================== -->
+    <header class="resource-hero">
+        <div class="container-xl">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-8">
+                    <span class="hero-library-pill">
+                        <i class="bi bi-collection-play-fill me-1"></i> RESOURCE LIBRARY
+                    </span>
+                    <h1 class="hero-library-title">Find your next study advantage</h1>
+                    <p class="hero-library-subtitle">
+                        Search student-shared notes, revision guides, and learning tools organized by subject and module.
+                    </p>
+                </div>
+                <div class="col-lg-4 d-flex justify-content-lg-end mt-4 mt-lg-0">
+                    <div class="hero-counter-box text-center text-lg-start">
+                        <div class="counter-number">320+</div>
+                        <div class="counter-label">Curated resources</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         3. BROWSE ALL FIRST-YEAR SUBJECTS (Exact 4 Cards Grid)
+         ==================================================================== -->
+    <section class="py-5" style="background-color: var(--nsbm-bg);">
+        <div class="container-xl">
+            <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+                <div>
+                    <span class="badge bg-success-subtle text-success fw-bold px-2 py-1 mb-2 rounded-pill text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.8px;">NSBM Year 1</span>
+                    <h2 class="h3 fw-bold mb-0">Browse all first-year subjects</h2>
+                </div>
+                <button id="viewAllSubjectsBtn" class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 fw-semibold">
+                    View all subjects <i class="bi bi-arrow-right ms-1"></i>
+                </button>
+            </div>
+
+            <div class="row g-4">
+                <!-- 1. Computing -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="subject-browse-card computing h-100 p-4" data-faculty="Computing" role="button" tabindex="0">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="subject-icon-box bg-white shadow-sm">
+                                <i class="bi bi-code-slash text-primary"></i>
+                            </div>
+                            <i class="bi bi-arrow-right subject-arrow"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-3 text-dark">Computing</h3>
+                        <ul class="subject-modules-list list-unstyled mb-0">
+                            <li>Intro to Programming</li>
+                            <li>Computer Systems</li>
+                            <li>Algorithms & Logic</li>
+                            <li>Web Development</li>
+                            <li>Discrete Mathematics</li>
+                            <li>Database Principles</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 2. Business -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="subject-browse-card business h-100 p-4" data-faculty="Business" role="button" tabindex="0">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="subject-icon-box bg-white shadow-sm">
+                                <i class="bi bi-briefcase text-success"></i>
+                            </div>
+                            <i class="bi bi-arrow-right subject-arrow"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-3 text-dark">Business</h3>
+                        <ul class="subject-modules-list list-unstyled mb-0">
+                            <li>Principles of Management</li>
+                            <li>Financial Accounting</li>
+                            <li>Marketing Fundamentals</li>
+                            <li>Business Economics</li>
+                            <li>Business Statistics</li>
+                            <li>Organizational Behaviour</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 3. Engineering -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="subject-browse-card engineering h-100 p-4" data-faculty="Engineering" role="button" tabindex="0">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="subject-icon-box bg-white shadow-sm">
+                                <i class="bi bi-gear-wide-connected text-warning"></i>
+                            </div>
+                            <i class="bi bi-arrow-right subject-arrow"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-3 text-dark">Engineering</h3>
+                        <ul class="subject-modules-list list-unstyled mb-0">
+                            <li>Engineering Mathematics I</li>
+                            <li>Engineering Physics</li>
+                            <li>Mechanics of Materials</li>
+                            <li>CAD & Drafting Basics</li>
+                            <li>Materials Science</li>
+                            <li>Electrical Circuit Theory</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 4. Science -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="subject-browse-card science h-100 p-4" data-faculty="Science" role="button" tabindex="0">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="subject-icon-box bg-white shadow-sm">
+                                <i class="bi bi-virus text-info"></i>
+                            </div>
+                            <i class="bi bi-arrow-right subject-arrow"></i>
+                        </div>
+                        <h3 class="h5 fw-bold mb-3 text-dark">Science</h3>
+                        <ul class="subject-modules-list list-unstyled mb-0">
+                            <li>General Chemistry I</li>
+                            <li>Cell Biology & Genetics</li>
+                            <li>Applied Statistics</li>
+                            <li>Laboratory Techniques</li>
+                            <li>Physics for Sciences</li>
+                            <li>Scientific Communication</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         4. RESOURCE EXPLORATION & FILTERING SECTION
+         ==================================================================== -->
+    <section class="py-5" id="resourcesExploreSection">
+        <div class="container-xl">
+            <div class="row g-4">
+                
+                <!-- Left Sidebar Filters -->
+                <div class="col-lg-3">
+                    <div class="filter-sidebar-card shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                            <h4 class="h6 fw-bold mb-0 text-uppercase tracking-wider" style="letter-spacing: 0.5px;">Filters</h4>
+                            <a href="#" id="clearFiltersBtn" class="clear-filters-link">Clear all</a>
+                        </div>
+
+                        <!-- Filter: Subject -->
+                        <div class="filter-group">
+                            <label for="subjectFilter" class="filter-label">Subject</label>
+                            <select id="subjectFilter" class="form-select filter-select">
+                                <option value="all">All subjects</option>
+                                <option value="Computing">Computing</option>
+                                <option value="Business">Business</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Science">Science</option>
+                            </select>
+                        </div>
+
+                        <!-- Filter: Resource Type -->
+                        <div class="filter-group">
+                            <label for="formatFilter" class="filter-label">Resource Type</label>
+                            <select id="formatFilter" class="form-select filter-select">
+                                <option value="all">All formats</option>
+                                <option value="pdf">PDF</option>
+                                <option value="docx">DOCX</option>
+                                <option value="pptx">PPTX</option>
+                            </select>
+                        </div>
+
+                        <!-- Filter: Academic Year -->
+                        <div class="filter-group mb-3">
+                            <label for="yearFilter" class="filter-label">Academic Year</label>
+                            <select id="yearFilter" class="form-select filter-select">
+                                <option value="all">Any year</option>
+                                <option value="Year 1">Year 1</option>
+                                <option value="Year 2">Year 2</option>
+                                <option value="Year 3">Year 3</option>
+                            </select>
+                        </div>
+
+                        <!-- Upload Resource Trigger Box -->
+                        <div class="border-top pt-3 text-center">
+                            <button type="button" class="btn btn-outline-success w-100 fw-bold btn-sm py-2 rounded-3 d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#uploadResourceModal">
+                                <i class="bi bi-cloud-arrow-up"></i> Upload Study Material
+                            </button>
+                            <small class="text-muted d-block mt-2" style="font-size: 0.72rem;">Share your notes with the NSBM community</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Main Resource Grid -->
+                <div class="col-lg-9">
+                    <!-- Top Search & Sort Bar -->
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+                        <div class="flex-grow-1 position-relative" style="min-width: 260px;">
+                            <input type="text" id="resourceSearchInput" class="form-control resource-search-bar" placeholder="Search by title, topic, or keyword...">
+                            <i class="bi bi-search position-absolute top-50 translate-middle-y text-muted" style="right: 18px;"></i>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <label for="sortSelect" class="small text-muted fw-semibold mb-0 text-nowrap">Sort by:</label>
+                            <select id="sortSelect" class="form-select sort-select form-select-sm">
+                                <option value="most_downloaded">Most downloaded</option>
+                                <option value="highest_rated">Highest rated</option>
+                                <option value="newest_first">Newest first</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Counter & Verification Subtext -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span id="resultsCount" class="fw-bold text-dark fs-6">Loading resources...</span>
+                        <span class="text-secondary small d-flex align-items-center gap-1">
+                            <i class="bi bi-patch-check-fill text-success"></i> Showing verified community uploads
+                        </span>
+                    </div>
+
+                    <!-- Cards Grid (2-columns matching screenshots) -->
+                    <div class="row" id="resourceGrid">
+                        <!-- Populated dynamically by resources.js -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         UPLOAD RESOURCE MODAL (Student Upload System)
+         ==================================================================== -->
+    <div class="modal fade" id="uploadResourceModal" tabindex="-1" aria-labelledby="uploadResourceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom px-4 pt-4 pb-3">
+                    <div>
+                        <h5 class="modal-title fw-bold text-dark" id="uploadResourceModalLabel">
+                            <i class="bi bi-cloud-arrow-up text-success me-2"></i> Upload Study Material
+                        </h5>
+                        <p class="text-secondary small mb-0">Contribute your lecture summaries, revision guides, or formula books.</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <form id="resourceUploadForm" enctype="multipart/form-data">
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <label for="uploadTitle" class="form-label fw-semibold small">Resource Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="uploadTitle" name="title" placeholder="e.g. Data Structures - Complete Revision Guide" required>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label for="uploadFaculty" class="form-label fw-semibold small">Faculty <span class="text-danger">*</span></label>
+                                <select class="form-select" id="uploadFaculty" name="faculty" required>
+                                    <option value="Computing">Computing</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Engineering">Engineering</option>
+                                    <option value="Science">Science</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="uploadModule" class="form-label fw-semibold small">Module Code <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="uploadModule" name="module_code" placeholder="e.g. CS2102 or COM101" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="uploadYear" class="form-label fw-semibold small">Academic Year</label>
+                                <select class="form-select" id="uploadYear" name="academic_year">
+                                    <option value="Year 1">Year 1</option>
+                                    <option value="Year 2">Year 2</option>
+                                    <option value="Year 3">Year 3</option>
+                                    <option value="Year 4">Year 4</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="uploadDesc" class="form-label fw-semibold small">Description</label>
+                            <textarea class="form-control" id="uploadDesc" name="description" rows="3" placeholder="Brief summary of topics covered in this resource..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="uploadFile" class="form-label fw-semibold small">Document File (PDF, DOCX, PPTX - Max 25MB) <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" id="uploadFile" name="resource_file" accept=".pdf,.docx,.pptx" required>
+                            <small class="text-muted" style="font-size:0.75rem;">Verified community uploads are scanned for security and academic integrity.</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top px-4 py-3 bg-light rounded-bottom-4">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success fw-bold px-4">
+                            <i class="bi bi-upload me-1"></i> Submit Upload
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         5. FOOTER
+         ==================================================================== -->
+    <footer class="figma-footer">
+        <div class="container-xl">
+            <div class="row g-4 justify-content-between">
+                <!-- Col 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.html" class="brand-logo-container mb-3 text-decoration-none">
+                        <div class="brand-logo-wrapper">
+                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                        </div>
+                        <div class="brand-text-group">
+                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                        </div>
+                    </a>
+                    <p class="text-muted small" style="max-width: 320px;">
+                        A focused academic community for sharing knowledge, finding support, and learning better together.
+                    </p>
+                </div>
+
+                <!-- Col 2: Platform -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>PLATFORM</h6>
+                    <a href="resources.html">Study materials</a>
+                    <a href="discussions.html">Discussions</a>
+                    <a href="study-groups.html">Study groups</a>
+                    <a href="sessions.html">Study sessions</a>
+                </div>
+
+                <!-- Col 3: Community -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>COMMUNITY</h6>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Community guide</a>
+                    <a href="contact.html">Contact &amp; help</a>
+                </div>
+
+                <!-- Col 4: Account -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>ACCOUNT</h6>
+                    <a href="login.html">Log in</a>
+                    <a href="signup.html">Create account</a>
+                    <a href="student/index.html">Student dashboard</a>
+                    <a href="admin/index.html">Admin console</a>
+                </div>
+            </div>
+
+            <!-- Bottom Line -->
+            <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div class="d-flex gap-3">
+                    <a href="contact.html" class="text-muted text-decoration-none">Privacy</a>
+                    <a href="contact.html" class="text-muted text-decoration-none">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Global Interactions & Stability JS -->
+    <script src="assets/js/main.js"></script>
+
+    <!-- Resources Logic Script -->
+    <script src="assets/js/resources.js"></script>
+</body>
+</html>
+

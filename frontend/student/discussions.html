@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discussions - Student Portal | NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('study_circle_theme')||localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Student Custom CSS -->
+    <link rel="stylesheet" href="assets/css/student.css">
+</head>
+<body>
+    <div class="student-layout">
+        <!-- Student Dark Navy Sidebar -->
+        <aside class="student-sidebar">
+            <a href="index.html" class="student-sidebar-brand">
+                <div class="student-brand-icon">
+                    <img src="../assets/images/logo.svg" alt="NSBM Study Circle Logo" onerror="this.onerror=null; this.src='../assets/images/logo.jpg';">
+                </div>
+                <div>
+                    <h6 class="student-brand-title">NSBM Study Circle</h6>
+                    <p class="student-brand-tagline">Learn Together. Grow Together.</p>
+                </div>
+            </a>
+
+            <!-- LEARNING SECTION -->
+            <div class="student-sidebar-section">
+                <span class="student-sidebar-label">LEARNING</span>
+                <ul class="student-nav-list">
+                    <li class="student-nav-item">
+                        <a href="index.html" class="student-nav-link">
+                            <i class="bi bi-house-door"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="student-nav-item">
+                        <a href="study-materials.html" class="student-nav-link">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span>Study Materials</span>
+                        </a>
+                    </li>
+                    <li class="student-nav-item">
+                        <a href="discussions.html" class="student-nav-link active">
+                            <i class="bi bi-chat-dots"></i>
+                            <span>Discussions</span>
+                        </a>
+                    </li>
+                    <li class="student-nav-item">
+                        <a href="groups.html" class="student-nav-link">
+                            <i class="bi bi-people"></i>
+                            <span>Study Groups</span>
+                        </a>
+                    </li>
+                    <li class="student-nav-item">
+                        <a href="schedule.html" class="student-nav-link">
+                            <i class="bi bi-calendar3"></i>
+                            <span>Study Sessions</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- MY LIBRARY SECTION -->
+            <div class="student-sidebar-section">
+                <span class="student-sidebar-label">MY LIBRARY</span>
+                <ul class="student-nav-list">
+                    <li class="student-nav-item">
+                        <a href="uploads.html" class="student-nav-link">
+                            <i class="bi bi-upload"></i>
+                            <span>My Uploads</span>
+                        </a>
+                    </li>
+                    <li class="student-nav-item">
+                        <a href="downloads.html" class="student-nav-link">
+                            <i class="bi bi-download"></i>
+                            <span>My Downloads</span>
+                        </a>
+                    </li>
+                    <li class="student-nav-item">
+                        <a href="saved.html" class="student-nav-link">
+                            <i class="bi bi-bookmark"></i>
+                            <span>Saved Resources</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- ACCOUNT SECTION -->
+            <div class="student-sidebar-section">
+                <span class="student-sidebar-label">ACCOUNT</span>
+                <ul class="student-nav-list">
+                    <li class="student-nav-item">
+                        <a href="notifications.html" class="student-nav-link">
+                            <i class="bi bi-bell"></i>
+                            <span>Notifications</span>
+                            <span class="student-nav-badge">4</span>
+                        </a>
+                    </li>
+                    <li class="student-nav-item">
+                        <a href="profile.html" class="student-nav-link">
+                            <i class="bi bi-person"></i>
+                            <span>My Profile</span>
+                        </a>
+                    </li>
+                    <li class="student-nav-item">
+                        <a href="settings.html" class="student-nav-link">
+                            <i class="bi bi-gear"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="student-main-content">
+            <!-- Student Portal Top Bar -->
+            <header class="student-topbar">
+                <div>
+                    <div class="student-topbar-breadcrumb">STUDENT PORTAL</div>
+                    <h1 class="student-topbar-title">Discussions & Peer Q&A</h1>
+                </div>
+
+                <!-- Search Input -->
+                <div class="student-search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search resources, discussions, or groups..." aria-label="Search">
+                </div>
+
+                <!-- Topbar Actions -->
+                <div class="student-topbar-actions">
+                    <!-- Theme Toggle -->
+                    <button type="button" class="student-icon-btn theme-toggle-btn" id="studentThemeToggle" title="Toggle Theme">
+                        <i class="bi bi-moon"></i>
+                    </button>
+
+                    <!-- Notifications Bell -->
+                    <a href="notifications.html" class="student-icon-btn position-relative" title="Notifications">
+                        <i class="bi bi-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle">
+                            <span class="visually-hidden">New alerts</span>
+                        </span>
+                    </a>
+
+                    <!-- User Profile Dropdown -->
+                    <div class="dropdown">
+                        <div class="student-profile-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="student-avatar">AS</div>
+                            <div class="student-user-info d-none d-sm-block">
+                                <p class="student-user-name">Alex Silva</p>
+                                <p class="student-user-role">Demonstration student</p>
+                            </div>
+                            <i class="bi bi-chevron-down ms-1 text-muted" style="font-size: 0.75rem;"></i>
+                        </div>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2" style="border-radius: 10px;">
+                            <li><a class="dropdown-item py-2" href="profile.html"><i class="bi bi-person me-2 text-muted"></i> My Profile</a></li>
+                            <li><a class="dropdown-item py-2" href="settings.html"><i class="bi bi-gear me-2 text-muted"></i> Account Settings</a></li>
+                            <li><hr class="dropdown-divider my-1"></li>
+                            <li><a class="dropdown-item py-2 text-danger" href="logout.php"><i class="bi bi-box-arrow-right me-2"></i> Log out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Discussions Body -->
+            <div class="student-content-body">
+                <!-- Header Banner -->
+                <div class="student-welcome-hero d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <div>
+                        <div class="student-hero-badge">
+                            <span class="student-pulse-dot"></span>
+                            STUDENT FORUM &bull; PEER Q&A
+                        </div>
+                        <h2 class="student-hero-title">Academic Discussions & Peer Q&A</h2>
+                        <p class="student-hero-sub">Ask questions, share knowledge, and solve academic challenges together with fellow NSBM students.</p>
+                    </div>
+                    <div>
+                        <button type="button" class="student-hero-btn-green" data-bs-toggle="modal" data-bs-target="#newDiscussionModal">
+                            <i class="bi bi-plus-lg me-1"></i> Start a Discussion
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Discussion Control Bar (Search, Faculty Pills, Sort) -->
+                <div class="student-card mb-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                        <!-- Faculty Filter Pills -->
+                        <div class="d-flex flex-wrap gap-2" id="discussionFacultyFilters">
+                            <button class="student-pill-btn active" data-filter="all">All Topics</button>
+                            <button class="student-pill-btn" data-filter="computing">Computing</button>
+                            <button class="student-pill-btn" data-filter="business">Business</button>
+                            <button class="student-pill-btn" data-filter="engineering">Engineering</button>
+                            <button class="student-pill-btn" data-filter="science">Science</button>
+                            <button class="student-pill-btn" data-filter="my-questions">My Questions</button>
+                        </div>
+
+                        <!-- Sort Dropdown -->
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="text-muted small">Sort by:</span>
+                            <select class="form-select form-select-sm" id="discussionSortSelect" style="width: auto; border-radius: 8px;">
+                                <option value="latest">Latest Discussions</option>
+                                <option value="answers">Most Answers</option>
+                                <option value="upvotes">Most Upvoted</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Search Input inside card -->
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0 text-muted">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" id="discussionSearchInput" class="form-control border-start-0 ps-0" placeholder="Search discussions by topic, module code, question or keywords..." aria-label="Search discussions">
+                    </div>
+                </div>
+
+                <!-- Discussion Stats Summary -->
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="student-stat-card student-stat-blue">
+                            <div class="student-stat-icon"><i class="bi bi-chat-left-text"></i></div>
+                            <div>
+                                <h3 class="student-stat-value" id="statTotalDiscussions">48</h3>
+                                <p class="student-stat-label">Active Discussions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="student-stat-card student-stat-green">
+                            <div class="student-stat-icon"><i class="bi bi-check2-circle"></i></div>
+                            <div>
+                                <h3 class="student-stat-value">36</h3>
+                                <p class="student-stat-label">Solved Questions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="student-stat-card student-stat-indigo">
+                            <div class="student-stat-icon"><i class="bi bi-pencil-square"></i></div>
+                            <div>
+                                <h3 class="student-stat-value" id="statMyQuestions">3</h3>
+                                <p class="student-stat-label">My Questions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="student-stat-card student-stat-amber">
+                            <div class="student-stat-icon"><i class="bi bi-people"></i></div>
+                            <div>
+                                <h3 class="student-stat-value">124</h3>
+                                <p class="student-stat-label">Active Contributors</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Discussions List Container -->
+                <div class="d-flex flex-column gap-3" id="studentDiscussionsList">
+                    <!-- Discussion Card 1 (Computing) -->
+                    <div class="student-card discussion-entry" data-faculty="computing" data-id="1">
+                        <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-primary-subtle text-primary fw-semibold px-2 py-1 rounded">Faculty of Computing</span>
+                                <span class="badge bg-success-subtle text-success fw-semibold px-2 py-1 rounded"><i class="bi bi-check-circle me-1"></i>Solved</span>
+                                <span class="text-muted small">&bull; Module CS2102</span>
+                            </div>
+                            <span class="text-muted small"><i class="bi bi-clock me-1"></i>2 hours ago</span>
+                        </div>
+                        <h5 class="fw-bold mb-2 text-dark">
+                            <a href="javascript:void(0)" class="text-decoration-none text-dark hover-green open-discussion-btn" data-id="1">
+                                How to optimize Dijkstra's Algorithm using a min-heap priority queue in Java?
+                            </a>
+                        </h5>
+                        <p class="text-muted small mb-3">
+                            I am working on the CS2102 Graph assignment. When running Dijkstra on dense graphs with 10,000+ vertices, my array-based queue encounters significant latency. Would using Java's PriorityQueue with custom Node objects reduce complexity to O((V+E) log V)?
+                        </p>
+                        <div class="d-flex flex-wrap gap-1 mb-3">
+                            <span class="badge bg-light text-secondary border">#DataStructures</span>
+                            <span class="badge bg-light text-secondary border">#Java</span>
+                            <span class="badge bg-light text-secondary border">#Algorithms</span>
+                            <span class="badge bg-light text-secondary border">#Year2</span>
+                        </div>
+                        <div class="d-flex flex-wrap justify-content-between align-items-center pt-2 border-top gap-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="student-avatar" style="width: 30px; height: 30px; font-size: 0.75rem;">AS</div>
+                                <div>
+                                    <span class="fw-semibold small d-block leading-tight">Alex Silva (You)</span>
+                                    <span class="text-muted" style="font-size: 0.75rem;">BSc (Hons) in Computer Science &bull; Year 2</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <button type="button" class="btn btn-sm btn-light border upvote-btn text-muted" data-id="1">
+                                    <i class="bi bi-hand-thumbs-up me-1"></i> <span class="vote-count">14</span>
+                                </button>
+                                <span class="text-muted small"><i class="bi bi-chat-text me-1"></i> 5 answers</span>
+                                <button type="button" class="student-btn-sm-view open-discussion-btn" data-id="1">
+                                    View & Answer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discussion Card 2 (Business) -->
+                    <div class="student-card discussion-entry" data-faculty="business" data-id="2">
+                        <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-success-subtle text-success fw-semibold px-2 py-1 rounded">Faculty of Business</span>
+                                <span class="badge bg-warning-subtle text-warning fw-semibold px-2 py-1 rounded">3 Answers</span>
+                                <span class="text-muted small">&bull; Module BM2204</span>
+                            </div>
+                            <span class="text-muted small"><i class="bi bi-clock me-1"></i>4 hours ago</span>
+                        </div>
+                        <h5 class="fw-bold mb-2 text-dark">
+                            <a href="javascript:void(0)" class="text-decoration-none text-dark hover-green open-discussion-btn" data-id="2">
+                                Calculating Weighted Average Cost of Capital (WACC) with changing debt-equity ratios
+                            </a>
+                        </h5>
+                        <p class="text-muted small mb-3">
+                            In corporate financial management, when market value weights diverge from book value weights due to equity repurchases, should we recalibrate beta before computing Ke via CAPM? Looking for guidance from Year 3 students who finished the case study.
+                        </p>
+                        <div class="d-flex flex-wrap gap-1 mb-3">
+                            <span class="badge bg-light text-secondary border">#CorporateFinance</span>
+                            <span class="badge bg-light text-secondary border">#WACC</span>
+                            <span class="badge bg-light text-secondary border">#CAPM</span>
+                        </div>
+                        <div class="d-flex flex-wrap justify-content-between align-items-center pt-2 border-top gap-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="student-avatar" style="width: 30px; height: 30px; font-size: 0.75rem; background: #064e3b;">SD</div>
+                                <div>
+                                    <span class="fw-semibold small d-block leading-tight">Sahan Dissanayake</span>
+                                    <span class="text-muted" style="font-size: 0.75rem;">BSc in Business Management &bull; Year 3</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <button type="button" class="btn btn-sm btn-light border upvote-btn text-muted" data-id="2">
+                                    <i class="bi bi-hand-thumbs-up me-1"></i> <span class="vote-count">9</span>
+                                </button>
+                                <span class="text-muted small"><i class="bi bi-chat-text me-1"></i> 3 answers</span>
+                                <button type="button" class="student-btn-sm-view open-discussion-btn" data-id="2">
+                                    View & Answer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discussion Card 3 (Computing) -->
+                    <div class="student-card discussion-entry" data-faculty="computing" data-id="3">
+                        <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-primary-subtle text-primary fw-semibold px-2 py-1 rounded">Faculty of Computing</span>
+                                <span class="badge bg-success-subtle text-success fw-semibold px-2 py-1 rounded"><i class="bi bi-check-circle me-1"></i>Solved</span>
+                                <span class="text-muted small">&bull; Module CS3105</span>
+                            </div>
+                            <span class="text-muted small"><i class="bi bi-clock me-1"></i>Yesterday</span>
+                        </div>
+                        <h5 class="fw-bold mb-2 text-dark">
+                            <a href="javascript:void(0)" class="text-decoration-none text-dark hover-green open-discussion-btn" data-id="3">
+                                Docker Compose networking issues when connecting Express API container to MySQL
+                            </a>
+                        </h5>
+                        <p class="text-muted small mb-3">
+                            Getting `ECONNREFUSED` when my node container starts before MySQL is ready to accept connections. We added `depends_on: - db` but it still fails. How do we properly implement a wait-for-it healthcheck in compose file?
+                        </p>
+                        <div class="d-flex flex-wrap gap-1 mb-3">
+                            <span class="badge bg-light text-secondary border">#Docker</span>
+                            <span class="badge bg-light text-secondary border">#NodeJS</span>
+                            <span class="badge bg-light text-secondary border">#DevOps</span>
+                            <span class="badge bg-light text-secondary border">#MySQL</span>
+                        </div>
+                        <div class="d-flex flex-wrap justify-content-between align-items-center pt-2 border-top gap-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="student-avatar" style="width: 30px; height: 30px; font-size: 0.75rem; background: #3b0764;">SP</div>
+                                <div>
+                                    <span class="fw-semibold small d-block leading-tight">Shenali Perera</span>
+                                    <span class="text-muted" style="font-size: 0.75rem;">BSc (Hons) in Software Engineering &bull; Year 3</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <button type="button" class="btn btn-sm btn-light border upvote-btn text-muted" data-id="3">
+                                    <i class="bi bi-hand-thumbs-up me-1"></i> <span class="vote-count">22</span>
+                                </button>
+                                <span class="text-muted small"><i class="bi bi-chat-text me-1"></i> 8 answers</span>
+                                <button type="button" class="student-btn-sm-view open-discussion-btn" data-id="3">
+                                    View & Answer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discussion Card 4 (Engineering) -->
+                    <div class="student-card discussion-entry" data-faculty="engineering" data-id="4">
+                        <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-purple-subtle text-purple fw-semibold px-2 py-1 rounded" style="background:#f3e8ff; color:#7e22ce;">Faculty of Engineering</span>
+                                <span class="badge bg-info-subtle text-info fw-semibold px-2 py-1 rounded">2 Answers</span>
+                                <span class="text-muted small">&bull; Module EN1103</span>
+                            </div>
+                            <span class="text-muted small"><i class="bi bi-clock me-1"></i>2 days ago</span>
+                        </div>
+                        <h5 class="fw-bold mb-2 text-dark">
+                            <a href="javascript:void(0)" class="text-decoration-none text-dark hover-green open-discussion-btn" data-id="4">
+                                Deriving Thevenin Equivalent circuit with dependent voltage sources
+                            </a>
+                        </h5>
+                        <p class="text-muted small mb-3">
+                            When calculating Rth with dependent sources present, we must apply a test voltage source of 1V or test current of 1A. Could someone clarify why setting independent sources to zero is mandatory while dependent sources must remain active?
+                        </p>
+                        <div class="d-flex flex-wrap gap-1 mb-3">
+                            <span class="badge bg-light text-secondary border">#CircuitAnalysis</span>
+                            <span class="badge bg-light text-secondary border">#Thevenin</span>
+                            <span class="badge bg-light text-secondary border">#Electrical</span>
+                        </div>
+                        <div class="d-flex flex-wrap justify-content-between align-items-center pt-2 border-top gap-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="student-avatar" style="width: 30px; height: 30px; font-size: 0.75rem; background: #4338ca;">DM</div>
+                                <div>
+                                    <span class="fw-semibold small d-block leading-tight">Dinuka Mendis</span>
+                                    <span class="text-muted" style="font-size: 0.75rem;">BSc in Electrical & Electronic Engineering &bull; Year 1</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <button type="button" class="btn btn-sm btn-light border upvote-btn text-muted" data-id="4">
+                                    <i class="bi bi-hand-thumbs-up me-1"></i> <span class="vote-count">11</span>
+                                </button>
+                                <span class="text-muted small"><i class="bi bi-chat-text me-1"></i> 2 answers</span>
+                                <button type="button" class="student-btn-sm-view open-discussion-btn" data-id="4">
+                                    View & Answer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- =========================================================================
+         MODAL 1: START NEW DISCUSSION MODAL (Loads inside Dashboard)
+         ========================================================================= -->
+    <div class="modal fade" id="newDiscussionModal" tabindex="-1" aria-labelledby="newDiscussionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-bold" id="newDiscussionModalLabel">
+                        <i class="bi bi-chat-dots-fill text-success me-2"></i>Start a New Academic Discussion
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="newDiscussionForm">
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted">DISCUSSION TITLE *</label>
+                            <input type="text" class="form-control" id="discTitle" placeholder="e.g. How to balance AVL Trees after double rotation in CS2102?" required>
+                            <div class="form-text">Be specific and imagine you’re asking a question to another student.</div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small text-muted">FACULTY *</label>
+                                <select class="form-select" id="discFaculty" required>
+                                    <option value="computing" selected>Faculty of Computing</option>
+                                    <option value="business">Faculty of Business</option>
+                                    <option value="engineering">Faculty of Engineering</option>
+                                    <option value="science">Faculty of Science</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small text-muted">MODULE / COURSE CODE</label>
+                                <input type="text" class="form-control" id="discModule" placeholder="e.g. CS2102 or BM1101">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted">TAGS (COMMA SEPARATED)</label>
+                            <input type="text" class="form-control" id="discTags" placeholder="e.g. DataStructures, Trees, ExamPrep">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted">QUESTION DETAILS *</label>
+                            <textarea class="form-control" id="discContent" rows="5" placeholder="Explain what you are trying to do, what you have tried, and where you are getting stuck..." required></textarea>
+                        </div>
+
+                        <div class="alert alert-light border small text-muted mb-0 d-flex align-items-center gap-2">
+                            <i class="bi bi-info-circle text-primary fs-5"></i>
+                            <div>
+                                Posting as <strong>Alex Silva</strong> (Demonstration Student). Your question will immediately be visible to fellow students and peers in your faculty.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top bg-light">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="student-hero-btn-green py-2 px-4">
+                            <i class="bi bi-send-fill me-1"></i> Post Discussion
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL 2: VIEW DISCUSSION & ANSWERS MODAL (Loads inside Dashboard)
+         ========================================================================= -->
+    <div class="modal fade" id="viewDiscussionModal" tabindex="-1" aria-labelledby="viewDiscussionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary-subtle text-primary fw-semibold px-2 py-1 rounded" id="modalDiscFaculty">Faculty of Computing</span>
+                        <span class="text-muted small" id="modalDiscTime">&bull; 2 hours ago</span>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <h4 class="fw-bold text-dark mb-3" id="modalDiscTitle">Title goes here</h4>
+
+                    <div class="d-flex align-items-center gap-2 mb-3 pb-3 border-bottom">
+                        <div class="student-avatar" id="modalDiscAvatar" style="width: 32px; height: 32px; font-size: 0.8rem;">AS</div>
+                        <div>
+                            <span class="fw-bold small d-block leading-tight" id="modalDiscAuthor">Alex Silva</span>
+                            <span class="text-muted" style="font-size: 0.75rem;" id="modalDiscAuthorMeta">BSc (Hons) in Computer Science &bull; Year 2</span>
+                        </div>
+                    </div>
+
+                    <div class="text-secondary mb-4 leading-relaxed" id="modalDiscBody">
+                        Question body text goes here...
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-1 mb-4" id="modalDiscTags">
+                        <span class="badge bg-light text-secondary border">#Tag</span>
+                    </div>
+
+                    <!-- Answers Header -->
+                    <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom">
+                        <h6 class="fw-bold mb-0 text-dark">
+                            <i class="bi bi-chat-left-quote-fill text-success me-2"></i>Community Answers (<span id="modalDiscAnswerCount">1</span>)
+                        </h6>
+                    </div>
+
+                    <!-- Answers Container -->
+                    <div class="d-flex flex-column gap-3 mb-4" id="modalAnswersList">
+                        <!-- Sample Answer 1 -->
+                        <div class="p-3 rounded bg-light border">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="student-avatar" style="width: 28px; height: 28px; font-size: 0.75rem; background: #064e3b;">SD</div>
+                                    <span class="fw-bold small">Sahan Dissanayake</span>
+                                    <span class="badge bg-success-subtle text-success small px-2 py-0">Verified Solution</span>
+                                </div>
+                                <span class="text-muted small">1 hour ago</span>
+                            </div>
+                            <p class="small text-secondary mb-2">
+                                Yes, exactly! If you use `java.util.PriorityQueue<Node>` with a comparator comparing distances, updating can be handled with lazy deletion or inserting updated distance pairs. The time complexity becomes O((V+E) log V), which runs in ~120ms on a 10,000 vertex graph compared to O(V^2) for an array.
+                            </p>
+                            <div class="d-flex align-items-center gap-2">
+                                <button type="button" class="btn btn-sm btn-white border px-2 py-0 text-muted" onclick="window.showStudentToast('Marked answer as helpful!', 'success'); this.classList.toggle('text-success');">
+                                    <i class="bi bi-hand-thumbs-up me-1"></i> Helpful (8)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit New Answer Form -->
+                    <div class="p-3 rounded border bg-light">
+                        <h6 class="fw-bold small text-dark mb-2">
+                            <i class="bi bi-pencil-fill text-primary me-1"></i> Post Your Answer
+                        </h6>
+                        <form id="submitAnswerForm">
+                            <textarea class="form-control mb-2" id="newAnswerContent" rows="3" placeholder="Share your academic explanation, code, or solution to help your peer..." required></textarea>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted small">Replying as <strong>Alex Silva</strong></span>
+                                <button type="submit" class="student-hero-btn-green py-1 px-3" style="font-size: 0.85rem;">
+                                    <i class="bi bi-send me-1"></i> Submit Answer
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer border-top bg-light">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification for In-Dashboard Feedback -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+        <div id="studentDiscussionToast" class="toast align-items-center text-bg-success border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMessage">
+                    Action completed successfully!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Student JS -->
+    <script src="assets/js/student.js"></script>
+    <!-- Discussions Controller Script -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toastEl = document.getElementById('studentDiscussionToast');
+        const toastMsg = document.getElementById('toastMessage');
+        const bsToast = toastEl ? new bootstrap.Toast(toastEl, { delay: 3500 }) : null;
+
+        function showToast(msg) {
+            if (toastMsg) toastMsg.textContent = msg;
+            if (bsToast) bsToast.show();
+        }
+
+        // 1. Upvote Button Functionality
+        document.querySelectorAll('.upvote-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const countSpan = this.querySelector('.vote-count');
+                let count = parseInt(countSpan.textContent, 10) || 0;
+                if (!this.classList.contains('voted')) {
+                    this.classList.add('voted', 'btn-success', 'text-white');
+                    this.classList.remove('btn-light', 'text-muted');
+                    countSpan.textContent = count + 1;
+                    showToast('Upvoted! Thank you for supporting peer questions.');
+                } else {
+                    this.classList.remove('voted', 'btn-success', 'text-white');
+                    this.classList.add('btn-light', 'text-muted');
+                    countSpan.textContent = Math.max(0, count - 1);
+                }
+            });
+        });
+
+        // 2. Filter Pills
+        const filterBtns = document.querySelectorAll('#discussionFacultyFilters button');
+        const discussionCards = document.querySelectorAll('.discussion-entry');
+        const searchInput = document.getElementById('discussionSearchInput');
+
+        function applyFilters() {
+            const activeFilter = document.querySelector('#discussionFacultyFilters button.active')?.getAttribute('data-filter') || 'all';
+            const searchTerm = (searchInput?.value || '').toLowerCase().trim();
+
+            discussionCards.forEach(card => {
+                const faculty = card.getAttribute('data-faculty') || '';
+                const title = (card.querySelector('h5')?.textContent || '').toLowerCase();
+                const desc = (card.querySelector('p')?.textContent || '').toLowerCase();
+                const isMine = card.querySelector('.fw-semibold')?.textContent.includes('Alex Silva');
+
+                let matchFilter = false;
+                if (activeFilter === 'all') matchFilter = true;
+                else if (activeFilter === 'my-questions') matchFilter = isMine;
+                else matchFilter = (faculty === activeFilter);
+
+                let matchSearch = !searchTerm || title.includes(searchTerm) || desc.includes(searchTerm);
+
+                if (matchFilter && matchSearch) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                applyFilters();
+            });
+        });
+
+        if (searchInput) {
+            searchInput.addEventListener('input', applyFilters);
+        }
+
+        // 3. New Discussion Submission
+        const newDiscForm = document.getElementById('newDiscussionForm');
+        if (newDiscForm) {
+            newDiscForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const title = document.getElementById('discTitle').value.trim();
+                const faculty = document.getElementById('discFaculty').value;
+                const moduleCode = document.getElementById('discModule').value.trim() || 'General';
+                const tags = document.getElementById('discTags').value.split(',').map(t => t.trim()).filter(Boolean);
+                const content = document.getElementById('discContent').value.trim();
+
+                const list = document.getElementById('studentDiscussionsList');
+                const newCard = document.createElement('div');
+                newCard.className = 'student-card discussion-entry';
+                newCard.setAttribute('data-faculty', faculty);
+
+                const facultyBadgeNames = {
+                    'computing': 'Faculty of Computing',
+                    'business': 'Faculty of Business',
+                    'engineering': 'Faculty of Engineering',
+                    'science': 'Faculty of Science'
+                };
+
+                const tagsHtml = tags.map(t => `<span class="badge bg-light text-secondary border">#${t}</span>`).join(' ');
+
+                newCard.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-primary-subtle text-primary fw-semibold px-2 py-1 rounded">${facultyBadgeNames[faculty] || 'Faculty of Computing'}</span>
+                            <span class="badge bg-info-subtle text-info fw-semibold px-2 py-1 rounded">New Discussion</span>
+                            <span class="text-muted small">&bull; Module ${moduleCode}</span>
+                        </div>
+                        <span class="text-muted small"><i class="bi bi-clock me-1"></i>Just now</span>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-dark">
+                        <a href="javascript:void(0)" class="text-decoration-none text-dark hover-green open-discussion-btn">
+                            ${title}
+                        </a>
+                    </h5>
+                    <p class="text-muted small mb-3">${content}</p>
+                    <div class="d-flex flex-wrap gap-1 mb-3">
+                        ${tagsHtml || '<span class="badge bg-light text-secondary border">#Discussion</span>'}
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-between align-items-center pt-2 border-top gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="student-avatar" style="width: 30px; height: 30px; font-size: 0.75rem;">AS</div>
+                            <div>
+                                <span class="fw-semibold small d-block leading-tight">Alex Silva (You)</span>
+                                <span class="text-muted" style="font-size: 0.75rem;">BSc (Hons) in Computer Science &bull; Year 2</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <button type="button" class="btn btn-sm btn-light border upvote-btn text-muted">
+                                <i class="bi bi-hand-thumbs-up me-1"></i> <span class="vote-count">1</span>
+                            </button>
+                            <span class="text-muted small"><i class="bi bi-chat-text me-1"></i> 0 answers</span>
+                            <button type="button" class="student-btn-sm-view open-discussion-btn">
+                                View & Answer
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                list.prepend(newCard);
+
+                // Update counter
+                const totalEl = document.getElementById('statTotalDiscussions');
+                if (totalEl) totalEl.textContent = (parseInt(totalEl.textContent, 10) || 48) + 1;
+                const myEl = document.getElementById('statMyQuestions');
+                if (myEl) myEl.textContent = (parseInt(myEl.textContent, 10) || 3) + 1;
+
+                // Close modal
+                const modalInstance = bootstrap.Modal.getInstance(document.getElementById('newDiscussionModal'));
+                if (modalInstance) modalInstance.hide();
+                newDiscForm.reset();
+
+                showToast('Discussion posted successfully! Fellow students can now view and answer.');
+            });
+        }
+
+        // 4. View Discussion Details Modal
+        const viewModalEl = document.getElementById('viewDiscussionModal');
+        const viewModal = viewModalEl ? new bootstrap.Modal(viewModalEl) : null;
+
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.open-discussion-btn');
+            if (btn && viewModal) {
+                e.preventDefault();
+                const card = btn.closest('.discussion-entry');
+                if (!card) return;
+
+                const title = card.querySelector('h5 a')?.textContent.trim() || 'Discussion Topic';
+                const body = card.querySelector('p')?.textContent.trim() || '';
+                const faculty = card.querySelector('.badge')?.textContent.trim() || 'Faculty of Computing';
+                const author = card.querySelector('.fw-semibold')?.textContent.trim() || 'Student';
+                const authorMeta = card.querySelector('.text-muted[style*="font-size: 0.75rem"]')?.textContent.trim() || '';
+
+                document.getElementById('modalDiscTitle').textContent = title;
+                document.getElementById('modalDiscBody').textContent = body;
+                document.getElementById('modalDiscFaculty').textContent = faculty;
+                document.getElementById('modalDiscAuthor').textContent = author;
+                document.getElementById('modalDiscAuthorMeta').textContent = authorMeta;
+
+                viewModal.show();
+            }
+        });
+
+        // 5. Submit Answer Form inside Discussion View Modal
+        const submitAnsForm = document.getElementById('submitAnswerForm');
+        if (submitAnsForm) {
+            submitAnsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const text = document.getElementById('newAnswerContent').value.trim();
+                if (!text) return;
+
+                const ansList = document.getElementById('modalAnswersList');
+                const newAns = document.createElement('div');
+                newAns.className = 'p-3 rounded bg-light border';
+                newAns.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="student-avatar" style="width: 28px; height: 28px; font-size: 0.75rem;">AS</div>
+                            <span class="fw-bold small">Alex Silva (You)</span>
+                            <span class="badge bg-primary-subtle text-primary small px-2 py-0">Student Contributor</span>
+                        </div>
+                        <span class="text-muted small">Just now</span>
+                    </div>
+                    <p class="small text-secondary mb-2">${text}</p>
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-sm btn-white border px-2 py-0 text-muted">
+                            <i class="bi bi-hand-thumbs-up me-1"></i> Helpful (1)
+                        </button>
+                    </div>
+                `;
+
+                ansList.appendChild(newAns);
+                document.getElementById('newAnswerContent').value = '';
+
+                const countEl = document.getElementById('modalDiscAnswerCount');
+                if (countEl) countEl.textContent = (parseInt(countEl.textContent, 10) || 1) + 1;
+
+                showToast('Your answer has been submitted and posted to the discussion!');
+            });
+        }
+    });
+    </script>
+</body>
+</html>

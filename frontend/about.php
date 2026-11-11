@@ -1,0 +1,240 @@
+<?php
+// ============================================================================
+// NSBM STUDY CIRCLE - ABOUT PAGE (PDF SCREENSHOTS PAGES 1 - 5)
+// ============================================================================
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+        <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- ====================================================================
+         1. SHARED PREMIUM ANIMATED NAVBAR
+         ==================================================================== -->
+    <?php $activePage = 'about'; include __DIR__ . '/includes/header.php'; ?>
+
+    <!-- ====================================================================
+         2. ABOUT HERO SECTION (Exact Match to PDF Page 1)
+         ==================================================================== -->
+    <header class="about-hero">
+        <div class="container-xl">
+            <span class="about-hero-label">ABOUT NSBM STUDY CIRCLE</span>
+            <h1 class="about-hero-title">A clearer way to learn together</h1>
+            <p class="about-hero-desc">
+                NSBM Study Circle is an independent student learning community designed around useful knowledge, focused collaboration, and academic integrity.
+            </p>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         3. WHY WE EXIST SECTION (Exact Match to PDF Pages 1 & 2)
+         ==================================================================== -->
+    <section class="why-we-exist-section">
+        <div class="container-xl">
+            <!-- 2-Column Content Row -->
+            <div class="row g-4 align-items-start justify-content-between">
+                <div class="col-lg-5">
+                    <span class="why-exist-label">WHY WE EXIST</span>
+                    <h2 class="why-exist-title">
+                        University learning works better when good support is easy to find.
+                    </h2>
+                </div>
+                <div class="col-lg-6">
+                    <p class="why-exist-text">
+                        Useful notes often stay hidden in private folders. Excellent questions disappear in message threads. Students who could help one another do not always know where to meet.
+                    </p>
+                    <p class="why-exist-text">
+                        NSBM Study Circle brings those moments into one organized, welcoming place—without replacing lectures, official learning systems, or independent academic work.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Large 3-Column Principle Cards (PDF Page 2) -->
+            <div class="principles-card-row">
+                <!-- Column 01 -->
+                <div class="principle-col">
+                    <div class="principle-number">01</div>
+                    <h3 class="principle-heading">Useful over noisy</h3>
+                    <p class="principle-desc">
+                        Resources and conversations should help students take a clear next step.
+                    </p>
+                </div>
+
+                <!-- Column 02 -->
+                <div class="principle-col">
+                    <div class="principle-number">02</div>
+                    <h3 class="principle-heading">Collaborative, not dependent</h3>
+                    <p class="principle-desc">
+                        The platform supports understanding rather than shortcuts.
+                    </p>
+                </div>
+
+                <!-- Column 03 -->
+                <div class="principle-col">
+                    <div class="principle-number">03</div>
+                    <h3 class="principle-heading">Respectfully student-led</h3>
+                    <p class="principle-desc">
+                        Every contribution should feel generous, credible, and constructive.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         4. HOW THE COMMUNITY WORKS SECTION (Exact Match to PDF Page 3)
+         ==================================================================== -->
+    <section class="community-works-section">
+        <div class="container-xl">
+            <span class="community-works-label">HOW THE COMMUNITY WORKS</span>
+            <h2 class="community-works-title">
+                Share what helps. Ask with context. Learn with integrity.
+            </h2>
+
+            <div class="community-pillars-grid">
+                <!-- Column 01: Share responsibly -->
+                <div class="community-pillar-col">
+                    <div class="pillar-icon-box">
+                        <i class="bi bi-file-earmark-text"></i>
+                    </div>
+                    <h3 class="pillar-heading">Share responsibly</h3>
+                    <p class="pillar-desc">
+                        Upload original or permitted materials with accurate details.
+                    </p>
+                </div>
+
+                <!-- Column 02: Discuss thoughtfully -->
+                <div class="community-pillar-col">
+                    <div class="pillar-icon-box">
+                        <i class="bi bi-chat-left-dots"></i>
+                    </div>
+                    <h3 class="pillar-heading">Discuss thoughtfully</h3>
+                    <p class="pillar-desc">
+                        Explain your attempts and respond with patience.
+                    </p>
+                </div>
+
+                <!-- Column 03: Build real connection -->
+                <div class="community-pillar-col">
+                    <div class="pillar-icon-box">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <h3 class="pillar-heading">Build real connection</h3>
+                    <p class="pillar-desc">
+                        Create groups and sessions with a clear academic purpose.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         5. READY TO FIND YOUR CIRCLE? CTA (Exact Match to PDF Page 4)
+         ==================================================================== -->
+    <section class="about-cta-section">
+        <div class="container-xl">
+            <h2 class="about-cta-title">Ready to find your circle?</h2>
+            <p class="about-cta-desc">
+                Explore the public library or discover a group working on your next challenge.
+            </p>
+            <div class="about-cta-buttons-wrap">
+                <a href="resources.php" class="btn-about-explore">
+                    Explore resources
+                </a>
+                <a href="study-groups.php" class="btn-about-browse">
+                    Browse groups
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         6. FOOTER (Exact Match to PDF Page 5)
+         ==================================================================== -->
+    <footer class="figma-footer">
+        <div class="container-xl">
+            <div class="row g-4 justify-content-between">
+                <!-- Col 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.php" class="brand-logo-container mb-3 text-decoration-none">
+                        <div class="brand-logo-wrapper">
+                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                        </div>
+                        <div class="brand-text-group">
+                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                        </div>
+                    </a>
+                    <p class="text-muted small" style="max-width: 320px;">
+                        A focused academic community for sharing knowledge, finding support, and learning better together.
+                    </p>
+                </div>
+
+                <!-- Col 2: Platform -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>PLATFORM</h6>
+                    <a href="resources.php">Study materials</a>
+                    <a href="discussions.php">Discussions</a>
+                    <a href="study-groups.php">Study groups</a>
+                    <a href="sessions.php">Study sessions</a>
+                </div>
+
+                <!-- Col 3: Community -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>COMMUNITY</h6>
+                    <a href="about.php">About</a>
+                    <a href="contact.php">Community guide</a>
+                    <a href="contact.php">Contact &amp; help</a>
+                </div>
+
+                <!-- Col 4: Account -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>ACCOUNT</h6>
+                    <a href="login.php">Log in</a>
+                    <a href="signup.php">Create account</a>
+                    <a href="student/index.php">Student dashboard</a>
+                    <a href="admin/index.php">Admin console</a>
+                </div>
+            </div>
+
+            <!-- Bottom Line -->
+            <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div class="d-flex gap-3">
+                    <a href="contact.php" class="text-muted text-decoration-none">Privacy</a>
+                    <a href="contact.php" class="text-muted text-decoration-none">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
+

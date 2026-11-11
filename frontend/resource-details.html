@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Details - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+        <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons 1.11.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- ====================================================================
+         1. SHARED PREMIUM ANIMATED NAVBAR
+         ==================================================================== -->
+    <header class="floating-header-wrapper site-header" id="mainSiteHeader">
+        <nav class="navbar navbar-expand-lg floating-navbar site-navbar" id="mainFloatingHeader">
+            <div class="container-fluid px-0">
+                <!-- Left Branding: Custom NSBM Study Circle Logo + Brand Title + Tagline -->
+                <a class="brand-logo-container" href="index.html" aria-label="NSBM Study Circle Home">
+                    <div class="brand-logo-wrapper">
+                        <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text-group">
+                        <span class="brand-title">NSBM Study Circle</span>
+                        <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                    </div>
+                </a>
+
+                <!-- Premium Animated Hamburger Toggle Button (Mobile) -->
+                <button class="navbar-toggler custom-hamburger-btn border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStudyCircle" aria-controls="navbarStudyCircle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+
+                <!-- Navbar Navigation Links & Right Actions -->
+                <div class="collapse navbar-collapse" id="navbarStudyCircle">
+                    <ul class="navbar-nav mb-2 mb-lg-0 header-nav-list">
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link active" href="resources.html">Explore Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="discussions.html">Discussions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="study-groups.html">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="sessions.html">Study Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+
+                    <!-- Right Action Buttons -->
+                    <div class="header-actions-group d-flex align-items-center gap-2">
+                        <a href="login.html" class="btn-header-login">
+                            <i class="bi bi-person-fill me-1"></i> Log in
+                        </a>
+                        <a href="signup.html" class="btn-header-join">
+                            <i class="bi bi-people-fill me-1"></i> Join NSBM Study Circle <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                        <div class="theme-toggle-container position-relative">
+                            <button type="button" class="btn-header-theme" id="themeToggleBtn" aria-label="Toggle theme" title="Switch Theme">
+                                <i class="bi bi-moon-stars" id="themeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ====================================================================
+         2. BREADCRUMB & BACK LINK
+         ==================================================================== -->
+    <div class="bg-body-secondary py-3 border-bottom">
+        <div class="container-xl">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-custom mb-0">
+                    <li class="breadcrumb-item"><a href="resources.html"><i class="bi bi-arrow-left me-1"></i> Resources</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" id="breadcrumbTitle">Data Structures - Complete Revision Guide</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         3. RESOURCE DETAILS MAIN CONTENT
+         ==================================================================== -->
+    <main class="py-5" id="resourceDetailsContainer">
+        <div class="container-xl">
+            <div class="row g-4 g-lg-5">
+                
+                <!-- Left Details Column (2/3 width) -->
+                <div class="col-lg-8">
+                    <div class="resource-main-card shadow-sm">
+                        
+                        <!-- Header with File Icon, Badge, Title, Meta -->
+                        <div class="d-flex align-items-start gap-3 mb-4">
+                            <div class="resource-format-icon bg-light rounded-3 p-3 border d-flex align-items-center justify-content-center" id="detailFormatIcon" style="width: 58px; height: 58px;">
+                                <i class="bi bi-file-earmark-pdf text-danger fs-3"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <span class="subject-badge badge-computing mb-2 d-inline-block fw-semibold" id="detailFacultyBadge">Computing</span>
+                                <h1 class="h3 fw-bold mb-2 text-dark" id="detailTitle">Data Structures - Complete Revision Guide</h1>
+                                <div class="text-secondary small fw-medium" id="detailMetaInfo">CS2102 • Year 2 • Updated 18 May 2025</div>
+                            </div>
+                        </div>
+
+                        <!-- Community Reviewed Pill Box -->
+                        <div class="review-verified-pill mb-4">
+                            <i class="bi bi-patch-check-fill fs-5 text-success flex-shrink-0"></i>
+                            <div>
+                                <strong class="d-block text-success-emphasis">Community reviewed</strong>
+                                <span class="small text-secondary">Checked for relevance, clarity, and appropriate academic use.</span>
+                            </div>
+                        </div>
+
+                        <!-- About This Resource Section -->
+                        <section class="mb-4">
+                            <h2 class="h5 fw-bold mb-3 text-dark">About this resource</h2>
+                            <p class="text-secondary leading-relaxed mb-0" id="detailAboutText" style="line-height: 1.75;">
+                                A structured revision guide covering arrays, linked lists, stacks, queues, trees, graphs, searching, sorting, and algorithm analysis. Each chapter includes concise explanations followed by worked examples and quick-check questions.
+                            </p>
+                        </section>
+
+                        <hr class="my-4 text-muted opacity-25">
+
+                        <!-- What's Included Section -->
+                        <section class="mb-5">
+                            <h2 class="h5 fw-bold mb-3 text-dark">What's included</h2>
+                            <ul class="list-unstyled mb-0" id="detailWhatsIncludedList">
+                                <li class="d-flex align-items-start gap-2 mb-2">
+                                    <i class="bi bi-check-circle-fill text-success mt-1"></i>
+                                    <span>Ten topic summaries aligned to the module outline</span>
+                                </li>
+                                <li class="d-flex align-items-start gap-2 mb-2">
+                                    <i class="bi bi-check-circle-fill text-success mt-1"></i>
+                                    <span>Visual diagrams for trees and graph traversal</span>
+                                </li>
+                                <li class="d-flex align-items-start gap-2 mb-2">
+                                    <i class="bi bi-check-circle-fill text-success mt-1"></i>
+                                    <span>Twenty-four worked algorithm questions</span>
+                                </li>
+                                <li class="d-flex align-items-start gap-2 mb-2">
+                                    <i class="bi bi-check-circle-fill text-success mt-1"></i>
+                                    <span>Final two-page exam checklist</span>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <!-- Document Preview Canvas Box -->
+                        <section class="mb-5">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h5 fw-bold mb-0 text-dark">Document preview</h2>
+                                <span class="badge bg-light text-secondary border px-3 py-1 rounded-pill" id="detailPreviewPageIndicator">Page 1 of 42</span>
+                            </div>
+
+                            <div class="document-preview-box">
+                                <div class="preview-paper-sheet">
+                                    <div class="mb-3">
+                                        <span class="badge bg-primary-subtle text-primary fw-bold text-uppercase px-2 py-1" style="font-size: 0.72rem; letter-spacing: 1px;" id="detailPreviewBadge">DATA STRUCTURES</span>
+                                    </div>
+                                    <h3 class="h4 fw-bold text-dark mb-2" id="detailPreviewHeading">Exam Revision Guide</h3>
+                                    <p class="text-secondary small mb-4" id="detailPreviewSubheading">Core concepts, visual explanations, and worked examples for confident revision.</p>
+                                    
+                                    <!-- Simulated Preview Layout Lines -->
+                                    <div class="preview-doc-lines w-100 px-3">
+                                        <div class="bg-secondary-subtle rounded-1 mb-2" style="height: 10px; width: 85%; margin: 0 auto;"></div>
+                                        <div class="bg-secondary-subtle rounded-1 mb-2" style="height: 10px; width: 95%; margin: 0 auto;"></div>
+                                        <div class="bg-secondary-subtle rounded-1 mb-2" style="height: 10px; width: 90%; margin: 0 auto;"></div>
+                                        <div class="bg-secondary-subtle rounded-1 mb-4" style="height: 10px; width: 70%; margin: 0 auto;"></div>
+
+                                        <div class="border rounded p-3 text-start bg-light-subtle mb-3">
+                                            <div class="fw-bold small text-dark mb-1">1.1 Time & Space Complexity (Big-O)</div>
+                                            <div class="text-muted" style="font-size: 0.75rem;">Summary table comparing O(1), O(log n), O(n), O(n log n), and O(n^2) operations across standard collections.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-muted small mt-2">
+                                        <i class="bi bi-file-earmark-lock text-secondary me-1"></i> Preview mode • Full document available on download
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <hr class="my-4 text-muted opacity-25">
+
+                        <!-- Student Feedback Section -->
+                        <section class="mb-4">
+                            <h2 class="h5 fw-bold mb-3 text-dark">Student feedback</h2>
+                            <div id="detailFeedbackList">
+                                <div class="feedback-item d-flex gap-3 pt-2">
+                                    <div class="feedback-avatar bg-light border text-dark fw-bold rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px;">
+                                        KS
+                                    </div>
+                                    <div>
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <h3 class="h6 fw-bold mb-0 text-dark">Kavindu S.</h3>
+                                            <div class="text-warning small">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                        </div>
+                                        <p class="text-secondary small mb-0">
+                                            Excellent structure. The graph traversal diagrams finally made BFS and DFS click for me.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Submit Rating & Feedback Form -->
+                        <section class="mt-4 pt-3 border-top">
+                            <h3 class="h6 fw-bold text-dark mb-2">Leave your feedback</h3>
+                            <form id="resourceReviewForm" class="bg-light p-3 rounded-3 border">
+                                <div class="row g-2 align-items-center mb-2">
+                                    <div class="col-auto">
+                                        <label class="form-label small fw-semibold mb-0">Your Rating:</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <select class="form-select form-select-sm" id="reviewRatingSelect" name="rating">
+                                            <option value="5">⭐⭐⭐⭐⭐ (5 - Outstanding)</option>
+                                            <option value="4">⭐⭐⭐⭐ (4 - Very Helpful)</option>
+                                            <option value="3">⭐⭐⭐ (3 - Good)</option>
+                                            <option value="2">⭐⭐ (2 - Fair)</option>
+                                            <option value="1">⭐ (1 - Needs Work)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <textarea class="form-control form-control-sm" id="reviewCommentText" name="comment" rows="2" placeholder="Share your experience with this study resource (e.g. clarity, helpful diagrams, exam readiness)..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-sm btn-success fw-bold px-3">
+                                    <i class="bi bi-send me-1"></i> Post Feedback
+                                </button>
+                            </form>
+                        </section>
+
+                    </div>
+                </div>
+
+                <!-- Right Sticky Specs Sidebar (1/3 width) -->
+                <div class="col-lg-4">
+                    <div class="resource-specs-card shadow-sm">
+                        
+                        <!-- Rating Header -->
+                        <div class="d-flex align-items-center gap-3 mb-4">
+                            <span class="fs-1 fw-bold text-dark lh-1" id="detailRatingValue">4.9</span>
+                            <div>
+                                <div class="text-warning mb-1">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                </div>
+                                <span class="small text-secondary" id="detailRatingsCount">(38 ratings)</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-grid gap-2 mb-4">
+                            <button id="detailDownloadBtn" class="btn btn-success fw-bold py-2 rounded-3 shadow-sm d-flex align-items-center justify-content-center gap-2">
+                                <i class="bi bi-download"></i> Download PDF
+                            </button>
+                            <button id="detailSaveBtn" class="btn btn-outline-secondary fw-semibold py-2 rounded-3 d-flex align-items-center justify-content-center gap-2">
+                                <i class="bi bi-bookmark"></i> Save resource
+                            </button>
+                        </div>
+
+                        <!-- 2x2 Specs Grid -->
+                        <div class="specs-grid">
+                            <div>
+                                <div class="specs-item-label">File size</div>
+                                <div class="specs-item-value" id="detailSpecSize">5.8 MB</div>
+                            </div>
+                            <div>
+                                <div class="specs-item-label">Pages</div>
+                                <div class="specs-item-value" id="detailSpecPages">42</div>
+                            </div>
+                            <div>
+                                <div class="specs-item-label">Downloads</div>
+                                <div class="specs-item-value" id="detailSpecDownloads">1,284</div>
+                            </div>
+                            <div>
+                                <div class="specs-item-label">Language</div>
+                                <div class="specs-item-value" id="detailSpecLanguage">English</div>
+                            </div>
+                        </div>
+
+                        <!-- Uploaded By Card -->
+                        <div class="uploaded-by-box mb-4">
+                            <div class="small fw-bold text-secondary text-uppercase mb-2" style="font-size: 0.72rem; letter-spacing: 0.6px;">Uploaded by</div>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="author-avatar bg-light border text-dark fw-bold rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" id="detailAuthorInitials" style="width: 44px; height: 44px;">
+                                    NP
+                                </div>
+                                <div>
+                                    <div class="fw-bold text-dark" id="detailAuthorName">Nethmi Perera</div>
+                                    <div class="small text-secondary" id="detailAuthorRole">Computing • Year 3</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Report Resource Link -->
+                        <div class="text-center pt-2 border-top">
+                            <a href="#" id="detailReportBtn" class="text-secondary small text-decoration-none">
+                                <i class="bi bi-flag me-1"></i> Found an issue? Report this resource
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ====================================================================
+         4. FOOTER
+         ==================================================================== -->
+    <footer class="figma-footer">
+        <div class="container-xl">
+            <div class="row g-4 justify-content-between">
+                <!-- Col 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.html" class="brand-logo-container mb-3 text-decoration-none">
+                        <div class="brand-logo-wrapper">
+                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                        </div>
+                        <div class="brand-text-group">
+                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                        </div>
+                    </a>
+                    <p class="text-muted small" style="max-width: 320px;">
+                        A focused academic community for sharing knowledge, finding support, and learning better together.
+                    </p>
+                </div>
+
+                <!-- Col 2: Platform -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>PLATFORM</h6>
+                    <a href="resources.html">Study materials</a>
+                    <a href="discussions.html">Discussions</a>
+                    <a href="study-groups.html">Study groups</a>
+                    <a href="sessions.html">Study sessions</a>
+                </div>
+
+                <!-- Col 3: Community -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>COMMUNITY</h6>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Community guide</a>
+                    <a href="contact.html">Contact &amp; help</a>
+                </div>
+
+                <!-- Col 4: Account -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>ACCOUNT</h6>
+                    <a href="login.html">Log in</a>
+                    <a href="signup.html">Create account</a>
+                    <a href="student/index.html">Student dashboard</a>
+                    <a href="admin/index.html">Admin console</a>
+                </div>
+            </div>
+
+            <!-- Bottom Line -->
+            <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div class="d-flex gap-3">
+                    <a href="contact.html" class="text-muted text-decoration-none">Privacy</a>
+                    <a href="contact.html" class="text-muted text-decoration-none">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Global Interactions & Stability JS -->
+    <script src="assets/js/main.js"></script>
+
+    <!-- Resources Details Script -->
+    <script src="assets/js/resources.js"></script>
+</body>
+</html>
+

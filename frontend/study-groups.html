@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Groups - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+        <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg"><link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- ====================================================================
+         1. SHARED PREMIUM ANIMATED NAVBAR
+         ==================================================================== -->
+    <!-- ====================================================================
+         1. FLOATING PILL GLASSMORPHISM ANIMATED HEADER
+         ==================================================================== -->
+    <!-- Official Clean Floating Pill Header -->
+    <header class="floating-header-wrapper site-header" id="mainSiteHeader">
+        <nav class="navbar navbar-expand-lg floating-navbar site-navbar" id="mainFloatingHeader">
+            <div class="container-fluid px-0">
+                <!-- Left Branding: Custom NSBM Study Circle Logo + Brand Title + Tagline -->
+                <a class="brand-logo-container" href="index.html" aria-label="NSBM Study Circle Home">
+                    <div class="brand-logo-wrapper">
+                        <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text-group">
+                        <span class="brand-title">NSBM Study Circle</span>
+                        <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                    </div>
+                </a>
+
+                <!-- Mobile Animated Hamburger -->
+                <button class="navbar-toggler custom-hamburger-btn border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStudyCircle" aria-controls="navbarStudyCircle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+
+                <!-- Center Nav Links + Right Actions -->
+                <div class="collapse navbar-collapse" id="navbarStudyCircle">
+                    <ul class="navbar-nav mb-2 mb-lg-0 header-nav-list">
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="resources.html">Explore Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="discussions.html">Discussions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link active" href="study-groups.html">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="sessions.html">Study Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+
+                    <div class="header-actions-group d-flex align-items-center gap-2">
+                        <a href="login.html" class="btn-header-login">
+                            <i class="bi bi-person-fill me-1"></i> Log in
+                        </a>
+                        <a href="signup.html" class="btn-header-join">
+                            <i class="bi bi-people-fill me-1"></i> Join NSBM Study Circle <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                        <div class="theme-toggle-container position-relative">
+                            <button type="button" class="btn-header-theme" id="themeToggleBtn" aria-label="Toggle theme" title="Switch Theme">
+                                <i class="bi bi-moon-stars" id="themeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ====================================================================
+         2. HERO SECTION (Exact Match to PDF Page 1)
+         ==================================================================== -->
+    <header class="study-groups-hero">
+        <div class="container-xl">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-8">
+                    <span class="study-groups-hero-label">LEARNING COMMUNITIES</span>
+                    <h1 class="study-groups-hero-title">Find people who are learning what you are</h1>
+                    <p class="study-groups-hero-desc">
+                        Join focused circles, exchange ideas, and turn independent study into shared momentum.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                    <button type="button" class="btn-create-group" data-bs-toggle="modal" data-bs-target="#createStudyGroupModal">
+                        Create a study group
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         3. SEARCH AND CATEGORY FILTERS (Exact Match to PDF Page 1 & 2)
+         ==================================================================== -->
+    <div class="container-xl">
+        <div class="study-search-filter-box">
+            <div class="study-search-input-wrap">
+                <i class="bi bi-search"></i>
+                <input type="text" id="groupSearchInput" class="study-search-input" placeholder="Search groups by name or subject" autocomplete="off">
+            </div>
+            <div class="category-pills-wrap" role="group">
+                <button type="button" class="category-pill-btn active" data-category="All">All</button>
+                <button type="button" class="category-pill-btn" data-category="Computing">Computing</button>
+                <button type="button" class="category-pill-btn" data-category="Business">Business</button>
+                <button type="button" class="category-pill-btn" data-category="Engineering">Engineering</button>
+                <button type="button" class="category-pill-btn" data-category="Science">Science</button>
+            </div>
+        </div>
+
+        <!-- ====================================================================
+             4. FEATURED COMMUNITY SECTION (Exact Match to PDF Page 2)
+             ==================================================================== -->
+        <section class="featured-community-card">
+            <span class="featured-community-label">FEATURED COMMUNITY</span>
+            <div class="featured-card-body">
+                <div class="featured-info-left">
+                    <div class="featured-group-badge">
+                        DS
+                    </div>
+                    <div>
+                        <h2 class="featured-group-title">Data Structures Circle</h2>
+                        <p class="featured-group-desc">Weekly problem solving, peer explanations, and focused preparation for algorithms and data structures.</p>
+                        <div class="featured-group-meta">
+                            <span><i class="bi bi-people me-1"></i> 48 members</span>
+                            <span><i class="bi bi-calendar2-week me-1"></i> Meets Wednesdays</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <a href="study-group-details.html?id=1" class="btn-view-featured">
+                        View group
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====================================================================
+             5. STUDY GROUPS CARDS GRID (Exact Match to PDF Pages 2, 3, 4)
+             ==================================================================== -->
+        <div class="study-groups-grid" id="studyGroupsGrid">
+            <!-- Card 1: Data Structures Circle -->
+            <div class="study-card-item" data-id="1" data-category="Computing" data-name="Data Structures Circle" data-code="DS" data-desc="Weekly problem-solving sessions for algorithms and data structures.">
+                <div class="card-top-row">
+                    <div class="group-badge-box badge-ds">DS</div>
+                    <div class="active-week-dot">
+                        <span class="active-dot-indicator"></span>
+                        <span>Active this week</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="study-card-title">Data Structures Circle</h3>
+                    <p class="study-card-desc">Weekly problem-solving sessions for algorithms and data structures.</p>
+                </div>
+                <div class="card-bottom-row">
+                    <div class="members-avatar-row">
+                        <div class="avatar-stack">
+                            <span class="avatar-circle">NP</span>
+                            <span class="avatar-circle avatar-blue">KS</span>
+                            <span class="avatar-circle">+46</span>
+                        </div>
+                        <span class="members-count-text">48 members</span>
+                    </div>
+                    <a href="study-group-details.html?id=1" class="btn-card-view-group">View group</a>
+                </div>
+            </div>
+
+            <!-- Card 2: Business Minds -->
+            <div class="study-card-item" data-id="2" data-category="Business" data-name="Business Minds" data-code="BM" data-desc="Case studies, presentations, and exam preparation for management students.">
+                <div class="card-top-row">
+                    <div class="group-badge-box badge-bm">BM</div>
+                    <div class="active-week-dot">
+                        <span class="active-dot-indicator"></span>
+                        <span>Active this week</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="study-card-title">Business Minds</h3>
+                    <p class="study-card-desc">Case studies, presentations, and exam preparation for management students.</p>
+                </div>
+                <div class="card-bottom-row">
+                    <div class="members-avatar-row">
+                        <div class="avatar-stack">
+                            <span class="avatar-circle">NP</span>
+                            <span class="avatar-circle avatar-blue">KS</span>
+                            <span class="avatar-circle">+33</span>
+                        </div>
+                        <span class="members-count-text">35 members</span>
+                    </div>
+                    <a href="study-group-details.html?id=2" class="btn-card-view-group">View group</a>
+                </div>
+            </div>
+
+            <!-- Card 3: Engineering Innovators -->
+            <div class="study-card-item" data-id="3" data-category="Engineering" data-name="Engineering Innovators" data-code="EI" data-desc="Work through first-year mechanics, mathematics, drawing, and physics together.">
+                <div class="card-top-row">
+                    <div class="group-badge-box badge-ei">EI</div>
+                    <div class="active-week-dot">
+                        <span class="active-dot-indicator"></span>
+                        <span>Active this week</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="study-card-title">Engineering Innovators</h3>
+                    <p class="study-card-desc">Work through first-year mechanics, mathematics, drawing, and physics together.</p>
+                </div>
+                <div class="card-bottom-row">
+                    <div class="members-avatar-row">
+                        <div class="avatar-stack">
+                            <span class="avatar-circle">NP</span>
+                            <span class="avatar-circle avatar-blue">KS</span>
+                            <span class="avatar-circle">+30</span>
+                        </div>
+                        <span class="members-count-text">32 members</span>
+                    </div>
+                    <a href="study-group-details.html?id=3" class="btn-card-view-group">View group</a>
+                </div>
+            </div>
+
+            <!-- Card 4: Science Study Circle -->
+            <div class="study-card-item" data-id="4" data-category="Science" data-name="Science Study Circle" data-code="SC" data-desc="Collaborate on laboratory work, scientific reports, and core science subjects.">
+                <div class="card-top-row">
+                    <div class="group-badge-box badge-sc">SC</div>
+                    <div class="active-week-dot">
+                        <span class="active-dot-indicator"></span>
+                        <span>Active this week</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="study-card-title">Science Study Circle</h3>
+                    <p class="study-card-desc">Collaborate on laboratory work, scientific reports, and core science subjects.</p>
+                </div>
+                <div class="card-bottom-row">
+                    <div class="members-avatar-row">
+                        <div class="avatar-stack">
+                            <span class="avatar-circle">NP</span>
+                            <span class="avatar-circle avatar-blue">KS</span>
+                            <span class="avatar-circle">+25</span>
+                        </div>
+                        <span class="members-count-text">27 members</span>
+                    </div>
+                    <a href="study-group-details.html?id=4" class="btn-card-view-group">View group</a>
+                </div>
+            </div>
+
+            <!-- Card 5: AI & Machine Learning Hub -->
+            <div class="study-card-item" data-id="5" data-category="Computing" data-name="AI & Machine Learning Hub" data-code="AI" data-desc="Paper discussions, practical experiments, and project support.">
+                <div class="card-top-row">
+                    <div class="group-badge-box badge-ai">AI</div>
+                    <div class="active-week-dot">
+                        <span class="active-dot-indicator"></span>
+                        <span>Active this week</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="study-card-title">AI & Machine Learning Hub</h3>
+                    <p class="study-card-desc">Paper discussions, practical experiments, and project support.</p>
+                </div>
+                <div class="card-bottom-row">
+                    <div class="members-avatar-row">
+                        <div class="avatar-stack">
+                            <span class="avatar-circle">NP</span>
+                            <span class="avatar-circle avatar-blue">KS</span>
+                            <span class="avatar-circle">+60</span>
+                        </div>
+                        <span class="members-count-text">62 members</span>
+                    </div>
+                    <a href="study-group-details.html?id=5" class="btn-card-view-group">View group</a>
+                </div>
+            </div>
+
+            <!-- Card 6: Finance Network -->
+            <div class="study-card-item" data-id="6" data-category="Business" data-name="Finance Network" data-code="FN" data-desc="Collaborative revision for finance and investment modules.">
+                <div class="card-top-row">
+                    <div class="group-badge-box badge-fn">FN</div>
+                    <div class="active-week-dot">
+                        <span class="active-dot-indicator"></span>
+                        <span>Active this week</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="study-card-title">Finance Network</h3>
+                    <p class="study-card-desc">Collaborative revision for finance and investment modules.</p>
+                </div>
+                <div class="card-bottom-row">
+                    <div class="members-avatar-row">
+                        <div class="avatar-stack">
+                            <span class="avatar-circle">NP</span>
+                            <span class="avatar-circle avatar-blue">KS</span>
+                            <span class="avatar-circle">+29</span>
+                        </div>
+                        <span class="members-count-text">31 members</span>
+                    </div>
+                    <a href="study-group-details.html?id=6" class="btn-card-view-group">View group</a>
+                </div>
+            </div>
+
+            <!-- Card 7: Research Studio -->
+            <div class="study-card-item" data-id="7" data-category="Science" data-name="Research Studio" data-code="RS" data-desc="Accountability and peer feedback for final-year research.">
+                <div class="card-top-row">
+                    <div class="group-badge-box badge-rs">RS</div>
+                    <div class="active-week-dot">
+                        <span class="active-dot-indicator"></span>
+                        <span>Active this week</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="study-card-title">Research Studio</h3>
+                    <p class="study-card-desc">Accountability and peer feedback for final-year research.</p>
+                </div>
+                <div class="card-bottom-row">
+                    <div class="members-avatar-row">
+                        <div class="avatar-stack">
+                            <span class="avatar-circle">NP</span>
+                            <span class="avatar-circle avatar-blue">KS</span>
+                            <span class="avatar-circle">+22</span>
+                        </div>
+                        <span class="members-count-text">24 members</span>
+                    </div>
+                    <a href="study-group-details.html?id=7" class="btn-card-view-group">View group</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         6. CREATE STUDY GROUP MODAL
+         ==================================================================== -->
+    <div class="modal fade" id="createStudyGroupModal" tabindex="-1" aria-labelledby="createGroupModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 18px;">
+                <div class="modal-header border-bottom px-4 pt-4 pb-3">
+                    <div>
+                        <h5 class="modal-title fw-bold text-dark mb-1" id="createGroupModalLabel">Create a Study Group</h5>
+                        <p class="text-muted small mb-0">Build a community around a shared module or subject.</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="createStudyGroupForm">
+                    <div class="modal-body px-4 py-3">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Group Name *</label>
+                            <input type="text" name="name" class="form-control" placeholder="e.g. Mobile Application Development Circle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Faculty / Category *</label>
+                            <select name="category" class="form-select" required>
+                                <option value="Computing" selected>Computing</option>
+                                <option value="Business">Business</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Science">Science</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Short Description *</label>
+                            <textarea name="description" class="form-control" rows="2" placeholder="Brief summary of what this circle focuses on" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">What We Study (comma-separated topics)</label>
+                            <input type="text" name="what_we_study" class="form-control" placeholder="e.g. Flutter, Kotlin, State Management, APIs">
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold text-secondary">Full About Text</label>
+                            <textarea name="about_text" class="form-control" rows="3" placeholder="Explain weekly meetings, study objectives, and group guidelines..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top px-4 py-3 bg-light" style="border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;">
+                        <button type="button" class="btn btn-outline-secondary btn-sm fw-semibold" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success btn-sm fw-bold px-3">Create Group</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         7. FOOTER (Exact Match to Figma / PDF Pages 4, 5, 9, 12)
+         ==================================================================== -->
+    <footer class="figma-footer">
+        <div class="container-xl">
+            <div class="row g-4 justify-content-between">
+                <!-- Col 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.html" class="brand-logo-container mb-3 text-decoration-none">
+                        <div class="brand-logo-wrapper">
+                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                        </div>
+                        <div class="brand-text-group">
+                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                        </div>
+                    </a>
+                    <p class="text-muted small" style="max-width: 320px;">
+                        A focused academic community for sharing knowledge, finding support, and learning better together.
+                    </p>
+                </div>
+
+                <!-- Col 2: Platform -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>PLATFORM</h6>
+                    <a href="resources.html">Study materials</a>
+                    <a href="discussions.html">Discussions</a>
+                    <a href="study-groups.html">Study groups</a>
+                    <a href="sessions.html">Study sessions</a>
+                </div>
+
+                <!-- Col 3: Community -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>COMMUNITY</h6>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Community guide</a>
+                    <a href="contact.html">Contact &amp; help</a>
+                </div>
+
+                <!-- Col 4: Account -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>ACCOUNT</h6>
+                    <a href="login.html">Log in</a>
+                    <a href="signup.html">Create account</a>
+                    <a href="student/index.html">Student dashboard</a>
+                    <a href="admin/index.html">Admin console</a>
+                </div>
+            </div>
+
+            <!-- Bottom Line -->
+            <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div class="d-flex gap-3">
+                    <a href="contact.html" class="text-muted text-decoration-none">Privacy</a>
+                    <a href="contact.html" class="text-muted text-decoration-none">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Study Groups JS -->
+    <script src="assets/js/study-groups.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
+

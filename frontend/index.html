@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSBM Study Circle - Learn Together. Grow Together.</title>
+    <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+    <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="alternate icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- ====================================================================
+         1. FLOATING PILL GLASSMORPHISM ANIMATED HEADER
+         ==================================================================== -->
+    <!-- Official Clean Floating Pill Header -->
+    <header class="floating-header-wrapper site-header" id="mainSiteHeader">
+        <nav class="navbar navbar-expand-lg floating-navbar site-navbar" id="mainFloatingHeader">
+            <div class="container-fluid px-0">
+                <!-- Left Branding: Custom NSBM Study Circle Logo + Brand Title + Tagline -->
+                <a class="brand-logo-container" href="index.html" aria-label="NSBM Study Circle Home">
+                    <div class="brand-logo-wrapper">
+                        <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text-group">
+                        <span class="brand-title">NSBM Study Circle</span>
+                        <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                    </div>
+                </a>
+
+                <!-- Mobile Animated Hamburger -->
+                <button class="navbar-toggler custom-hamburger-btn border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStudyCircle" aria-controls="navbarStudyCircle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+
+                <!-- Center Nav Links + Right Actions -->
+                <div class="collapse navbar-collapse" id="navbarStudyCircle">
+                    <ul class="navbar-nav mb-2 mb-lg-0 header-nav-list">
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link active" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="resources.html">Explore Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="discussions.html">Discussions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="study-groups.html">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="sessions.html">Study Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+
+                    <div class="header-actions-group d-flex align-items-center gap-2">
+                        <a href="login.html" class="btn-header-login">
+                            <i class="bi bi-person-fill me-1"></i> Log in
+                        </a>
+                        <a href="signup.html" class="btn-header-join">
+                            <i class="bi bi-people-fill me-1"></i> Join NSBM Study Circle <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                        <div class="theme-toggle-container position-relative">
+                            <button type="button" class="btn-header-theme" id="themeToggleBtn" aria-label="Toggle theme" title="Switch Theme">
+                                <i class="bi bi-moon-stars" id="themeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ====================================================================
+         2. HERO SECTION (Matches Screenshot Reference)
+         ==================================================================== -->
+    <header class="hero-section" id="home">
+        <div class="hero-overlay"></div>
+        <div class="container-xl d-flex flex-column justify-content-center h-100 position-relative z-2">
+            <div class="hero-content">
+                <!-- Eyebrow Badge with Pulse Indicator -->
+                <div class="hero-eyebrow-badge">
+                    <span class="badge-pulse-dot"></span>
+                    <span>YOUR UNIVERSITY LEARNING COMMUNITY</span>
+                </div>
+
+                <!-- 3-line Headline with Emerald Accent -->
+                <h1 class="hero-headline">
+                    Learn Better.<br>
+                    Achieve More.<br>
+                    <span class="text-hero-emerald">Together.</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="hero-subtitle">
+                    Discover valuable study materials, exchange ideas, and connect with fellow students through one collaborative learning community.
+                </p>
+
+                <!-- Two CTA Pills Side-by-Side -->
+                <div class="hero-cta-group">
+                    <a href="resources.html" class="btn-hero-primary-pill">
+                        <i class="bi bi-book-half"></i>
+                        <span>Explore Resources</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="study-groups.html" class="btn-hero-glass-pill">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Join the Community</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Organic Curved Wave Divider at Bottom Edge -->
+        <div class="hero-curved-wave">
+            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,45 C320,115 560,35 880,75 C1140,110 1340,55 1440,68 L1440,120 L0,120 Z" fill="rgba(50, 217, 139, 0.28)"></path>
+                <path d="M0,70 C360,125 640,65 940,92 C1200,118 1360,78 1440,84 L1440,120 L0,120 Z" fill="var(--nsbm-light-bg)"></path>
+            </svg>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         3. BUILT FOR BETTER LEARNING (Exact Figma Pages 3 & 4)
+         ==================================================================== -->
+    <section class="py-5 my-3" id="about">
+        <div class="container-xl">
+            <div class="text-center mb-5">
+                <span class="section-tag">BUILT FOR BETTER LEARNING</span>
+                <h2 class="section-title">Everything students need to move forward</h2>
+                <p class="section-subtitle mx-auto">One focused space for the resources, people, and study habits that turn effort into progress.</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Card 1 -->
+                <div class="col-md-4">
+                    <div class="feature-box-card">
+                        <div>
+                            <div class="feature-icon-wrapper feature-icon-blue">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </div>
+                            <h4>Trusted study materials</h4>
+                            <p>Find organized notes, revision guides, and past-paper support shared by your academic community.</p>
+                        </div>
+                        <a href="#resources" class="feature-card-link">Learn more <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="col-md-4">
+                    <div class="feature-box-card">
+                        <div>
+                            <div class="feature-icon-wrapper feature-icon-green">
+                                <i class="bi bi-chat-square-quote"></i>
+                            </div>
+                            <h4>Knowledge that moves</h4>
+                            <p>Ask thoughtful questions and learn from clear, peer-reviewed answers across every subject.</p>
+                        </div>
+                        <a href="#discussions" class="feature-card-link">Learn more <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="col-md-4">
+                    <div class="feature-box-card">
+                        <div>
+                            <div class="feature-icon-wrapper feature-icon-purple">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <h4>Real academic connection</h4>
+                            <p>Build focused study circles, plan sessions, and make difficult modules feel manageable.</p>
+                        </div>
+                        <a href="#study-groups" class="feature-card-link">Learn more <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         4. EXPLORE RESOURCES (Exact Figma Pages 5, 6, 7)
+         ==================================================================== -->
+    <section class="py-5 bg-body-tertiary" id="resources">
+        <div class="container-xl">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+                <div>
+                    <span class="section-tag">EXPLORE RESOURCES</span>
+                    <h2 class="section-title mb-1">Study smarter with material you can trust</h2>
+                    <p class="section-subtitle mb-0">Discover useful, student-shared resources organized for the way you actually learn.</p>
+                </div>
+                <a href="resources.html" class="text-success fw-bold text-decoration-none small">
+                    View all resources <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Search and Filter Bar -->
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                <div class="position-relative" style="min-width: 320px; max-width: 450px; flex: 1;">
+                    <i class="bi bi-search position-absolute top-50 translate-middle-y text-muted" style="left: 14px;"></i>
+                    <input type="text" id="liveSearchInput" class="form-control ps-5 py-2" placeholder="Search notes, modules, or subjects..." style="border-radius: 10px;">
+                </div>
+                <div class="d-flex gap-2 flex-wrap" id="facultyFilterButtons">
+                    <button class="resource-filter-pill active" data-filter="all">All subjects</button>
+                    <button class="resource-filter-pill" data-filter="Computing">Computing</button>
+                    <button class="resource-filter-pill" data-filter="Business">Business</button>
+                    <button class="resource-filter-pill" data-filter="Engineering">Engineering</button>
+                    <button class="resource-filter-pill" data-filter="Science">Science</button>
+                </div>
+            </div>
+
+            <!-- Resource Cards Grid (Page 5, 6, 7) -->
+            <div class="row g-4" id="resourceCardsContainer">
+                
+                <!-- Resource 1 (Computing) -->
+                <div class="col-lg-3 col-md-6 resource-filter-item" data-faculty="Computing" data-title="Data Structures Complete Revision Guide">
+                    <div class="resource-grid-card">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="res-format-badge"><i class="bi bi-file-earmark-pdf text-danger"></i> PDF</span>
+                                <button class="btn btn-sm p-0 text-muted border-0" title="Bookmark"><i class="bi bi-bookmark"></i></button>
+                            </div>
+                            <span class="res-faculty-pill pill-computing">Computing</span>
+                            <h5 class="res-card-title">Data Structures — Complete Revision Guide</h5>
+                            <p class="res-card-desc">Clear summaries, worked examples, and exam-focused notes covering the full module.</p>
+                        </div>
+                        <div>
+                            <div class="res-author-row">
+                                <div class="res-author-avatar" style="background:#0f172a;">NP</div>
+                                <div class="res-author-text">
+                                    Shared by<br><strong>Nethmi Perera</strong>
+                                </div>
+                            </div>
+                            <div class="res-card-footer">
+                                <div><i class="bi bi-star-fill text-warning me-1"></i>4.9 &nbsp; <i class="bi bi-download text-muted me-1"></i>1.2k</div>
+                                <a href="resource-details.html?id=1" class="text-success fw-bold text-decoration-none">View resource</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource 2 (Business) -->
+                <div class="col-lg-3 col-md-6 resource-filter-item" data-faculty="Business" data-title="Financial Accounting Core Concepts">
+                    <div class="resource-grid-card">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="res-format-badge"><i class="bi bi-file-earmark-pdf text-danger"></i> PDF</span>
+                                <button class="btn btn-sm p-0 text-muted border-0" title="Bookmark"><i class="bi bi-bookmark"></i></button>
+                            </div>
+                            <span class="res-faculty-pill pill-business">Business</span>
+                            <h5 class="res-card-title">Financial Accounting: Core Concepts</h5>
+                            <p class="res-card-desc">A concise lecture companion with key formulas, journal entries, and practice questions.</p>
+                        </div>
+                        <div>
+                            <div class="res-author-row">
+                                <div class="res-author-avatar" style="background:#064e3b;">KS</div>
+                                <div class="res-author-text">
+                                    Shared by<br><strong>Kavindu Silva</strong>
+                                </div>
+                            </div>
+                            <div class="res-card-footer">
+                                <div><i class="bi bi-star-fill text-warning me-1"></i>4.8 &nbsp; <i class="bi bi-download text-muted me-1"></i>864</div>
+                                <a href="resource-details.html?id=2" class="text-success fw-bold text-decoration-none">View resource</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource 3 (Engineering) -->
+                <div class="col-lg-3 col-md-6 resource-filter-item" data-faculty="Engineering" data-title="Engineering Mechanics First-Year Guide">
+                    <div class="resource-grid-card">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="res-format-badge"><i class="bi bi-file-earmark-pdf text-danger"></i> PDF</span>
+                                <button class="btn btn-sm p-0 text-muted border-0" title="Bookmark"><i class="bi bi-bookmark"></i></button>
+                            </div>
+                            <span class="res-faculty-pill pill-engineering">Engineering</span>
+                            <h5 class="res-card-title">Engineering Mechanics — First-Year Guide</h5>
+                            <p class="res-card-desc">Core mechanics principles, force diagrams, worked examples, and revision questions.</p>
+                        </div>
+                        <div>
+                            <div class="res-author-row">
+                                <div class="res-author-avatar" style="background:#4338ca;">RM</div>
+                                <div class="res-author-text">
+                                    Shared by<br><strong>Ravindu Mendis</strong>
+                                </div>
+                            </div>
+                            <div class="res-card-footer">
+                                <div><i class="bi bi-star-fill text-warning me-1"></i>4.7 &nbsp; <i class="bi bi-download text-muted me-1"></i>706</div>
+                                <a href="resource-details.html?id=3" class="text-success fw-bold text-decoration-none">View resource</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource 4 (Science) -->
+                <div class="col-lg-3 col-md-6 resource-filter-item" data-faculty="Science" data-title="Scientific Communication Toolkit">
+                    <div class="resource-grid-card">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="res-format-badge"><i class="bi bi-file-earmark-word text-primary"></i> DOCX</span>
+                                <button class="btn btn-sm p-0 text-muted border-0" title="Bookmark"><i class="bi bi-bookmark"></i></button>
+                            </div>
+                            <span class="res-faculty-pill pill-science">Science</span>
+                            <h5 class="res-card-title">Scientific Communication Toolkit</h5>
+                            <p class="res-card-desc">Practical frameworks for laboratory records, scientific reports, citations, and presentations.</p>
+                        </div>
+                        <div>
+                            <div class="res-author-row">
+                                <div class="res-author-avatar" style="background:#0f766e;">DJ</div>
+                                <div class="res-author-text">
+                                    Shared by<br><strong>Dinara Jayasinghe</strong>
+                                </div>
+                            </div>
+                            <div class="res-card-footer">
+                                <div><i class="bi bi-star-fill text-warning me-1"></i>4.7 &nbsp; <i class="bi bi-download text-muted me-1"></i>621</div>
+                                <a href="resource-details.html?id=4" class="text-success fw-bold text-decoration-none">View resource</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         5. A SIMPLE RHYTHM - DARK CARD (Exact Figma Page 8)
+         ==================================================================== -->
+    <section class="py-5">
+        <div class="container-xl">
+            <div class="rhythm-dark-card">
+                <div class="row align-items-center g-5">
+                    <!-- Left Side -->
+                    <div class="col-lg-6">
+                        <span class="text-uppercase fw-bold small text-info" style="letter-spacing: 2px;">A SIMPLE RHYTHM</span>
+                        <h2 class="display-6 fw-bold my-3 text-white">From searching to succeeding</h2>
+                        <p class="text-light opacity-75 mb-4" style="max-width: 480px; font-size: 1.05rem;">
+                            NSBM Study Circle keeps the path from curiosity to confidence clear and collaborative.
+                        </p>
+                        <a href="#resources" class="btn btn-outline-light rounded-2 px-4 py-2 fw-semibold">
+                            Start exploring <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+
+                    <!-- Right Side: 3 Steps -->
+                    <div class="col-lg-6">
+                        <div class="rhythm-step-item">
+                            <div class="rhythm-step-num">01</div>
+                            <div>
+                                <h5 class="fw-bold mb-1 text-white">Discover</h5>
+                                <p class="text-light opacity-75 small mb-0">Find relevant materials, discussions, and people.</p>
+                            </div>
+                        </div>
+                        <div class="rhythm-step-item">
+                            <div class="rhythm-step-num">02</div>
+                            <div>
+                                <h5 class="fw-bold mb-1 text-white">Collaborate</h5>
+                                <p class="text-light opacity-75 small mb-0">Share context, solve problems, and study together.</p>
+                            </div>
+                        </div>
+                        <div class="rhythm-step-item">
+                            <div class="rhythm-step-num">03</div>
+                            <div>
+                                <h5 class="fw-bold mb-1 text-white">Achieve</h5>
+                                <p class="text-light opacity-75 small mb-0">Build understanding and make consistent progress.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         6. ACADEMIC DISCUSSIONS (Exact Figma Pages 9 & 10)
+         ==================================================================== -->
+    <section class="py-5 bg-body-tertiary" id="discussions">
+        <div class="container-xl">
+            <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+                <div>
+                    <span class="section-tag">ACADEMIC DISCUSSIONS</span>
+                    <h2 class="section-title mb-1">Questions worth asking. Answers worth sharing.</h2>
+                    <p class="section-subtitle mb-0">Join active conversations and turn individual questions into community knowledge.</p>
+                </div>
+                <a href="discussions.html?action=ask" class="btn btn-outline-secondary btn-sm py-2 px-3 fw-semibold">
+                    Ask a question
+                </a>
+            </div>
+
+            <div class="row g-4 align-items-stretch">
+                <!-- Left: Discussion Cards -->
+                <div class="col-lg-8">
+                    <div class="discussion-item-card mb-3">
+                        <div class="upvote-box">
+                            <i class="bi bi-arrow-up fs-5 text-success"></i>
+                            <span class="count">18</span>
+                            <span class="label">helpful</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="res-faculty-pill pill-computing">Computing</span>
+                            <h5 class="fw-bold mb-2">How do you choose between merge sort and quicksort in practice?</h5>
+                            <p class="text-muted small mb-3">I understand the time complexity, but what practical constraints should influence the choice?</p>
+                            <div class="d-flex align-items-center gap-3 small text-muted">
+                                <span><span class="badge bg-dark rounded-circle me-1">AP</span> Asked by A. Perera</span>
+                                <span><i class="bi bi-chat-left-text me-1"></i> 12 answers</span>
+                                <span>2h ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="discussion-item-card">
+                        <div class="upvote-box">
+                            <i class="bi bi-arrow-up fs-5 text-success"></i>
+                            <span class="count">15</span>
+                            <span class="label">helpful</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="res-faculty-pill pill-business">Accounting</span>
+                            <h5 class="fw-bold mb-2">Why can profit differ from cash flow?</h5>
+                            <p class="text-muted small mb-3">Looking for a real-world accounting example covering non-cash expenses and working capital adjustments.</p>
+                            <div class="d-flex align-items-center gap-3 small text-muted">
+                                <span><span class="badge bg-secondary rounded-circle me-1">KS</span> Asked by Kavindu S.</span>
+                                <span><i class="bi bi-chat-left-text me-1"></i> 8 answers</span>
+                                <span>5h ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Have something on your mind? (Page 10) -->
+                <div class="col-lg-4">
+                    <div class="discussion-callout-card">
+                        <div>
+                            <div class="feature-icon-wrapper feature-icon-green mb-3">
+                                <i class="bi bi-chat-square-dots"></i>
+                            </div>
+                            <h4 class="fw-bold mb-2">Have something on your mind?</h4>
+                            <p class="text-muted small mb-4">Good questions help everyone learn. Add context, show what you tried, and invite a stronger answer.</p>
+                        </div>
+                        <a href="discussions.html?action=start" class="btn btn-success fw-bold py-2 w-100 shadow-sm">
+                            Start a discussion
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         7. STUDY GROUPS (Exact Figma Pages 11 & 12)
+         ==================================================================== -->
+    <section class="py-5" id="study-groups">
+        <div class="container-xl">
+            <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
+                <div>
+                    <span class="section-tag">STUDY GROUPS</span>
+                    <h2 class="section-title mb-1">Progress feels easier in the right circle</h2>
+                    <p class="section-subtitle mb-0">Find focused communities built around the modules and goals that matter to you.</p>
+                </div>
+                <a href="study-groups.html" class="text-success fw-bold text-decoration-none small">
+                    Browse all groups <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="row g-4">
+                <!-- Group 1 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="study-group-box">
+                        <div>
+                            <div class="group-avatar-initials bg-init-ds">DS</div>
+                            <h5 class="fw-bold mb-2">Data Structures Circle</h5>
+                            <p class="text-muted small mb-3">Weekly problem-solving sessions for algorithms and data structures.</p>
+                        </div>
+                        <div>
+                            <div class="small text-muted mb-3"><i class="bi bi-people me-1"></i> 48 members</div>
+                            <a href="study-group-details.html?id=1" class="btn btn-outline-secondary btn-sm w-100 fw-semibold">Join group</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group 2 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="study-group-box">
+                        <div>
+                            <div class="group-avatar-initials bg-init-bm">BM</div>
+                            <h5 class="fw-bold mb-2">Business Minds</h5>
+                            <p class="text-muted small mb-3">Case studies, presentations, and exam preparation for management students.</p>
+                        </div>
+                        <div>
+                            <div class="small text-muted mb-3"><i class="bi bi-people me-1"></i> 35 members</div>
+                            <a href="study-group-details.html?id=2" class="btn btn-outline-secondary btn-sm w-100 fw-semibold">Join group</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group 3 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="study-group-box">
+                        <div>
+                            <div class="group-avatar-initials bg-init-ei">EI</div>
+                            <h5 class="fw-bold mb-2">Engineering Innovators</h5>
+                            <p class="text-muted small mb-3">Work through first-year mechanics, mathematics, drawing, and physics together.</p>
+                        </div>
+                        <div>
+                            <div class="small text-muted mb-3"><i class="bi bi-people me-1"></i> 32 members</div>
+                            <a href="study-group-details.html?id=3" class="btn btn-outline-secondary btn-sm w-100 fw-semibold">Join group</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group 4 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="study-group-box">
+                        <div>
+                            <div class="group-avatar-initials bg-init-sc">SC</div>
+                            <h5 class="fw-bold mb-2">Science Study Circle</h5>
+                            <p class="text-muted small mb-3">Collaborate on laboratory work, scientific reports, and core science subjects.</p>
+                        </div>
+                        <div>
+                            <div class="small text-muted mb-3"><i class="bi bi-people me-1"></i> 27 members</div>
+                            <a href="study-group-details.html?id=4" class="btn btn-outline-secondary btn-sm w-100 fw-semibold">Join group</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         8. UPCOMING SESSIONS (Exact Figma Page 13)
+         ==================================================================== -->
+    <section class="py-5 bg-body-tertiary" id="sessions">
+        <div class="container-xl">
+            <div class="text-center mb-5">
+                <span class="section-tag">UPCOMING SESSIONS</span>
+                <h2 class="section-title">Make time for focused learning</h2>
+                <p class="section-subtitle mx-auto">Join planned sessions, bring your questions, and leave with clearer next steps.</p>
+            </div>
+
+            <div class="row g-3 justify-content-center">
+                <!-- Session 1 (Featured) -->
+                <div class="col-lg-10">
+                    <div class="session-row-card">
+                        <div class="session-date-box date-box-dark">
+                            <span class="day">24</span>
+                            <span class="month">MAY</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="res-faculty-pill pill-computing mb-1">Computing</span>
+                            <h5 class="fw-bold mb-1">Algorithms: Final Exam Problem Solving</h5>
+                            <div class="d-flex align-items-center gap-3 small text-muted">
+                                <span><i class="bi bi-clock me-1"></i> 6:30 PM - 8:00 PM</span>
+                                <span><i class="bi bi-people me-1"></i> 18 attending</span>
+                            </div>
+                        </div>
+                        <div>
+                            <a href="session-details.html?id=1" class="btn btn-success fw-bold px-4 py-2">Reserve a seat</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session 2 -->
+                <div class="col-lg-10">
+                    <div class="session-row-card">
+                        <div class="session-date-box date-box-light">
+                            <span class="day">26</span>
+                            <span class="month">MAY</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="res-faculty-pill pill-business mb-1">Business</span>
+                            <h5 class="fw-bold mb-1">Marketing Strategy Case Review</h5>
+                            <div class="small text-muted">4:00 PM · Online session</div>
+                        </div>
+                        <div>
+                            <a href="session-details.html?id=2" class="btn btn-outline-secondary btn-sm rounded-circle p-2" title="Details">
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session 3 -->
+                <div class="col-lg-10">
+                    <div class="session-row-card">
+                        <div class="session-date-box date-box-light">
+                            <span class="day">28</span>
+                            <span class="month">MAY</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="res-faculty-pill pill-science mb-1">Science</span>
+                            <h5 class="fw-bold mb-1">Laboratory Report Review</h5>
+                            <div class="small text-muted">5:30 PM · Science laboratory</div>
+                        </div>
+                        <div>
+                            <a href="session-details.html?id=3" class="btn btn-outline-secondary btn-sm rounded-circle p-2" title="Details">
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         9. READY WHEN YOU ARE - CTA BANNER (Exact Figma Page 14)
+         ==================================================================== -->
+    <section class="py-5">
+        <div class="container-xl">
+            <div class="cta-banner-card">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-8">
+                        <span class="text-uppercase fw-bold small text-info" style="letter-spacing: 2px;">READY WHEN YOU ARE</span>
+                        <h2 class="display-6 fw-bold my-2 text-white">Your Next Academic Breakthrough Starts Here.</h2>
+                        <p class="text-light opacity-75 mb-0" style="max-width: 580px;">
+                            Join a community built to help you learn with more clarity, confidence, and connection.
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end text-start">
+                        <a href="signup.html" class="btn-cta-white mb-2">
+                            Create your free account <i class="bi bi-arrow-right"></i>
+                        </a>
+                        <div class="small text-light opacity-75">No credit card · Built for students</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         10. FOOTER (Exact Figma Page 15)
+         ==================================================================== -->
+    <footer class="figma-footer">
+        <div class="container-xl">
+            <div class="row g-4 justify-content-between">
+                <!-- Col 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.html" class="brand-logo-container mb-3 text-decoration-none">
+                        <div class="brand-logo-wrapper">
+                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                        </div>
+                        <div class="brand-text-group">
+                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                        </div>
+                    </a>
+                    <p class="text-muted small" style="max-width: 320px;">
+                        A focused academic community for sharing knowledge, finding support, and learning better together.
+                    </p>
+                </div>
+
+                <!-- Col 2: Platform -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>PLATFORM</h6>
+                    <a href="resources.html">Study materials</a>
+                    <a href="discussions.html">Discussions</a>
+                    <a href="study-groups.html">Study groups</a>
+                    <a href="sessions.html">Study sessions</a>
+                </div>
+
+                <!-- Col 3: Community -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>COMMUNITY</h6>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Community guide</a>
+                    <a href="contact.html">Contact &amp; help</a>
+                </div>
+
+                <!-- Col 4: Account -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>ACCOUNT</h6>
+                    <a href="login.html">Log in</a>
+                    <a href="signup.html">Create account</a>
+                    <a href="student/index.html">Student dashboard</a>
+                    <a href="admin/index.html">Admin console</a>
+                </div>
+            </div>
+
+            <!-- Bottom Line -->
+            <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div class="d-flex gap-3">
+                    <a href="contact.html" class="text-muted text-decoration-none">Privacy</a>
+                    <a href="contact.html" class="text-muted text-decoration-none">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Global Interactions & Stability JS -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

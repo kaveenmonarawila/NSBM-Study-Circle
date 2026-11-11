@@ -1,0 +1,128 @@
+{
+  "total_tests": 15,
+  "passed": 15,
+  "failed": 0,
+  "timestamp": 1794396259,
+  "results": [
+    {
+      "cat_num": 1,
+      "title": "Student registration and login with multiple independent accounts",
+      "expected": "Both students registered independently with unique IDs, correct login succeeds, bad password rejected",
+      "actual": "S1 ID=63, S2 ID=64, Re-login=True, BadPassDenied=True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "cat_num": 2,
+      "title": "Multiple admin accounts with independent login credentials",
+      "expected": "Multiple admin accounts created in MySQL with distinct credentials, both authenticate independently with role 'admin'",
+      "actual": "Admin1 (ID=65, Login=True), Admin2 (ID=66, Login=True), Admin3 created via Controller=True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "cat_num": 3,
+      "title": "Correct student and admin role permissions (RBAC)",
+      "expected": "Student blocked from admin pages & API (302/403); Guest blocked from student & admin dashboards",
+      "actual": "StudentToAdmin=302 (../login.php?role=admin&error=Access+denied.+Administrator+privileges+required.), GuestToStudent=302, GuestToAdmin=302, StudentToAdminAPI=403",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "cat_num": 4,
+      "title": "Student and admin dashboard data isolation",
+      "expected": "Student 1 dashboard shows only Student 1's identity; Student 2 dashboard shows Student 2's; Admin displays aggregated MySQL data",
+      "actual": "S1 Isolated=True, S2 Isolated=True, Admin Aggregates=True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "cat_num": 5,
+      "title": "Database persistence after logout and cold login",
+      "expected": "User data and password hash persist in MySQL, allowing immediate re-authentication from a fresh session",
+      "actual": "Cold login successful=True, User ID matched=63",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "cat_num": 6,
+      "title": "Resource upload and download operations",
+      "expected": "Valid PDF uploaded to MySQL resources, and download tracking record logged successfully",
+      "actual": "Upload Success=True (ID=22), Download Tracked=True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "cat_num": 7,
+      "title": "Discussion creation, comments, and study group operations",
+      "expected": "Student 1 asks question, Student 2 posts answer to that question, and Student 1 joins study group",
+      "actual": "Question Posted=True (DiscID=15), Answer Posted=True, Group Joined=True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "cat_num": 8,
+      "title": "Search, filtering, and category functions",
+      "expected": "Resources filtered by faculty, keyword search works on resources and discussions",
+      "actual": "Resource Filter=True, Resource Search=True, Discussion Search=True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "cat_num": 9,
+      "title": "Profile updates and notifications",
+      "expected": "Profile bio and degree updated in MySQL; notifications marked as read",
+      "actual": "Profile Updated=True, Notifications Processed=True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "cat_num": 10,
+      "title": "Session security and logout functionality",
+      "expected": "Logout terminates session on server; subsequent access with previous cookie redirects to login",
+      "actual": "Logout API=True, Session Destroyed Verified=True (Status=302)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "cat_num": 11,
+      "title": "SQL injection and XSS protection",
+      "expected": "SQL injection payloads safely rejected via prepared statements; XSS tags sanitized and escaped via htmlspecialchars",
+      "actual": "SQLi Blocked=True, XSS Neutralized=True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "cat_num": 12,
+      "title": "File upload security and access permissions",
+      "expected": "Non-whitelisted executable (.php) uploads strictly rejected; .htaccess denies execution in uploads directory",
+      "actual": "Malicious Upload Blocked=True, Upload .htaccess Active=True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "cat_num": 13,
+      "title": "Database foreign keys, indexes, and data consistency",
+      "expected": "All 10 essential domain tables verified present with primary keys and indexed lookups in MySQL",
+      "actual": "Schema Verification Passed=True",
+      "status": "PASS",
+      "details": "Missing Tables: [], Primary Key Intact: True"
+    },
+    {
+      "cat_num": 14,
+      "title": "All website buttons, links, forms, and navigation",
+      "expected": "All 29 critical public, student, and admin routes return HTTP 200 with zero broken endpoints",
+      "actual": "Tested 29 Routes. Broken=0",
+      "status": "PASS",
+      "details": "All 29 routes OK"
+    },
+    {
+      "cat_num": 15,
+      "title": "PHP errors, warnings, notices, and clean execution",
+      "expected": "Zero PHP Fatal errors, syntax parse errors, or unhandled exceptions logged during audit",
+      "actual": "Clean Execution=True, Fatal Errors Found=0",
+      "status": "PASS",
+      "details": "Zero fatal errors detected"
+    }
+  ]
+}

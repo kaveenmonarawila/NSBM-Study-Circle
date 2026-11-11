@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - Student Portal | NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('study_circle_theme')||localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+    <!-- Website Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <!-- Google Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/student.css">
+</head>
+<body>
+
+<div class="student-layout">
+    <!-- Student Dark Navy Sidebar -->
+    <aside class="student-sidebar">
+        <a href="index.html" class="student-sidebar-brand">
+            <div class="student-brand-icon">
+                <img src="../assets/images/logo.svg" alt="NSBM Study Circle Logo" onerror="this.onerror=null; this.src='../assets/images/logo.jpg';">
+            </div>
+            <div>
+                <h6 class="student-brand-title">NSBM Study Circle</h6>
+                <p class="student-brand-tagline">Learn Together. Grow Together.</p>
+            </div>
+        </a>
+
+        <!-- LEARNING SECTION -->
+        <div class="student-sidebar-section">
+            <span class="student-sidebar-label">LEARNING</span>
+            <ul class="student-nav-list">
+                <li class="student-nav-item">
+                    <a href="index.html" class="student-nav-link">
+                        <i class="bi bi-house-door"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="study-materials.html" class="student-nav-link">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>Study Materials</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="discussions.html" class="student-nav-link">
+                        <i class="bi bi-chat-dots"></i>
+                        <span>Discussions</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="groups.html" class="student-nav-link">
+                        <i class="bi bi-people"></i>
+                        <span>Study Groups</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="schedule.html" class="student-nav-link">
+                        <i class="bi bi-calendar3"></i>
+                        <span>Study Sessions</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MY LIBRARY SECTION -->
+        <div class="student-sidebar-section">
+            <span class="student-sidebar-label">MY LIBRARY</span>
+            <ul class="student-nav-list">
+                <li class="student-nav-item">
+                    <a href="uploads.html" class="student-nav-link">
+                        <i class="bi bi-upload"></i>
+                        <span>My Uploads</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="downloads.html" class="student-nav-link">
+                        <i class="bi bi-download"></i>
+                        <span>My Downloads</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="saved.html" class="student-nav-link">
+                        <i class="bi bi-bookmark"></i>
+                        <span>Saved Resources</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ACCOUNT SECTION -->
+        <div class="student-sidebar-section">
+            <span class="student-sidebar-label">ACCOUNT</span>
+            <ul class="student-nav-list">
+                <li class="student-nav-item">
+                    <a href="notifications.html" class="student-nav-link active">
+                        <i class="bi bi-bell"></i>
+                        <span>Notifications</span>
+                        <span class="student-nav-badge">4</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="profile.html" class="student-nav-link">
+                        <i class="bi bi-person"></i>
+                        <span>My Profile</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="settings.html" class="student-nav-link">
+                        <i class="bi bi-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="student-main-content">
+        <!-- Topbar -->
+        <header class="student-topbar">
+            <div>
+                <div class="student-topbar-breadcrumb">STUDENT PORTAL</div>
+                <h1 class="student-topbar-title">Notifications</h1>
+            </div>
+
+            <!-- Search Input -->
+            <div class="student-search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" placeholder="Search resources, discussions, or groups..." aria-label="Search">
+            </div>
+
+            <!-- Topbar Actions -->
+            <div class="student-topbar-actions">
+                <!-- Theme Toggle -->
+                <button type="button" class="student-icon-btn theme-toggle-btn" id="studentThemeToggle" title="Toggle Theme">
+                    <i class="bi bi-moon"></i>
+                </button>
+
+                <!-- Notifications Bell -->
+                <a href="notifications.html" class="student-icon-btn position-relative" title="Notifications">
+                    <i class="bi bi-bell"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle">
+                        <span class="visually-hidden">New alerts</span>
+                    </span>
+                </a>
+
+                <!-- User Profile Dropdown -->
+                <div class="dropdown">
+                    <div class="student-profile-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="student-avatar">AS</div>
+                        <div class="student-user-info d-none d-sm-block">
+                            <p class="student-user-name">Alex Silva</p>
+                            <p class="student-user-role">Demonstration student</p>
+                        </div>
+                        <i class="bi bi-chevron-down ms-1 text-muted" style="font-size: 0.75rem;"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2" style="border-radius: 10px;">
+                        <li><a class="dropdown-item py-2" href="profile.html"><i class="bi bi-person me-2 text-muted"></i> My Profile</a></li>
+                        <li><a class="dropdown-item py-2" href="settings.html"><i class="bi bi-gear me-2 text-muted"></i> Account Settings</a></li>
+                        <li><hr class="dropdown-divider my-1"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="logout.php"><i class="bi bi-box-arrow-right me-2"></i> Log out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <div class="student-content-body">
+            <!-- Page Header -->
+            <div class="student-page-header">
+                <div>
+                    <h2 class="student-page-heading">Notifications</h2>
+                    <div class="d-flex align-items-center gap-3 my-2">
+                        <a href="notifications.html" class="text-decoration-none fw-bold" style="color: var(--navy-title); border-bottom: 2px solid var(--navy-title); padding-bottom: 4px;">All</a>
+                        <a href="notifications.html?filter=unread" class="text-decoration-none text-muted" style="padding-bottom: 4px;">Unread</a>
+                        <a href="notifications.html?filter=mentions" class="text-decoration-none text-muted" style="padding-bottom: 4px;">Mentions</a>
+                    </div>
+                    <p class="student-page-subheading">Updates from your resources, questions, groups, and sessions.</p>
+                </div>
+                <div>
+                    <a href="javascript:void(0)" class="student-card-link text-muted small fw-semibold">Mark all as read</a>
+                </div>
+            </div>
+
+            <!-- Notifications List Container -->
+            <div class="student-card p-0">
+                <!-- Item 1: New answer on your question -->
+                <div class="p-3 border-bottom d-flex align-items-start gap-3">
+                    <div class="student-act-icon student-act-blue mt-1">
+                        <i class="bi bi-chat-left-dots"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4 class="student-act-title" style="font-size: 0.95rem;">
+                                <a href="discussions.html" class="text-decoration-none text-dark hover-green">New answer on your question</a>
+                            </h4>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge rounded-circle p-1 bg-primary"></span>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-link text-muted p-0" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                        <li><a class="dropdown-item small" href="javascript:void(0)">Mark as read</a></li>
+                                        <li><a class="dropdown-item small text-danger" href="javascript:void(0)">Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="student-act-desc mb-1" style="font-size: 0.85rem;">
+                            Sahan answered "How do you choose between merge sort and quicksort?"
+                        </p>
+                        <span class="text-muted" style="font-size: 0.74rem;">12 minutes ago</span>
+                    </div>
+                </div>
+
+                <!-- Item 2: Your upload was approved -->
+                <div class="p-3 border-bottom d-flex align-items-start gap-3">
+                    <div class="student-act-icon student-act-green mt-1">
+                        <i class="bi bi-check2"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4 class="student-act-title" style="font-size: 0.95rem;">
+                                <a href="uploads.html" class="text-decoration-none text-dark hover-green">Your upload was approved</a>
+                            </h4>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge rounded-circle p-1 bg-primary"></span>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-link text-muted p-0" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                        <li><a class="dropdown-item small" href="javascript:void(0)">Mark as read</a></li>
+                                        <li><a class="dropdown-item small text-danger" href="javascript:void(0)">Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="student-act-desc mb-1" style="font-size: 0.85rem;">
+                            Algorithm Complexity Cheat Sheet is now available publicly.
+                        </p>
+                        <span class="text-muted" style="font-size: 0.74rem;">2 hours ago</span>
+                    </div>
+                </div>
+
+                <!-- Item 3: New group member -->
+                <div class="p-3 border-bottom d-flex align-items-start gap-3">
+                    <div class="student-act-icon student-act-indigo mt-1">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4 class="student-act-title" style="font-size: 0.95rem;">
+                                <a href="groups.html" class="text-decoration-none text-dark hover-green">New group member</a>
+                            </h4>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge rounded-circle p-1 bg-primary"></span>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-link text-muted p-0" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                        <li><a class="dropdown-item small" href="javascript:void(0)">Mark as read</a></li>
+                                        <li><a class="dropdown-item small text-danger" href="javascript:void(0)">Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="student-act-desc mb-1" style="font-size: 0.85rem;">
+                            Dinara Jayasinghe joined Data Structures Circle.
+                        </p>
+                        <span class="text-muted" style="font-size: 0.74rem;">5 hours ago</span>
+                    </div>
+                </div>
+
+                <!-- Item 4: Session reminder -->
+                <div class="p-3 border-bottom d-flex align-items-start gap-3">
+                    <div class="student-act-icon student-act-blue mt-1">
+                        <i class="bi bi-calendar-event"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4 class="student-act-title" style="font-size: 0.95rem;">
+                                <a href="schedule.html" class="text-decoration-none text-dark hover-green">Session reminder</a>
+                            </h4>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-link text-muted p-0" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                    <li><a class="dropdown-item small text-danger" href="javascript:void(0)">Delete</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="student-act-desc mb-1" style="font-size: 0.85rem;">
+                            Database Systems Revision begins today at 6:00 PM.
+                        </p>
+                        <span class="text-muted" style="font-size: 0.74rem;">Yesterday</span>
+                    </div>
+                </div>
+
+                <!-- Item 5: Saved resource updated -->
+                <div class="p-3 d-flex align-items-start gap-3">
+                    <div class="student-act-icon student-act-orange mt-1">
+                        <i class="bi bi-bookmark"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4 class="student-act-title" style="font-size: 0.95rem;">
+                                <a href="saved.html" class="text-decoration-none text-dark hover-green">Saved resource updated</a>
+                            </h4>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-link text-muted p-0" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                    <li><a class="dropdown-item small text-danger" href="javascript:void(0)">Delete</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p class="student-act-desc mb-1" style="font-size: 0.85rem;">
+                            UI/UX Research Methods Toolkit has a new version.
+                        </p>
+                        <span class="text-muted" style="font-size: 0.74rem;">2 days ago</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/student.js"></script>
+</body>
+</html>

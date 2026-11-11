@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Student Portal | NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('study_circle_theme')||localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+    <!-- Website Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <!-- Google Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/student.css">
+</head>
+<body>
+
+<div class="student-layout">
+    <!-- Student Dark Navy Sidebar -->
+    <aside class="student-sidebar">
+        <a href="index.html" class="student-sidebar-brand">
+            <div class="student-brand-icon">
+                <img src="../assets/images/logo.svg" alt="NSBM Study Circle Logo" onerror="this.onerror=null; this.src='../assets/images/logo.jpg';">
+            </div>
+            <div>
+                <h6 class="student-brand-title">NSBM Study Circle</h6>
+                <p class="student-brand-tagline">Learn Together. Grow Together.</p>
+            </div>
+        </a>
+
+        <!-- LEARNING SECTION -->
+        <div class="student-sidebar-section">
+            <span class="student-sidebar-label">LEARNING</span>
+            <ul class="student-nav-list">
+                <li class="student-nav-item">
+                    <a href="index.html" class="student-nav-link active">
+                        <i class="bi bi-house-door"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="study-materials.html" class="student-nav-link">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>Study Materials</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="discussions.html" class="student-nav-link">
+                        <i class="bi bi-chat-dots"></i>
+                        <span>Discussions</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="groups.html" class="student-nav-link">
+                        <i class="bi bi-people"></i>
+                        <span>Study Groups</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="schedule.html" class="student-nav-link">
+                        <i class="bi bi-calendar3"></i>
+                        <span>Study Sessions</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- MY LIBRARY SECTION -->
+        <div class="student-sidebar-section">
+            <span class="student-sidebar-label">MY LIBRARY</span>
+            <ul class="student-nav-list">
+                <li class="student-nav-item">
+                    <a href="uploads.html" class="student-nav-link">
+                        <i class="bi bi-upload"></i>
+                        <span>My Uploads</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="downloads.html" class="student-nav-link">
+                        <i class="bi bi-download"></i>
+                        <span>My Downloads</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="saved.html" class="student-nav-link">
+                        <i class="bi bi-bookmark"></i>
+                        <span>Saved Resources</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ACCOUNT SECTION -->
+        <div class="student-sidebar-section">
+            <span class="student-sidebar-label">ACCOUNT</span>
+            <ul class="student-nav-list">
+                <li class="student-nav-item">
+                    <a href="notifications.html" class="student-nav-link">
+                        <i class="bi bi-bell"></i>
+                        <span>Notifications</span>
+                        <span class="student-nav-badge">4</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="profile.html" class="student-nav-link">
+                        <i class="bi bi-person"></i>
+                        <span>My Profile</span>
+                    </a>
+                </li>
+                <li class="student-nav-item">
+                    <a href="settings.html" class="student-nav-link">
+                        <i class="bi bi-gear"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="student-main-content">
+        <!-- Topbar -->
+        <header class="student-topbar">
+            <div>
+                <div class="student-topbar-breadcrumb">STUDENT PORTAL</div>
+                <h1 class="student-topbar-title">Dashboard</h1>
+            </div>
+
+            <!-- Search Input -->
+            <div class="student-search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" placeholder="Search resources, discussions, or groups..." aria-label="Search">
+            </div>
+
+            <!-- Topbar Actions -->
+            <div class="student-topbar-actions">
+                <!-- Theme Toggle -->
+                <button type="button" class="student-icon-btn theme-toggle-btn" id="studentThemeToggle" title="Toggle Theme">
+                    <i class="bi bi-moon"></i>
+                </button>
+
+                <!-- Notifications Bell -->
+                <a href="notifications.html" class="student-icon-btn position-relative" title="Notifications">
+                    <i class="bi bi-bell"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle">
+                        <span class="visually-hidden">New alerts</span>
+                    </span>
+                </a>
+
+                <!-- User Profile Dropdown -->
+                <div class="dropdown">
+                    <div class="student-profile-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="student-avatar">AS</div>
+                        <div class="student-user-info d-none d-sm-block">
+                            <p class="student-user-name">Alex Silva</p>
+                            <p class="student-user-role">Demonstration student</p>
+                        </div>
+                        <i class="bi bi-chevron-down ms-1 text-muted" style="font-size: 0.75rem;"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 py-2" style="border-radius: 10px;">
+                        <li><a class="dropdown-item py-2" href="profile.html"><i class="bi bi-person me-2 text-muted"></i> My Profile</a></li>
+                        <li><a class="dropdown-item py-2" href="settings.html"><i class="bi bi-gear me-2 text-muted"></i> Account Settings</a></li>
+                        <li><hr class="dropdown-divider my-1"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="logout.php"><i class="bi bi-box-arrow-right me-2"></i> Log out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <div class="student-content-body">
+            <!-- Hero Banner -->
+            <div class="student-hero-banner">
+                <div class="student-hero-tag">YOUR LEARNING SPACE</div>
+                <h2 class="student-hero-heading">Welcome back, Alex!</h2>
+                <p class="student-hero-text">Continue learning, explore new resources, and connect with your study community.</p>
+                <div class="d-flex align-items-center flex-wrap gap-2">
+                    <a href="study-materials.html" class="student-hero-btn-green">
+                        Explore Resources
+                    </a>
+                    <a href="uploads.html" class="student-hero-btn-outline">
+                        Upload Material
+                    </a>
+                </div>
+
+                <!-- Right 3D style badge artwork -->
+                <div class="student-hero-badge-art">
+                    <div class="student-hero-card-white">
+                        <i class="bi bi-book"></i>
+                    </div>
+                    <div class="student-hero-badge-pill">
+                        Learn<br>Together.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Stat Metric Cards (Clickable) -->
+            <div class="student-stats-row">
+                <!-- Card 1: Uploaded Resources -->
+                <a href="uploads.html" class="text-decoration-none student-stat-card student-stat-blue">
+                    <div class="student-stat-icon-box">
+                        <i class="bi bi-upload"></i>
+                    </div>
+                    <div>
+                        <div class="student-stat-value">12</div>
+                        <div class="student-stat-label">Uploaded Resources</div>
+                        <p class="student-stat-subtext">3 approved this month</p>
+                    </div>
+                </a>
+
+                <!-- Card 2: Downloaded Materials -->
+                <a href="downloads.html" class="text-decoration-none student-stat-card student-stat-green">
+                    <div class="student-stat-icon-box">
+                        <i class="bi bi-download"></i>
+                    </div>
+                    <div>
+                        <div class="student-stat-value">48</div>
+                        <div class="student-stat-label">Downloaded Materials</div>
+                        <p class="student-stat-subtext">6 added this week</p>
+                    </div>
+                </a>
+
+                <!-- Card 3: Study Groups -->
+                <a href="groups.html" class="text-decoration-none student-stat-card student-stat-indigo">
+                    <div class="student-stat-icon-box">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <div>
+                        <div class="student-stat-value">4</div>
+                        <div class="student-stat-label">Study Groups</div>
+                        <p class="student-stat-subtext">1 group you manage</p>
+                    </div>
+                </a>
+
+                <!-- Card 4: Upcoming Sessions -->
+                <a href="schedule.html" class="text-decoration-none student-stat-card student-stat-amber">
+                    <div class="student-stat-icon-box">
+                        <i class="bi bi-calendar3"></i>
+                    </div>
+                    <div>
+                        <div class="student-stat-value">3</div>
+                        <div class="student-stat-label">Upcoming Sessions</div>
+                        <p class="student-stat-subtext">Next session today</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Two Column Row 1: Recommended Resources & Upcoming Study Sessions -->
+            <div class="student-grid-2col">
+                <!-- Recommended Resources -->
+                <div class="student-card mb-0">
+                    <div class="student-card-header">
+                        <div>
+                            <div class="student-card-eyebrow">FOR YOU</div>
+                            <h3 class="student-card-title">Recommended resources</h3>
+                            <p class="student-item-subtitle mt-1">Useful material selected from your subjects and recent activity.</p>
+                        </div>
+                        <a href="study-materials.html" class="student-card-link">View library</a>
+                    </div>
+
+                    <!-- Item 1 -->
+                    <div class="student-resource-item">
+                        <div class="student-res-icon student-res-icon-blue">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="student-badge-computing">Computing</span>
+                            <h4 class="student-item-title">Data Structures — Complete Revision Guide</h4>
+                            <p class="student-item-subtitle">PDF · Shared by Alex Silva</p>
+                        </div>
+                        <a href="javascript:void(0)" data-resource-id="1" class="student-btn-sm-view open-resource-modal">View</a>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="student-resource-item">
+                        <div class="student-res-icon student-res-icon-green">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="student-badge-business">Business</span>
+                            <h4 class="student-item-title">Financial Accounting: Core Concepts</h4>
+                            <p class="student-item-subtitle">PDF · Shared by Kavindu Silva</p>
+                        </div>
+                        <a href="javascript:void(0)" data-resource-id="2" class="student-btn-sm-view open-resource-modal">View</a>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="student-resource-item mb-0">
+                        <div class="student-res-icon student-res-icon-teal">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="student-badge-science">Science</span>
+                            <h4 class="student-item-title">Scientific Communication Toolkit</h4>
+                            <p class="student-item-subtitle">DOCX · Shared by Dinara Jayasinghe</p>
+                        </div>
+                        <a href="javascript:void(0)" data-resource-id="4" class="student-btn-sm-view open-resource-modal">View</a>
+                    </div>
+                </div>
+
+                <!-- Upcoming Study Sessions -->
+                <div class="student-card mb-0">
+                    <div class="student-card-header">
+                        <div>
+                            <div class="student-card-eyebrow">NEXT UP</div>
+                            <h3 class="student-card-title">Upcoming study sessions</h3>
+                        </div>
+                        <a href="schedule.html" class="student-card-link">Full schedule</a>
+                    </div>
+
+                    <!-- Session 1 -->
+                    <div class="student-session-item">
+                        <div class="student-date-badge student-date-dark">
+                            <span class="student-date-num">19</span>
+                            <span class="student-date-month">MAY</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="student-badge-computing">Computing</span>
+                            <h4 class="student-item-title">Database Systems Revision</h4>
+                            <p class="student-item-subtitle">6:00 PM · Online</p>
+                        </div>
+                        <a href="javascript:void(0)" data-session-id="1" class="student-card-link open-session-modal">Details</a>
+                    </div>
+
+                    <!-- Session 2 -->
+                    <div class="student-session-item">
+                        <div class="student-date-badge student-date-light">
+                            <span class="student-date-num">24</span>
+                            <span class="student-date-month">MAY</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="student-badge-computing">Computing</span>
+                            <h4 class="student-item-title">Algorithms: Exam Problems</h4>
+                            <p class="student-item-subtitle">6:30 PM · Online</p>
+                        </div>
+                        <a href="javascript:void(0)" data-session-id="2" class="student-card-link open-session-modal">Details</a>
+                    </div>
+
+                    <!-- Session 3 -->
+                    <div class="student-session-item mb-0">
+                        <div class="student-date-badge student-date-light">
+                            <span class="student-date-num">26</span>
+                            <span class="student-date-month">MAY</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="student-badge-business">Business</span>
+                            <h4 class="student-item-title">Marketing Case Review</h4>
+                            <p class="student-item-subtitle">4:00 PM · Learning Commons</p>
+                        </div>
+                        <a href="javascript:void(0)" data-session-id="3" class="student-card-link open-session-modal">Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Column Row 2: Recent Discussions & My Study Groups -->
+            <div class="student-grid-2col">
+                <!-- Recent Discussions -->
+                <div class="student-card mb-0">
+                    <div class="student-card-header">
+                        <div>
+                            <div class="student-card-eyebrow">COMMUNITY QUESTIONS</div>
+                            <h3 class="student-card-title">Recent discussions</h3>
+                        </div>
+                        <a href="discussions.html" class="student-card-link">Browse all</a>
+                    </div>
+
+                    <!-- Question 1 -->
+                    <a href="discussions.html" class="text-decoration-none student-discussion-item">
+                        <div class="student-helpful-badge">
+                            <span class="student-helpful-count">18</span>
+                            <span class="student-helpful-txt">helpful</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="student-badge-computing">Computing</span>
+                            <h4 class="student-item-title">Merge sort or quicksort in practice?</h4>
+                            <p class="student-item-subtitle">12 answers · 2h ago</p>
+                        </div>
+                    </a>
+
+                    <!-- Question 2 -->
+                    <a href="discussions.html" class="text-decoration-none student-discussion-item">
+                        <div class="student-helpful-badge">
+                            <span class="student-helpful-count">15</span>
+                            <span class="student-helpful-txt">helpful</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="student-badge-accounting">Accounting</span>
+                            <h4 class="student-item-title">Why can profit differ from cash flow?</h4>
+                            <p class="student-item-subtitle">8 answers · 5h ago</p>
+                        </div>
+                    </a>
+
+                    <!-- Question 3 -->
+                    <a href="discussions.html" class="text-decoration-none student-discussion-item mb-0">
+                        <div class="student-helpful-badge">
+                            <span class="student-helpful-count">12</span>
+                            <span class="student-helpful-txt">helpful</span>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="student-badge-science">Science</span>
+                            <h4 class="student-item-title">What makes a usability test reliable?</h4>
+                            <p class="student-item-subtitle">6 answers · 1d ago</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- My Study Groups -->
+                <div class="student-card mb-0">
+                    <div class="student-card-header">
+                        <div>
+                            <div class="student-card-eyebrow">YOUR CIRCLES</div>
+                            <h3 class="student-card-title">My study groups</h3>
+                        </div>
+                        <a href="groups.html" class="student-card-link">All groups</a>
+                    </div>
+
+                    <!-- Group 1 -->
+                    <div class="student-group-row">
+                        <div class="student-circle-avatar student-circle-ds">DS</div>
+                        <div class="flex-grow-1">
+                            <h4 class="student-item-title">Data Structures Circle</h4>
+                            <p class="student-item-subtitle"><i class="bi bi-people me-1"></i> 48 members</p>
+                        </div>
+                        <a href="javascript:void(0)" data-group-id="1" class="student-btn-sm-view open-group-modal">Open</a>
+                    </div>
+
+                    <!-- Group 2 -->
+                    <div class="student-group-row">
+                        <div class="student-circle-avatar student-circle-sc">SC</div>
+                        <div class="flex-grow-1">
+                            <h4 class="student-item-title">Science Study Circle</h4>
+                            <p class="student-item-subtitle"><i class="bi bi-people me-1"></i> 27 members</p>
+                        </div>
+                        <a href="javascript:void(0)" data-group-id="2" class="student-btn-sm-view open-group-modal">Open</a>
+                    </div>
+
+                    <!-- Group 3 -->
+                    <div class="student-group-row mb-0">
+                        <div class="student-circle-avatar student-circle-bm">BM</div>
+                        <div class="flex-grow-1">
+                            <h4 class="student-item-title">Business Minds</h4>
+                            <p class="student-item-subtitle"><i class="bi bi-people me-1"></i> 35 members</p>
+                        </div>
+                        <a href="javascript:void(0)" data-group-id="3" class="student-btn-sm-view open-group-modal">Open</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Column Row 3: Recent Activity & Quick Actions -->
+            <div class="student-grid-2col">
+                <!-- Recent Activity -->
+                <div class="student-card mb-0">
+                    <div class="student-card-header">
+                        <div>
+                            <div class="student-card-eyebrow">ACTIVITY</div>
+                            <h3 class="student-card-title">Recent activity</h3>
+                        </div>
+                        <a href="notifications.html" class="student-card-link">Notifications</a>
+                    </div>
+
+                    <!-- Activity 1 -->
+                    <a href="uploads.html" class="text-decoration-none student-activity-item">
+                        <div class="student-act-icon student-act-green">
+                            <i class="bi bi-check2"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h4 class="student-act-title">Upload approved</h4>
+                            <p class="student-act-desc">Your Algorithm Complexity Cheat Sheet is now public.</p>
+                        </div>
+                        <span class="student-act-time">2h</span>
+                    </a>
+
+                    <!-- Activity 2 -->
+                    <a href="discussions.html" class="text-decoration-none student-activity-item">
+                        <div class="student-act-icon student-act-blue">
+                            <i class="bi bi-chat-left-dots"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h4 class="student-act-title">New discussion reply</h4>
+                            <p class="student-act-desc">Sahan replied to your question about quicksort.</p>
+                        </div>
+                        <span class="student-act-time">4h</span>
+                    </a>
+
+                    <!-- Activity 3 -->
+                    <a href="groups.html" class="text-decoration-none student-activity-item">
+                        <div class="student-act-icon student-act-indigo">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h4 class="student-act-title">Group update</h4>
+                            <p class="student-act-desc">A new worksheet was shared in Data Structures Circle.</p>
+                        </div>
+                        <span class="student-act-time">1d</span>
+                    </a>
+
+                    <!-- Activity 4 -->
+                    <a href="saved.html" class="text-decoration-none student-activity-item">
+                        <div class="student-act-icon student-act-orange">
+                            <i class="bi bi-bookmark"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h4 class="student-act-title">Saved resource updated</h4>
+                            <p class="student-act-desc">UI/UX Research Methods Toolkit has a new version.</p>
+                        </div>
+                        <span class="student-act-time">2d</span>
+                    </a>
+                </div>
+
+                <!-- Quick Actions (2x2 Grid) -->
+                <div class="student-card mb-0">
+                    <div class="student-card-header">
+                        <div>
+                            <div class="student-card-eyebrow">SHORTCUTS</div>
+                            <h3 class="student-card-title">Quick actions</h3>
+                            <p class="student-item-subtitle mt-1">Start your next contribution or collaboration.</p>
+                        </div>
+                    </div>
+
+                    <div class="student-quick-grid">
+                        <!-- Action 1 -->
+                        <a href="uploads.html" class="student-quick-card">
+                            <div class="student-quick-icon text-primary">
+                                <i class="bi bi-upload"></i>
+                            </div>
+                            <div>
+                                <h4 class="student-quick-title">Upload Study Material</h4>
+                                <p class="student-quick-sub">Share useful notes</p>
+                            </div>
+                        </a>
+
+                        <!-- Action 2 -->
+                        <a href="discussions.html" class="student-quick-card">
+                            <div class="student-quick-icon text-success">
+                                <i class="bi bi-question-circle"></i>
+                            </div>
+                            <div>
+                                <h4 class="student-quick-title">Ask a Question</h4>
+                                <p class="student-quick-sub">Get academic help</p>
+                            </div>
+                        </a>
+
+                        <!-- Action 3 -->
+                        <a href="groups.html" class="student-quick-card">
+                            <div class="student-quick-icon" style="color: #6366F1;">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div>
+                                <h4 class="student-quick-title">Create a Study Group</h4>
+                                <p class="student-quick-sub">Build your circle</p>
+                            </div>
+                        </a>
+
+                        <!-- Action 4 -->
+                        <a href="schedule.html" class="student-quick-card">
+                            <div class="student-quick-icon text-warning">
+                                <i class="bi bi-calendar3"></i>
+                            </div>
+                            <div>
+                                <h4 class="student-quick-title">Schedule a Session</h4>
+                                <p class="student-quick-sub">Plan focused study</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap 5 JS Bundle & Student script -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/student.js"></script>
+</body>
+</html>

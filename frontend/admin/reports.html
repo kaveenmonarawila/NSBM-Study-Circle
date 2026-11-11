@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports &amp; Analytics - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+    <link rel="alternate icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Admin Console Dark Navy Sidebar -->
+<aside class="admin-sidebar" id="adminSidebar">
+    <a href="index.html" class="admin-sidebar-brand">
+        <div class="admin-brand-icon">
+            <img src="../assets/images/logo.svg" alt="NSBM Study Circle" onerror="this.onerror=null; this.src='../assets/images/logo.jpg';">
+        </div>
+        <div>
+            <h6 class="admin-brand-title">NSBM Study Circle</h6>
+            <p class="admin-brand-tagline">ADMIN CONSOLE</p>
+        </div>
+    </a>
+
+    <div class="admin-sidebar-scroll">
+        <!-- OVERVIEW -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">OVERVIEW</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="index.html" class="admin-nav-link ">
+                        <i class="bi bi-grid"></i>
+                        <span>Admin Dashboard</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- PEOPLE -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">PEOPLE</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="users.html" class="admin-nav-link ">
+                        <i class="bi bi-people"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ACADEMIC CONTENT -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">ACADEMIC CONTENT</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="approvals.html" class="admin-nav-link ">
+                        <i class="bi bi-check2"></i>
+                        <span>Resource Approvals</span>
+                        <span class="admin-nav-badge" id="sidebarApprovalBadge">7</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="resources.html" class="admin-nav-link ">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>Resource Management</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="academic-areas.html" class="admin-nav-link ">
+                        <i class="bi bi-book"></i>
+                        <span>Academic Areas</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="subjects.html" class="admin-nav-link ">
+                        <i class="bi bi-journal-text"></i>
+                        <span>First-Year Subjects</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- COMMUNITY -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">COMMUNITY</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="discussions.html" class="admin-nav-link ">
+                        <i class="bi bi-chat-left-text"></i>
+                        <span>Discussion Moderation</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="groups.html" class="admin-nav-link ">
+                        <i class="bi bi-people"></i>
+                        <span>Study Groups</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="sessions.html" class="admin-nav-link ">
+                        <i class="bi bi-calendar-event"></i>
+                        <span>Study Sessions</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- SYSTEM -->
+        <div class="admin-sidebar-section">
+            <span class="admin-sidebar-label">SYSTEM</span>
+            <ul class="admin-nav-list">
+                <li class="admin-nav-item">
+                    <a href="reports.html" class="admin-nav-link active">
+                        <i class="bi bi-bar-chart-line"></i>
+                        <span>Reports &amp; Analytics</span>
+                    </a>
+                </li>
+                <li class="admin-nav-item">
+                    <a href="settings.html" class="admin-nav-link ">
+                        <i class="bi bi-gear"></i>
+                        <span>Admin Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bottom System Status Box (PDF Pages 4, 26, 27) -->
+    <div class="admin-sidebar-footer">
+        <div class="admin-system-status-card">
+            <span class="status-dot"></span>
+            <div>
+                <div class="status-title">All systems operational</div>
+                <div class="status-subtitle">Last checked 2 min ago</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+        <div class="admin-main-wrapper">
+            <!-- Admin Console Topbar -->
+<header class="admin-topbar">
+    <!-- Left Search Input -->
+    <div class="admin-topbar-search">
+        <i class="bi bi-search"></i>
+        <input type="text" id="adminGlobalSearch" placeholder="Search users, resources, or records..." aria-label="Search">
+    </div>
+
+    <!-- Right Actions & Admin User Profile -->
+    <div class="admin-topbar-actions">
+        <button type="button" class="admin-icon-btn" id="adminThemeToggle" title="Toggle theme" aria-label="Toggle theme">
+            <i class="bi bi-moon"></i>
+        </button>
+
+        <button type="button" class="admin-icon-btn" id="adminNotificationBtn" title="Notifications" aria-label="Notifications">
+            <i class="bi bi-bell"></i>
+        </button>
+
+        <div class="dropdown">
+            <div class="admin-profile-trigger" data-bs-toggle="dropdown" aria-expanded="false" role="button" tabindex="0">
+                <div class="admin-avatar-badge">AD</div>
+                <div class="admin-user-meta">
+                    <div class="admin-user-name">Admin User</div>
+                    <div class="admin-user-role">Super administrator</div>
+                </div>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-end admin-profile-dropdown-menu">
+                <li><a class="dropdown-item" href="settings.html">Admin settings</a></li>
+                <li><a class="dropdown-item" href="../index.html">Return to website</a></li>
+                <li><a class="dropdown-item" href="logout.php">Sign out</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+            <main class="admin-content">
+                <!-- Page Header -->
+                <div class="admin-page-header">
+                    <div>
+                        <h1 class="admin-page-title">Reports and analytics</h1>
+                        <p class="admin-page-subtitle">Understand usage, content quality, and community growth.</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <select class="admin-select" aria-label="Reporting period">
+                            <option selected>Last 30 days</option>
+                            <option>Last 90 days</option>
+                            <option>This academic year</option>
+                        </select>
+                        <button type="button" class="btn-admin-outline" data-admin-export="nsbm-analytics-report">Export report</button>
+                    </div>
+                </div>
+
+                <!-- 4 KPI Cards Row (PDF Page 21) -->
+                <div class="row g-3 mb-4">
+                    <div class="col-xl-3 col-md-6">
+                        <a href="users.html" class="admin-card p-3 px-4 h-100 d-flex flex-column justify-content-between text-decoration-none">
+                            <div class="admin-kpi-label mb-2">Registered students</div>
+                            <div class="d-flex align-items-baseline justify-content-between">
+                                <div class="admin-kpi-value mb-0">2,486</div>
+                                <span class="status-pill pill-green">+8.4%</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <a href="users.html" class="admin-card p-3 px-4 h-100 d-flex flex-column justify-content-between text-decoration-none">
+                            <div class="admin-kpi-label mb-2">Weekly active users</div>
+                            <div class="d-flex align-items-baseline justify-content-between">
+                                <div class="admin-kpi-value mb-0">1,204</div>
+                                <span class="status-pill pill-green">+5.2%</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <a href="resources.html" class="admin-card p-3 px-4 h-100 d-flex flex-column justify-content-between text-decoration-none">
+                            <div class="admin-kpi-label mb-2">Published resources</div>
+                            <div class="d-flex align-items-baseline justify-content-between">
+                                <div class="admin-kpi-value mb-0">486</div>
+                                <span class="status-pill pill-green">+12.1%</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6">
+                        <a href="resources.html" class="admin-card p-3 px-4 h-100 d-flex flex-column justify-content-between text-decoration-none">
+                            <div class="admin-kpi-label mb-2">Resource downloads</div>
+                            <div class="d-flex align-items-baseline justify-content-between">
+                                <div class="admin-kpi-value mb-0">8,942</div>
+                                <span class="status-pill pill-green">+18.6%</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Engagement by Week & Resources by Faculty (PDF Page 21) -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-7">
+                        <div class="admin-card h-100">
+                            <div class="admin-card-header">
+                                <div>
+                                    <h2 class="admin-card-title">Engagement by week</h2>
+                                    <p class="admin-card-subtitle">Active students, downloads, and contributions</p>
+                                </div>
+                            </div>
+
+                            <div class="weekly-bars-container">
+                                                                <div class="week-bar-group">
+                                    <div class="week-bars-pair">
+                                        <div class="bar-active-students" style="height: 96px;"></div>
+                                        <div class="bar-downloads" style="height: 72px;"></div>
+                                    </div>
+                                    <span class="week-label">W1</span>
+                                </div>
+                                                                <div class="week-bar-group">
+                                    <div class="week-bars-pair">
+                                        <div class="bar-active-students" style="height: 118px;"></div>
+                                        <div class="bar-downloads" style="height: 86px;"></div>
+                                    </div>
+                                    <span class="week-label">W2</span>
+                                </div>
+                                                                <div class="week-bar-group">
+                                    <div class="week-bars-pair">
+                                        <div class="bar-active-students" style="height: 108px;"></div>
+                                        <div class="bar-downloads" style="height: 78px;"></div>
+                                    </div>
+                                    <span class="week-label">W3</span>
+                                </div>
+                                                                <div class="week-bar-group">
+                                    <div class="week-bars-pair">
+                                        <div class="bar-active-students" style="height: 136px;"></div>
+                                        <div class="bar-downloads" style="height: 98px;"></div>
+                                    </div>
+                                    <span class="week-label">W4</span>
+                                </div>
+                                                                <div class="week-bar-group">
+                                    <div class="week-bars-pair">
+                                        <div class="bar-active-students" style="height: 124px;"></div>
+                                        <div class="bar-downloads" style="height: 92px;"></div>
+                                    </div>
+                                    <span class="week-label">W5</span>
+                                </div>
+                                                                <div class="week-bar-group">
+                                    <div class="week-bars-pair">
+                                        <div class="bar-active-students" style="height: 152px;"></div>
+                                        <div class="bar-downloads" style="height: 114px;"></div>
+                                    </div>
+                                    <span class="week-label">W6</span>
+                                </div>
+                                                                <div class="week-bar-group">
+                                    <div class="week-bars-pair">
+                                        <div class="bar-active-students" style="height: 142px;"></div>
+                                        <div class="bar-downloads" style="height: 106px;"></div>
+                                    </div>
+                                    <span class="week-label">W7</span>
+                                </div>
+                                                                <div class="week-bar-group">
+                                    <div class="week-bars-pair">
+                                        <div class="bar-active-students" style="height: 164px;"></div>
+                                        <div class="bar-downloads" style="height: 128px;"></div>
+                                    </div>
+                                    <span class="week-label">W8</span>
+                                </div>
+                                                            </div>
+
+                            <div class="d-flex align-items-center justify-content-center gap-4 pt-3" style="font-size:0.76rem;color:var(--admin-slate);">
+                                <span class="d-flex align-items-center gap-2">
+                                    <span style="width:7px;height:7px;border-radius:2px;background:#0369A1;display:inline-block;"></span> Active students
+                                </span>
+                                <span class="d-flex align-items-center gap-2">
+                                    <span style="width:7px;height:7px;border-radius:2px;background:#BAE6FD;display:inline-block;"></span> Downloads
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="admin-card h-100">
+                            <div class="admin-card-header">
+                                <div>
+                                    <h2 class="admin-card-title">Resources by faculty</h2>
+                                    <p class="admin-card-subtitle">Published content distribution</p>
+                                </div>
+                            </div>
+
+                            <div class="pt-1">
+                                <div class="faculty-progress-row">
+                                    <div class="d-flex justify-content-between" style="font-size:0.82rem;">
+                                        <span class="text-secondary">Computing</span>
+                                        <strong class="text-dark">224</strong>
+                                    </div>
+                                    <div class="faculty-progress-track">
+                                        <div class="faculty-progress-fill" style="width: 58%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="faculty-progress-row">
+                                    <div class="d-flex justify-content-between" style="font-size:0.82rem;">
+                                        <span class="text-secondary">Business</span>
+                                        <strong class="text-dark">141</strong>
+                                    </div>
+                                    <div class="faculty-progress-track">
+                                        <div class="faculty-progress-fill" style="width: 37%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="faculty-progress-row">
+                                    <div class="d-flex justify-content-between" style="font-size:0.82rem;">
+                                        <span class="text-secondary">Engineering</span>
+                                        <strong class="text-dark">78</strong>
+                                    </div>
+                                    <div class="faculty-progress-track">
+                                        <div class="faculty-progress-fill" style="width: 21%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="faculty-progress-row">
+                                    <div class="d-flex justify-content-between" style="font-size:0.82rem;">
+                                        <span class="text-secondary">Science</span>
+                                        <strong class="text-dark">43</strong>
+                                    </div>
+                                    <div class="faculty-progress-track">
+                                        <div class="faculty-progress-fill" style="width: 12%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Moderation Quality & Top Resources (PDF Page 22) -->
+                <div class="row g-4">
+                    <div class="col-lg-7">
+                        <div class="admin-card h-100">
+                            <div class="admin-card-header">
+                                <div>
+                                    <h2 class="admin-card-title">Moderation quality</h2>
+                                    <p class="admin-card-subtitle">Resolution and approval performance</p>
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="mod-quality-box">
+                                        <div class="fw-bold text-dark mb-1" style="font-size:1.35rem;">94%</div>
+                                        <div class="text-secondary" style="font-size:0.76rem;line-height:1.35;">Reports resolved within SLA</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mod-quality-box">
+                                        <div class="fw-bold text-dark mb-1" style="font-size:1.35rem;">1.4d</div>
+                                        <div class="text-secondary" style="font-size:0.76rem;line-height:1.35;">Average resource review time</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mod-quality-box">
+                                        <div class="fw-bold text-dark mb-1" style="font-size:1.35rem;">3.2%</div>
+                                        <div class="text-secondary" style="font-size:0.76rem;line-height:1.35;">Submission rejection rate</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="admin-card h-100">
+                            <div class="admin-card-header">
+                                <div>
+                                    <h2 class="admin-card-title">Top resources</h2>
+                                    <p class="admin-card-subtitle">By downloads this period</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <a href="resources.html" class="d-flex align-items-center justify-content-between py-2 border-bottom text-decoration-none" style="border-color:var(--admin-divider) !important;">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <span class="text-secondary fw-bold" style="font-size:0.78rem;">01</span>
+                                        <div>
+                                            <div class="fw-bold text-dark" style="font-size:0.83rem;">Data Structures — Complete Revision Guide</div>
+                                            <div class="text-secondary" style="font-size:0.75rem;">Computing</div>
+                                        </div>
+                                    </div>
+                                    <span class="code-badge-text">1284</span>
+                                </a>
+
+                                <a href="resources.html" class="d-flex align-items-center justify-content-between py-2 border-bottom text-decoration-none" style="border-color:var(--admin-divider) !important;">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <span class="text-secondary fw-bold" style="font-size:0.78rem;">02</span>
+                                        <div>
+                                            <div class="fw-bold text-dark" style="font-size:0.83rem;">Financial Accounting Formula Book</div>
+                                            <div class="text-secondary" style="font-size:0.75rem;">Business</div>
+                                        </div>
+                                    </div>
+                                    <span class="code-badge-text">971</span>
+                                </a>
+
+                                <a href="resources.html" class="d-flex align-items-center justify-content-between pt-2 text-decoration-none">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <span class="text-secondary fw-bold" style="font-size:0.78rem;">03</span>
+                                        <div>
+                                            <div class="fw-bold text-dark" style="font-size:0.83rem;">Engineering Mechanics — First-Year Guide</div>
+                                            <div class="text-secondary" style="font-size:0.75rem;">Engineering</div>
+                                        </div>
+                                    </div>
+                                    <span class="code-badge-text">658</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/admin.js"></script>
+</body>
+</html>

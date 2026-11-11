@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discussions - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+        <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg"><link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons 1.11.3 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="discussion-page-bg">
+
+    <!-- ====================================================================
+         1. FLOATING PILL GLASSMORPHISM ANIMATED HEADER
+         ==================================================================== -->
+    <!-- Official Clean Floating Pill Header -->
+    <header class="floating-header-wrapper site-header" id="mainSiteHeader">
+        <nav class="navbar navbar-expand-lg floating-navbar site-navbar" id="mainFloatingHeader">
+            <div class="container-fluid px-0">
+                <!-- Left Branding: Custom NSBM Study Circle Logo + Brand Title + Tagline -->
+                <a class="brand-logo-container" href="index.html" aria-label="NSBM Study Circle Home">
+                    <div class="brand-logo-wrapper">
+                        <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text-group">
+                        <span class="brand-title">NSBM Study Circle</span>
+                        <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                    </div>
+                </a>
+
+                <!-- Mobile Animated Hamburger -->
+                <button class="navbar-toggler custom-hamburger-btn border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStudyCircle" aria-controls="navbarStudyCircle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+
+                <!-- Center Nav Links + Right Actions -->
+                <div class="collapse navbar-collapse" id="navbarStudyCircle">
+                    <ul class="navbar-nav mb-2 mb-lg-0 header-nav-list">
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="resources.html">Explore Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link active" href="discussions.html">Discussions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="study-groups.html">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="sessions.html">Study Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+
+                    <div class="header-actions-group d-flex align-items-center gap-2">
+                        <a href="login.html" class="btn-header-login">
+                            <i class="bi bi-person-fill me-1"></i> Log in
+                        </a>
+                        <a href="signup.html" class="btn-header-join">
+                            <i class="bi bi-people-fill me-1"></i> Join NSBM Study Circle <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                        <div class="theme-toggle-container position-relative">
+                            <button type="button" class="btn-header-theme" id="themeToggleBtn" aria-label="Toggle theme" title="Switch Theme">
+                                <i class="bi bi-moon-stars" id="themeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ====================================================================
+         2. HERO SECTION (Exact Match to PDF Page 1)
+         ==================================================================== -->
+    <header class="discussion-hero">
+        <div class="container-xl">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-8">
+                    <span class="discussion-hero-label">STUDENT KNOWLEDGE EXCHANGE</span>
+                    <h1 class="discussion-hero-title">Ask clearly. Answer generously.</h1>
+                    <p class="discussion-hero-desc">
+                        A thoughtful space for academic questions, useful explanations, and shared understanding.
+                    </p>
+                </div>
+                <div class="col-lg-4 d-flex justify-content-lg-end mt-4 mt-lg-0">
+                    <button type="button" class="btn-ask-question" data-bs-toggle="modal" data-bs-target="#askQuestionModal">
+                        Ask a question
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         3. MAIN DISCUSSION EXPLORATION SECTION (PDF Pages 1 - 4)
+         ==================================================================== -->
+    <main class="py-4">
+        <div class="container-xl">
+            <div class="row g-4">
+                
+                <!-- Left Main Discussions Column -->
+                <div class="col-lg-8">
+                    
+                    <!-- Search and Filters Bar (Exact PDF Match) -->
+                    <div class="discussion-search-filter-card d-flex align-items-center justify-content-between gap-3">
+                        <div class="d-flex align-items-center flex-grow-1">
+                            <i class="bi bi-search text-muted ps-1"></i>
+                            <input type="text" id="discussionSearchInput" class="discussion-search-input" placeholder="Search discussions">
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            <button type="button" class="discussion-filter-tab active" data-filter="recent">Recent</button>
+                            <button type="button" class="discussion-filter-tab" data-filter="popular">Popular</button>
+                            <button type="button" class="discussion-filter-tab" data-filter="unanswered">Unanswered</button>
+                        </div>
+                    </div>
+
+                    <!-- Discussion Cards List -->
+                    <div id="discussionsListContainer">
+                        
+                        <!-- Card 1 (Computing) -->
+                        <a href="discussion-details.html?id=1" class="discussion-card">
+                            <div class="discussion-stats-box">
+                                <div class="stat-item">
+                                    <div class="stat-count">18</div>
+                                    <div class="stat-text">helpful</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-count">12</div>
+                                    <div class="stat-text">answers</div>
+                                </div>
+                            </div>
+                            <div class="discussion-content-box">
+                                <span class="discussion-category-pill category-computing">Computing</span>
+                                <h2 class="discussion-item-title">How do you choose between merge sort and quicksort in practice?</h2>
+                                <p class="discussion-item-snippet">I understand the theory, but I am unsure which constraints matter most in a real implementation.</p>
+                                <div class="discussion-item-meta">Asked by A. Perera · 2 hours ago</div>
+                            </div>
+                            <i class="bi bi-arrow-right discussion-arrow-icon"></i>
+                        </a>
+
+                        <!-- Card 2 (Accounting) -->
+                        <a href="discussion-details.html?id=2" class="discussion-card">
+                            <div class="discussion-stats-box">
+                                <div class="stat-item">
+                                    <div class="stat-count">15</div>
+                                    <div class="stat-text">helpful</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-count">8</div>
+                                    <div class="stat-text">answers</div>
+                                </div>
+                            </div>
+                            <div class="discussion-content-box">
+                                <span class="discussion-category-pill category-accounting">Accounting</span>
+                                <h2 class="discussion-item-title">Can someone explain the difference between cash flow and profit?</h2>
+                                <p class="discussion-item-snippet">I'm revising this topic and would appreciate a simple explanation with a practical example.</p>
+                                <div class="discussion-item-meta">Asked by A. Perera · 5 hours ago</div>
+                            </div>
+                            <i class="bi bi-arrow-right discussion-arrow-icon"></i>
+                        </a>
+
+                        <!-- Card 3 (Science) -->
+                        <a href="discussion-details.html?id=3" class="discussion-card">
+                            <div class="discussion-stats-box">
+                                <div class="stat-item">
+                                    <div class="stat-count">11</div>
+                                    <div class="stat-text">helpful</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-count">6</div>
+                                    <div class="stat-text">answers</div>
+                                </div>
+                            </div>
+                            <div class="discussion-content-box">
+                                <span class="discussion-category-pill category-science">Science</span>
+                                <h2 class="discussion-item-title">How do you document a reliable laboratory experiment?</h2>
+                                <p class="discussion-item-snippet">I understand the theory, but I am unsure which constraints matter most in a real implementation.</p>
+                                <div class="discussion-item-meta">Asked by A. Perera · Yesterday</div>
+                            </div>
+                            <i class="bi bi-arrow-right discussion-arrow-icon"></i>
+                        </a>
+
+                        <!-- Card 4 (Databases) -->
+                        <a href="discussion-details.html?id=4" class="discussion-card">
+                            <div class="discussion-stats-box">
+                                <div class="stat-item">
+                                    <div class="stat-count">9</div>
+                                    <div class="stat-text">helpful</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-count">4</div>
+                                    <div class="stat-text">answers</div>
+                                </div>
+                            </div>
+                            <div class="discussion-content-box">
+                                <span class="discussion-category-pill category-databases">Databases</span>
+                                <h2 class="discussion-item-title">Why does normalization sometimes increase query complexity?</h2>
+                                <p class="discussion-item-snippet">I'm revising this topic and would appreciate a simple explanation with a practical example.</p>
+                                <div class="discussion-item-meta">Asked by A. Perera · Yesterday</div>
+                            </div>
+                            <i class="bi bi-arrow-right discussion-arrow-icon"></i>
+                        </a>
+
+                        <!-- Card 5 (Academic Skills) -->
+                        <a href="discussion-details.html?id=5" class="discussion-card">
+                            <div class="discussion-stats-box">
+                                <div class="stat-item">
+                                    <div class="stat-count">7</div>
+                                    <div class="stat-text">helpful</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-count">3</div>
+                                    <div class="stat-text">answers</div>
+                                </div>
+                            </div>
+                            <div class="discussion-content-box">
+                                <span class="discussion-category-pill category-academicskills">Academic Skills</span>
+                                <h2 class="discussion-item-title">Best way to structure a literature review for a research proposal?</h2>
+                                <p class="discussion-item-snippet">I understand the theory, but I am unsure which constraints matter most in a real implementation.</p>
+                                <div class="discussion-item-meta">Asked by A. Perera · 2 days ago</div>
+                            </div>
+                            <i class="bi bi-arrow-right discussion-arrow-icon"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <!-- Right Sidebar Column -->
+                <div class="col-lg-4">
+                    
+                    <!-- Browse by Subject Card (Exact PDF Page 1 & 2) -->
+                    <div class="sidebar-section-card">
+                        <h3 class="sidebar-title-header">Browse by subject</h3>
+                        <div class="subject-browse-list">
+                            <a href="#" class="subject-browse-item" data-subject="Computing">
+                                <span>Computing</span>
+                                <span class="subject-count-badge">86</span>
+                            </a>
+                            <a href="#" class="subject-browse-item" data-subject="Business">
+                                <span>Business</span>
+                                <span class="subject-count-badge">64</span>
+                            </a>
+                            <a href="#" class="subject-browse-item" data-subject="Engineering">
+                                <span>Engineering</span>
+                                <span class="subject-count-badge">38</span>
+                            </a>
+                            <a href="#" class="subject-browse-item" data-subject="Science">
+                                <span>Science</span>
+                                <span class="subject-count-badge">42</span>
+                            </a>
+                            <a href="#" class="subject-browse-item" data-subject="Accounting">
+                                <span>Accounting</span>
+                                <span class="subject-count-badge">28</span>
+                            </a>
+                            <a href="#" class="subject-browse-item" data-subject="Databases">
+                                <span>Databases</span>
+                                <span class="subject-count-badge">32</span>
+                            </a>
+                            <a href="#" class="subject-browse-item" data-subject="Academic Skills">
+                                <span>Academic Skills</span>
+                                <span class="subject-count-badge">24</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Keep it Constructive Tip Card (Exact PDF Page 2) -->
+                    <div class="constructive-tip-card">
+                        <div class="tip-check-circle">
+                            <i class="bi bi-check2"></i>
+                        </div>
+                        <h4 class="tip-heading">Keep it constructive</h4>
+                        <p class="tip-text">
+                            Show what you tried, explain your context, and credit useful answers.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ====================================================================
+         ASK A QUESTION MODAL
+         ==================================================================== -->
+    <div class="modal fade" id="askQuestionModal" tabindex="-1" aria-labelledby="askQuestionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom px-4 pt-4 pb-3">
+                    <div>
+                        <h5 class="modal-title fw-bold text-dark" id="askQuestionModalLabel">
+                            <i class="bi bi-question-circle text-success me-2"></i> Ask a Question
+                        </h5>
+                        <p class="text-secondary small mb-0">Ask clearly so peers and seniors can give generous explanations.</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <form id="askQuestionForm">
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <label for="questionTitle" class="form-label fw-semibold small">Question Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="questionTitle" name="title" placeholder="e.g. How do you choose between merge sort and quicksort in practice?" required>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="questionCategory" class="form-label fw-semibold small">Subject / Category <span class="text-danger">*</span></label>
+                                <select class="form-select" id="questionCategory" name="category" required>
+                                    <option value="Computing">Computing</option>
+                                    <option value="Accounting">Accounting</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Engineering">Engineering</option>
+                                    <option value="Science">Science</option>
+                                    <option value="Databases">Databases</option>
+                                    <option value="Academic Skills">Academic Skills</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="questionTags" class="form-label fw-semibold small">Tags (comma-separated)</label>
+                                <input type="text" class="form-control" id="questionTags" name="tags" placeholder="e.g. algorithms, sorting, complexity">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="questionBody" class="form-label fw-semibold small">Explanation & Context <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="questionBody" name="body" rows="4" placeholder="Explain what you understand so far, what you tried, and what specific part you need help with..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top px-4 py-3 bg-light rounded-bottom-4">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success fw-bold px-4">
+                            <i class="bi bi-send me-1"></i> Post Question
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         4. FOOTER (Exact Website Footer Match)
+         ==================================================================== -->
+    <footer class="figma-footer">
+        <div class="container-xl">
+            <div class="row g-4 justify-content-between">
+                <!-- Col 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.html" class="brand-logo-container mb-3 text-decoration-none">
+                        <div class="brand-logo-wrapper">
+                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                        </div>
+                        <div class="brand-text-group">
+                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                        </div>
+                    </a>
+                    <p class="text-muted small" style="max-width: 320px;">
+                        A focused academic community for sharing knowledge, finding support, and learning better together.
+                    </p>
+                </div>
+
+                <!-- Col 2: Platform -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>PLATFORM</h6>
+                    <a href="resources.html">Study materials</a>
+                    <a href="discussions.html">Discussions</a>
+                    <a href="study-groups.html">Study groups</a>
+                    <a href="sessions.html">Study sessions</a>
+                </div>
+
+                <!-- Col 3: Community -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>COMMUNITY</h6>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Community guide</a>
+                    <a href="contact.html">Contact &amp; help</a>
+                </div>
+
+                <!-- Col 4: Account -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>ACCOUNT</h6>
+                    <a href="login.html">Log in</a>
+                    <a href="signup.html">Create account</a>
+                    <a href="student/index.html">Student dashboard</a>
+                    <a href="admin/index.html">Admin console</a>
+                </div>
+            </div>
+
+            <!-- Bottom Line -->
+            <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div class="d-flex gap-3">
+                    <a href="contact.html" class="text-muted text-decoration-none">Privacy</a>
+                    <a href="contact.html" class="text-muted text-decoration-none">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Global Interactions & Stability JS -->
+    <script src="assets/js/main.js"></script>
+
+    <!-- Discussions Logic Script -->
+    <script src="assets/js/discussions.js"></script>
+</body>
+</html>
+

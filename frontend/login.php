@@ -1,0 +1,444 @@
+<?php
+// ============================================================================
+// NSBM STUDY CIRCLE - DEDICATED LOGIN PAGE (PHP SERVER-RENDERED)
+// Matches Reference PDF Screenshots: 2-Column Split Layout, Role Tabs
+// Supports Both Student Login and Administrator Login States
+// ============================================================================
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Allow direct access to login.php so users can switch between Student and Administrator roles anytime
+if (isset($_GET['logged_out']) || isset($_GET['deleted'])) {
+    $_SESSION = [];
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
+    if (session_status() === PHP_SESSION_ACTIVE) {
+        @session_destroy();
+    }
+}
+
+$errorMessage = $_GET['error'] ?? '';
+$successMessage = $_GET['success'] ?? '';
+if (isset($_GET['logged_out'])) {
+    $successMessage = 'You have been safely logged out.';
+}
+
+$initialRole = strtolower($_GET['role'] ?? 'student');
+if (!in_array($initialRole, ['student', 'admin'])) {
+    $initialRole = 'student';
+}
+?>
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in - NSBM Study Circle</title>
+    <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Page Specific Login CSS (Strictly isolates login styling) -->
+    <link rel="stylesheet" href="assets/css/login.css">
+    <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+</head>
+<body>
+
+    <div class="login-page-wrapper">
+        <!-- ------------------------------------------------------------------
+             LEFT PANEL (Brand Header + Centered Login Card + Footer)
+             ------------------------------------------------------------------ -->
+        <div class="login-left-panel">
+            <!-- Top Bar -->
+            <div class="login-top-bar">
+                <a class="login-brand" href="index.php" aria-label="NSBM Study Circle Home">
+                    <div class="login-brand-logo-wrapper">
+                        <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="login-brand-logo-img">
+                    </div>
+                    <div>
+                        <h1 class="login-brand-title">NSBM Study Circle</h1>
+                        <p class="login-brand-subtitle">Learn Together. Grow Together.</p>
+                    </div>
+                </a>
+
+                <div class="login-top-actions">
+                    <button type="button" class="btn-login-theme" id="themeToggleBtn" aria-label="Toggle theme" title="Toggle theme">
+                        <i class="bi bi-moon" id="themeIcon"></i>
+                    </button>
+                    <a href="index.php" class="btn-back-website">
+                        <i class="bi bi-arrow-left"></i>
+                        <span>Back to website</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Centered Form Container -->
+            <div class="login-form-container">
+                <div class="login-card">
+                    <!-- Eyebrow & Main Headings -->
+                    <span class="login-eyebrow">WELCOME BACK</span>
+                    <h2 class="login-main-heading">Log in to NSBM Study Circle</h2>
+                    <p class="login-subtext">Continue to your student workspace or administration console.</p>
+
+                    <!-- Role Tabs Segmented Control -->
+                    <div class="role-tabs-container" role="tablist" aria-label="Login Role Selection">
+                        <button type="button" 
+                                class="role-tab-btn <?php echo ($initialRole === 'student') ? 'active' : ''; ?>" 
+                                id="tabStudent" 
+                                data-role="student" 
+                                role="tab" 
+                                aria-selected="<?php echo ($initialRole === 'student') ? 'true' : 'false'; ?>">
+                            Student
+                        </button>
+                        <button type="button" 
+                                class="role-tab-btn <?php echo ($initialRole === 'admin') ? 'active' : ''; ?>" 
+                                id="tabAdmin" 
+                                data-role="admin" 
+                                role="tab" 
+                                aria-selected="<?php echo ($initialRole === 'admin') ? 'true' : 'false'; ?>">
+                            Administrator
+                        </button>
+                    </div>
+
+                    <!-- Alert Notifications Box -->
+                    <div id="loginAlertBox">
+                        <?php if (!empty($errorMessage)): ?>
+                            <div class="alert alert-danger py-2 small mb-3" role="alert">
+                                <i class="bi bi-exclamation-circle-fill me-1"></i> <?php echo htmlspecialchars($errorMessage); ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($successMessage)): ?>
+                            <div class="alert alert-success py-2 small mb-3" role="alert">
+                                <i class="bi bi-check-circle-fill me-1"></i> <?php echo htmlspecialchars($successMessage); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="loginForm" action="../backend/controllers/auth_controller.php" method="POST" novalidate>
+                        <input type="hidden" name="action" value="login">
+                        <input type="hidden" name="role" id="formRoleInput" value="<?php echo htmlspecialchars($initialRole); ?>">
+
+                        <!-- Email Address Field -->
+                        <div class="login-field-group">
+                            <label class="login-field-label" for="loginEmailInput">Email address</label>
+                            <input type="email" 
+                                   name="email" 
+                                   id="loginEmailInput" 
+                                   class="login-input" 
+                                   placeholder="name@example.com" 
+                                   required 
+                                   autocomplete="username">
+                        </div>
+
+                        <!-- Password Field with Toggle -->
+                        <div class="login-field-group">
+                            <label class="login-field-label" for="loginPasswordInput">Password</label>
+                            <div class="login-password-wrapper">
+                                <input type="password" 
+                                       name="password" 
+                                       id="loginPasswordInput" 
+                                       class="login-input" 
+                                       placeholder="Enter your password" 
+                                       required 
+                                       autocomplete="current-password">
+                                <button type="button" class="login-password-toggle" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                                    <i class="bi bi-eye" id="togglePasswordIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Options Row: Remember Me & Forgot Password -->
+                        <div class="login-options-row">
+                            <label class="login-checkbox-label" for="rememberMeCheckbox">
+                                <input type="checkbox" name="remember_me" id="rememberMeCheckbox" class="login-checkbox">
+                                <span>Keep me signed in</span>
+                            </label>
+                            <a href="#forgotPasswordModal" class="login-forgot-link" id="forgotPasswordLink">Forgot password?</a>
+                        </div>
+
+                        <!-- Primary Green Log In Button -->
+                        <button type="submit" class="btn-login-submit" id="submitLoginBtn">
+                            <span id="btnText">Log in</span>
+                            <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                        </button>
+
+                        <!-- Sign Up Link -->
+                        <p class="login-create-account-text">
+                            New to NSBM Study Circle? 
+                            <a href="signup.php" class="login-create-account-link">Create an account</a>
+                        </p>
+
+                        <!-- Prototype Access Callout Box -->
+                        <div class="login-prototype-box" id="prototypeBox" title="Click to autofill prototype demo credentials">
+                            Prototype access: enter any valid email and a 6+ character password.
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Left Footer -->
+            <div class="login-footer">
+                &copy; <?php echo date('Y'); ?> NSBM Study Circle · <a href="#privacy" class="login-footer-link" id="privacyLink">Privacy</a> · <a href="#help" class="login-footer-link" id="helpLink">Help</a>
+            </div>
+        </div>
+
+        <!-- ------------------------------------------------------------------
+             RIGHT PANEL (Dark Navy Blue Showcase Panel)
+             ------------------------------------------------------------------ -->
+        <div class="login-right-panel">
+            <div>
+                <span class="login-right-badge">LEARN WITH YOUR COMMUNITY</span>
+                <h2 class="login-right-heading">Your learning space is ready.</h2>
+                <p class="login-right-desc">
+                    Return to your resources, discussions, groups, and upcoming study sessions.
+                </p>
+
+                <div class="login-features-list">
+                    <!-- Feature 01 -->
+                    <div class="login-feature-item">
+                        <div class="login-feature-number">01</div>
+                        <div>
+                            <h3 class="login-feature-title">Find trusted material</h3>
+                            <p class="login-feature-subtitle">Organized for the modules you study.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 02 -->
+                    <div class="login-feature-item">
+                        <div class="login-feature-number">02</div>
+                        <div>
+                            <h3 class="login-feature-title">Ask better questions</h3>
+                            <p class="login-feature-subtitle">Learn from thoughtful peer explanations.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 03 -->
+                    <div class="login-feature-item">
+                        <div class="login-feature-number">03</div>
+                        <div>
+                            <h3 class="login-feature-title">Build consistent progress</h3>
+                            <p class="login-feature-subtitle">Plan focused sessions and study together.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="login-right-footer-text">
+                Independent student learning platform
+            </p>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Client-Side Interactive Login Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Clean up any stale client-side session caches upon logout
+            if (window.location.search.includes('logged_out=1') || window.location.search.includes('deleted=1')) {
+                localStorage.removeItem('nsbm_current_user_id');
+                localStorage.removeItem('nsbm_student_profile');
+            }
+
+            // 1. Dark/Light Theme Toggle
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            const themeIcon = document.getElementById('themeIcon');
+            const savedTheme = localStorage.getItem('theme') || localStorage.getItem('study_circle_theme') || 'light';
+
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-bs-theme', theme);
+                localStorage.setItem('theme', theme);
+                localStorage.setItem('study_circle_theme', theme);
+                if (themeIcon) {
+                    themeIcon.className = (theme === 'dark') ? 'bi bi-sun' : 'bi bi-moon';
+                }
+            }
+            applyTheme(savedTheme);
+
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-bs-theme');
+                    applyTheme(current === 'dark' ? 'light' : 'dark');
+                });
+            }
+
+            // 2. Role Tab Switching (Student vs Administrator)
+            const tabStudent = document.getElementById('tabStudent');
+            const tabAdmin = document.getElementById('tabAdmin');
+            const formRoleInput = document.getElementById('formRoleInput');
+            const emailInput = document.getElementById('loginEmailInput');
+            const passwordInput = document.getElementById('loginPasswordInput');
+            const loginAlertBox = document.getElementById('loginAlertBox');
+
+            function setRoleState(role) {
+                if (role === 'admin') {
+                    tabAdmin.classList.add('active');
+                    tabAdmin.setAttribute('aria-selected', 'true');
+                    tabStudent.classList.remove('active');
+                    tabStudent.setAttribute('aria-selected', 'false');
+                    formRoleInput.value = 'admin';
+                } else {
+                    tabStudent.classList.add('active');
+                    tabStudent.setAttribute('aria-selected', 'true');
+                    tabAdmin.classList.remove('active');
+                    tabAdmin.setAttribute('aria-selected', 'false');
+                    formRoleInput.value = 'student';
+                }
+                if (loginAlertBox) {
+                    loginAlertBox.innerHTML = '';
+                }
+            }
+
+            if (tabStudent) {
+                tabStudent.addEventListener('click', () => setRoleState('student'));
+            }
+            if (tabAdmin) {
+                tabAdmin.addEventListener('click', () => setRoleState('admin'));
+            }
+
+            // 3. Password Visibility Toggle (Show / Hide Password)
+            const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+            const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+            if (togglePasswordBtn && passwordInput) {
+                togglePasswordBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const isPassword = (passwordInput.type === 'password');
+                    passwordInput.type = isPassword ? 'text' : 'password';
+                    if (togglePasswordIcon) {
+                        togglePasswordIcon.className = isPassword ? 'bi bi-eye-slash' : 'bi bi-eye';
+                    }
+                    togglePasswordBtn.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+                    togglePasswordBtn.setAttribute('title', isPassword ? 'Hide password' : 'Show password');
+                });
+            }
+
+            // 4. Prototype Access One-Click Autofill Helper
+            const prototypeBox = document.getElementById('prototypeBox');
+            if (prototypeBox) {
+                prototypeBox.style.cursor = 'pointer';
+                prototypeBox.addEventListener('click', () => {
+                    if (formRoleInput.value === 'admin') {
+                        emailInput.value = 'admin.nsbmstudycircle@gmail.com';
+                        passwordInput.value = 'admin@nsbmsc';
+                    } else {
+                        emailInput.value = 'alex.silva@nsbm.ac.lk';
+                        passwordInput.value = 'password123';
+                    }
+                    if (loginAlertBox) {
+                        loginAlertBox.innerHTML = `
+                            <div class="alert alert-info py-2 small mb-3">
+                                <i class="bi bi-info-circle-fill me-1"></i> Demo credentials filled for ${formRoleInput.value === 'admin' ? 'Administrator' : 'Student'}.
+                            </div>
+                        `;
+                    }
+                });
+            }
+
+            // 5. Client-Side Input Validation & Live Login Submission
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    const email = emailInput.value.trim();
+                    const password = passwordInput.value;
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                    if (!email) {
+                        e.preventDefault();
+                        showError('Please enter your email address.');
+                        emailInput.focus();
+                        return;
+                    }
+
+                    if (!emailRegex.test(email)) {
+                        e.preventDefault();
+                        showError('Please enter a valid email address (e.g. name@example.com).');
+                        emailInput.focus();
+                        return;
+                    }
+
+                    if (!password) {
+                        e.preventDefault();
+                        showError('Please enter your password.');
+                        passwordInput.focus();
+                        return;
+                    }
+
+                    // Use AJAX fetch for instant snappy feedback
+                    e.preventDefault();
+                    const submitBtn = document.getElementById('submitLoginBtn');
+                    const btnText = document.getElementById('btnText');
+                    const btnSpinner = document.getElementById('btnSpinner');
+
+                    if (submitBtn) submitBtn.disabled = true;
+                    if (btnSpinner) btnSpinner.classList.remove('d-none');
+                    if (btnText) btnText.textContent = 'Signing in...';
+
+                    fetch('../backend/controllers/auth_controller.php?action=login&format=json', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            action: 'login',
+                            email: email,
+                            password: password,
+                            role: formRoleInput.value
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.success) {
+                            localStorage.removeItem('nsbm_student_profile');
+                            if (data.redirect) {
+                                window.location.href = data.redirect.replace('../../frontend/', '');
+                            } else {
+                                window.location.href = (formRoleInput.value === 'admin' || (data.user && data.user.role === 'admin'))
+                                    ? 'admin/index.php'
+                                    : 'student/index.php';
+                            }
+                        } else {
+                            if (submitBtn) submitBtn.disabled = false;
+                            if (btnSpinner) btnSpinner.classList.add('d-none');
+                            if (btnText) btnText.textContent = 'Log in';
+                            showError((data && data.message) ? data.message : 'Invalid credentials.');
+                        }
+                    })
+                    .catch(() => {
+                        // Fallback to traditional form submission
+                        loginForm.submit();
+                    });
+                });
+            }
+
+            function showError(msg) {
+                if (loginAlertBox) {
+                    loginAlertBox.innerHTML = `
+                        <div class="alert alert-danger py-2 small mb-3">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> ${msg}
+                        </div>
+                    `;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

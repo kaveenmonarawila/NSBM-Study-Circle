@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Structures Circle - NSBM Study Circle</title>
+    <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
+    <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <!-- ====================================================================
+         1. SHARED PREMIUM ANIMATED NAVBAR
+         ==================================================================== -->
+    <header class="floating-header-wrapper site-header" id="mainSiteHeader">
+        <nav class="navbar navbar-expand-lg floating-navbar site-navbar" id="mainFloatingHeader">
+            <div class="container-fluid px-0">
+                <!-- Left Branding: Custom NSBM Study Circle Logo + Brand Title + Tagline -->
+                <a class="brand-logo-container" href="index.html" aria-label="NSBM Study Circle Home">
+                    <div class="brand-logo-wrapper">
+                        <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text-group">
+                        <span class="brand-title">NSBM Study Circle</span>
+                        <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                    </div>
+                </a>
+
+                <!-- Premium Animated Hamburger Toggle Button (Mobile) -->
+                <button class="navbar-toggler custom-hamburger-btn border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarStudyCircle" aria-controls="navbarStudyCircle" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+
+                <!-- Navbar Navigation Links & Right Actions -->
+                <div class="collapse navbar-collapse" id="navbarStudyCircle">
+                    <ul class="navbar-nav mb-2 mb-lg-0 header-nav-list">
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="resources.html">Explore Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="discussions.html">Discussions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link active" href="study-groups.html">Study Groups</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="sessions.html">Study Sessions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+
+                    <!-- Right Action Buttons -->
+                    <div class="header-actions-group d-flex align-items-center gap-2">
+                        <a href="login.html" class="btn-header-login">
+                            <i class="bi bi-person-fill me-1"></i> Log in
+                        </a>
+                        <a href="signup.html" class="btn-header-join">
+                            <i class="bi bi-people-fill me-1"></i> Join NSBM Study Circle <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                        <div class="theme-toggle-container position-relative">
+                            <button type="button" class="btn-header-theme" id="themeToggleBtn" aria-label="Toggle theme" title="Switch Theme">
+                                <i class="bi bi-moon-stars" id="themeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ====================================================================
+         2. INDIVIDUAL GROUP HERO SECTION (Exact Match to PDF Page 10)
+         ==================================================================== -->
+    <div class="container-xl">
+        <header class="group-details-hero">
+            <span class="group-details-label">PUBLIC STUDY GROUP</span>
+            <div class="group-hero-content">
+                <div class="group-hero-meta-left">
+                    <div class="group-hero-large-badge">
+                        DS
+                    </div>
+                    <div>
+                        <h1 class="group-hero-title">Data Structures Circle</h1>
+                        <p class="group-hero-desc">
+                            Make complex algorithms easier through consistent practice and clear peer explanations.
+                        </p>
+                        <div class="group-hero-stats">
+                            <span id="detailsMemberCount"><i class="bi bi-people me-1"></i> 48 members</span>
+                            <span><i class="bi bi-calendar2-week me-1"></i> Created February 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class="btn-join-group-action" id="joinGroupBtn" data-group-id="1">
+                        Join this group
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- ====================================================================
+             3. 2-COLUMN MAIN CONTENT & SIDEBAR (Exact Match to PDF Pages 10 - 12)
+             ==================================================================== -->
+        <div class="row g-4 mb-5">
+            <!-- Left Main Column -->
+            <div class="col-lg-8">
+                <!-- About This Group Card -->
+                <div class="details-section-card">
+                    <h2 class="details-section-title">About this group</h2>
+                    <p class="details-section-text">
+                        We are a focused community for students working through data structures and algorithms. Members
+                        meet weekly to compare approaches, practice past-paper questions, and support one another
+                        without sharing prohibited assessment answers.
+                    </p>
+
+                    <h3 class="what-we-study-subtitle">What we study</h3>
+                    <div class="study-topic-pills">
+                        <span class="topic-pill">Arrays & linked lists</span>
+                        <span class="topic-pill">Trees</span>
+                        <span class="topic-pill">Graphs</span>
+                        <span class="topic-pill">Sorting</span>
+                        <span class="topic-pill">Complexity</span>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Section (PDF Page 11 & 12) -->
+                <div class="details-section-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="details-section-title mb-0">Recent activity</h2>
+                        <a href="discussions.html" class="btn btn-outline-secondary btn-sm fw-semibold"
+                            style="font-size: 0.82rem;">
+                            <i class="bi bi-chat-left-text me-1"></i> Open Discussion
+                        </a>
+                    </div>
+
+                    <div class="activity-items-container">
+                        <!-- Activity 1 -->
+                        <div class="activity-item-row">
+                            <div class="activity-user-info">
+                                <div class="activity-avatar">NP</div>
+                                <div>
+                                    <div class="activity-text-line">
+                                        <span class="activity-author-name">Nethmi Perera</span>
+                                        <span>shared a revision checklist</span>
+                                    </div>
+                                    <span class="activity-time-stamp">35 minutes ago</span>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="discussions.html" class="btn-activity-view">View</a>
+                            </div>
+                        </div>
+
+                        <!-- Activity 2 -->
+                        <div class="activity-item-row">
+                            <div class="activity-user-info">
+                                <div class="activity-avatar">KS</div>
+                                <div>
+                                    <div class="activity-text-line">
+                                        <span class="activity-author-name">Kavindu Silva</span>
+                                        <span>asked about AVL rotations</span>
+                                    </div>
+                                    <span class="activity-time-stamp">2 hours ago</span>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="discussions.html" class="btn-activity-view">View</a>
+                            </div>
+                        </div>
+
+                        <!-- Activity 3 -->
+                        <div class="activity-item-row">
+                            <div class="activity-user-info">
+                                <div class="activity-avatar">AF</div>
+                                <div>
+                                    <div class="activity-text-line">
+                                        <span class="activity-author-name">Amaya</span>
+                                        <span>scheduled a graph traversal session</span>
+                                    </div>
+                                    <span class="activity-time-stamp">Yesterday</span>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="index.html#sessions" class="btn-activity-view">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar Column -->
+            <div class="col-lg-4">
+                <!-- Next Group Session Card -->
+                <div class="sidebar-info-card">
+                    <h3 class="sidebar-card-header-title">Next group session</h3>
+                    <div class="session-date-display">
+                        <span class="session-date-number">24</span>
+                        <span class="session-date-month">MAY</span>
+                    </div>
+                    <h4 class="sidebar-session-title">Graph Traversal Practice</h4>
+                    <p class="sidebar-session-details">Saturday · 6:30 PM · Online</p>
+                    <a href="index.html#sessions" class="btn-sidebar-outline">
+                        View session
+                    </a>
+                </div>
+
+                <!-- Group Coordinators Card -->
+                <div class="sidebar-info-card">
+                    <h3 class="sidebar-card-header-title">Group coordinators</h3>
+                    <div class="coordinators-list">
+                        <!-- Coordinator 1 -->
+                        <div class="coordinator-row">
+                            <div class="coordinator-avatar">NP</div>
+                            <div>
+                                <h5 class="coordinator-name">Nethmi Perera</h5>
+                                <span class="coordinator-role">Coordinator</span>
+                            </div>
+                        </div>
+                        <!-- Coordinator 2 -->
+                        <div class="coordinator-row">
+                            <div class="coordinator-avatar">SD</div>
+                            <div>
+                                <h5 class="coordinator-name">Sahan Dissanayake</h5>
+                                <span class="coordinator-role">Coordinator</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guidelines Card -->
+                <div class="sidebar-info-card"
+                    style="background: linear-gradient(135deg, #f0fdf4 0%, #f8fafc 100%); border-color: #bbf7d0;">
+                    <h4 class="fw-bold mb-2 text-dark" style="font-size: 0.95rem;">
+                        <i class="bi bi-shield-check text-success me-1"></i> Community Standard
+                    </h4>
+                    <p class="small text-muted mb-0" style="line-height: 1.5;">
+                        We encourage peer explanations, concept clarity, and past-paper revision. Prohibited assignment
+                        sharing is not allowed.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         4. FOOTER (Exact Match to Figma / PDF Pages 4, 5, 9, 12)
+         ==================================================================== -->
+    <footer class="figma-footer">
+        <div class="container-xl">
+            <div class="row g-4 justify-content-between">
+                <!-- Col 1: Brand Info -->
+                <div class="col-lg-4 col-md-6">
+                    <a href="index.html" class="brand-logo-container mb-3 text-decoration-none">
+                        <div class="brand-logo-wrapper">
+                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                        </div>
+                        <div class="brand-text-group">
+                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-subtitle">Learn Together. Grow Together.</span>
+                        </div>
+                    </a>
+                    <p class="text-muted small" style="max-width: 320px;">
+                        A focused academic community for sharing knowledge, finding support, and learning better together.
+                    </p>
+                </div>
+
+                <!-- Col 2: Platform -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>PLATFORM</h6>
+                    <a href="resources.html">Study materials</a>
+                    <a href="discussions.html">Discussions</a>
+                    <a href="study-groups.html">Study groups</a>
+                    <a href="sessions.html">Study sessions</a>
+                </div>
+
+                <!-- Col 3: Community -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>COMMUNITY</h6>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Community guide</a>
+                    <a href="contact.html">Contact &amp; help</a>
+                </div>
+
+                <!-- Col 4: Account -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h6>ACCOUNT</h6>
+                    <a href="login.html">Log in</a>
+                    <a href="signup.html">Create account</a>
+                    <a href="student/index.html">Student dashboard</a>
+                    <a href="admin/index.html">Admin console</a>
+                </div>
+            </div>
+
+            <!-- Bottom Line -->
+            <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div class="d-flex gap-3">
+                    <a href="contact.html" class="text-muted text-decoration-none">Privacy</a>
+                    <a href="contact.html" class="text-muted text-decoration-none">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Study Groups JS -->
+    <script src="assets/js/study-groups.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

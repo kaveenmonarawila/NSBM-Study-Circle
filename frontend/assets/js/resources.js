@@ -204,6 +204,24 @@
         }, 3200);
     }
 
+    // Parse a fetch() response as JSON. Some hosts (e.g. InfinityFree's browser
+    // check) can answer with an HTML page instead, so never trust response.json().
+    async function readJson(response) {
+        const text = await response.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            showToast('Something went wrong loading data. Please refresh the page and try again.', false);
+            const err = new Error('Non-JSON response from server');
+            err.nonJson = true;
+            throw err;
+        }
+    }
+
+    // Must match RESOURCE_MAX_UPLOAD_MB in backend/controllers/resource_controller.php
+    const MAX_UPLOAD_MB = 10;
+    const ALLOWED_UPLOAD_EXTS = ['pdf', 'docx', 'pptx'];
+
     // =========================================================================
     // 1. RESOURCES LIST PAGE (resources.html & resources.php)
     // =========================================================================
@@ -242,7 +260,7 @@
             try {
                 const response = await fetch(`${API_BASE}?${params.toString()}`);
                 if (response.ok) {
-                    const data = await response.json();
+                    const data = await readJson(response);
                     if (data.success && Array.isArray(data.resources)) {
                         activeSavedIds = data.saved_ids || [];
                         renderCards(data.resources, activeSavedIds);
@@ -407,7 +425,7 @@
                     return;
                 }
 
-                const resData = await response.json();
+                const resData = await readJson(response);
                 if (resData.success) {
                     const isSaved = resData.is_saved;
                     if (isSaved) {
@@ -423,6 +441,7 @@
                     return;
                 }
             } catch (e) {
+                if (e && e.nonJson) return; // friendly toast already shown
                 // Fallback to local storage if offline
                 let saved = [];
                 try { saved = JSON.parse(localStorage.getItem('nsbm_saved_resources') || '[]'); } catch (err) {}
@@ -510,6 +529,21 @@
                     return;
                 }
 
+                // Client-side file checks (the server enforces the same rules)
+                const fileInput = uploadForm.querySelector('input[type="file"]');
+                const chosenFile = fileInput && fileInput.files ? fileInput.files[0] : null;
+                if (chosenFile) {
+                    const ext = (chosenFile.name.split('.').pop() || '').toLowerCase();
+                    if (!ALLOWED_UPLOAD_EXTS.includes(ext)) {
+                        showToast('Unsupported file format. Only PDF, DOCX, and PPTX files are allowed.', false);
+                        return;
+                    }
+                    if (chosenFile.size > MAX_UPLOAD_MB * 1024 * 1024) {
+                        showToast(`File is too large (${(chosenFile.size / 1048576).toFixed(1)} MB). The maximum upload size is ${MAX_UPLOAD_MB} MB.`, false);
+                        return;
+                    }
+                }
+
                 const submitBtn = uploadForm.querySelector('button[type="submit"]');
                 const originalText = submitBtn ? submitBtn.innerHTML : 'Upload';
                 if (submitBtn) {
@@ -533,7 +567,7 @@
                         return;
                     }
 
-                    const data = await response.json();
+                    const data = await readJson(response);
                     if (data.success) {
                         showToast(data.message || 'Resource uploaded successfully!', true);
                         uploadForm.reset();
@@ -549,6 +583,7 @@
                         showToast(data.message || 'Upload failed.', false);
                     }
                 } catch (err) {
+                    if (err && err.nonJson) return; // friendly toast already shown
                     showToast('Connection error during upload. Please check your network.', false);
                 } finally {
                     if (submitBtn) {
@@ -577,7 +612,7 @@
             try {
                 const response = await fetch(`${API_BASE}?action=get&format=json&id=${resourceId}`);
                 if (response.ok) {
-                    const data = await response.json();
+                    const data = await readJson(response);
                     if (data.success && data.resource) {
                         populateDetails(data.resource, data.is_saved);
                         return;
@@ -767,7 +802,7 @@
                             return;
                         }
 
-                        const d = await resp.json();
+                        const d = await readJson(resp);
                         if (d.success) {
                             showToast(d.message || "Review submitted successfully!", true);
                             if (d.average_rating && ratingValEl) ratingValEl.textContent = parseFloat(d.average_rating).toFixed(1);
@@ -778,6 +813,7 @@
                             showToast(d.message || "Failed to submit review.", false);
                         }
                     } catch (err) {
+                        if (err && err.nonJson) return; // friendly toast already shown
                         showToast("Failed to connect to review server.", false);
                     }
                 };
@@ -844,13 +880,15 @@
                     return;
                 }
 
-                const resData = await response.json();
+                const resData = await readJson(response);
                 if (resData.success) {
                     updateBookmarkButtonUI(btn, resData.is_saved);
                     showToast(resData.message, true);
                     return;
                 }
-            } catch (err) {}
+            } catch (err) {
+                if (err && err.nonJson) return; // friendly toast already shown
+            }
 
             // Local fallback
             let saved = [];

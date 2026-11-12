@@ -35,6 +35,20 @@
 
     window.showAdminToast = showAdminToast;
 
+    // Parse a fetch() response as JSON. Some hosts (e.g. InfinityFree's browser
+    // check) can answer with an HTML page instead, so never trust response.json().
+    async function readJson(response) {
+        const text = await response.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            showAdminToast('Something went wrong loading data. Please refresh the page and try again.', 'warning');
+            const err = new Error('Non-JSON response from server');
+            err.nonJson = true;
+            throw err;
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         // 1. Theme Toggle (Synchronized across Website, Student Portal & Admin)
         const savedTheme = localStorage.getItem('theme') || localStorage.getItem('study_circle_theme') || 'light';
@@ -1497,7 +1511,7 @@
         // 12. LIVE MYSQL DATABASE HYDRATION (`admin_controller.php?action=admin_data`)
         // ====================================================================
         fetch('../../backend/controllers/admin_controller.php?action=admin_data')
-            .then((res) => res.json())
+            .then((res) => readJson(res))
             .then((data) => {
                 if (!data || !data.success) return;
 

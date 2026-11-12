@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const res = await fetch(`../backend/controllers/calendar_controller.php?action=get_events&year=${year}&month=${month}`);
             if (res.ok) {
-                const data = await res.json();
+                const data = await readJson(res);
                 if (data && data.success) {
                     monthEventsCache[cacheKey] = data.events_by_date || {};
                     return monthEventsCache[cacheKey];
@@ -506,4 +506,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial Render
     renderWeeklyStrip();
+
+    // Parse a fetch() response as JSON. Some hosts (e.g. InfinityFree's browser
+    // check) can answer with an HTML page instead, so never trust response.json().
+    async function readJson(response) {
+        const text = await response.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            showSessionToast('Something went wrong loading data. Please refresh the page and try again.');
+            const err = new Error('Non-JSON response from server');
+            err.nonJson = true;
+            throw err;
+        }
+    }
 });

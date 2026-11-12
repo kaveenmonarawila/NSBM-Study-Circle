@@ -86,6 +86,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeFaculty = 'all';
     let searchDebounceTimeout = null;
 
+    // Parse a fetch() response as JSON. Some hosts (e.g. InfinityFree's browser
+    // check) can answer with an HTML page instead, so never trust response.json().
+    async function readJson(response) {
+        const text = await response.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            showNoticeToast('Something went wrong loading data. Please refresh the page and try again.');
+            const err = new Error('Non-JSON response from server');
+            err.nonJson = true;
+            throw err;
+        }
+    }
+
+    function showNoticeToast(message) {
+        const toastEl = document.createElement('div');
+        toastEl.setAttribute('role', 'alert');
+        toastEl.className = 'shadow';
+        toastEl.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;background:#0f172a;color:#fff;padding:12px 20px;border-radius:10px;font-weight:600;font-size:0.9rem;max-width:360px;';
+        toastEl.textContent = message;
+        document.body.appendChild(toastEl);
+        setTimeout(() => toastEl.remove(), 4000);
+    }
+
     async function fetchFilteredResources() {
         const query = searchInput ? searchInput.value.trim() : '';
 
@@ -94,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const apiUrl = `../backend/controllers/home_controller.php?action=resources&faculty=${encodeURIComponent(activeFaculty)}&search=${encodeURIComponent(query)}`;
                 const response = await fetch(apiUrl);
-                const result = await response.json();
+                const result = await readJson(response);
 
                 if (result.success && Array.isArray(result.data)) {
                     renderResourceCards(result.data);

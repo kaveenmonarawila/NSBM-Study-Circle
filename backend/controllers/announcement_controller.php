@@ -1,6 +1,6 @@
 <?php
 // Announcement Controller - Handles announcement operations
-include '../config/db_config.php';
+require_once __DIR__ . '/../config/db_config.php';
 
 // Get all announcements
 // Get announcement by ID

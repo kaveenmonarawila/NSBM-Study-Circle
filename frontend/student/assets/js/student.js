@@ -89,6 +89,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Parse a fetch() response as JSON. Some hosts (e.g. InfinityFree's browser
+    // check) can answer with an HTML page instead, so never trust response.json().
+    async function readJson(response) {
+        const text = await response.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            showStudentToast('Something went wrong loading data. Please refresh the page and try again.', 'warning');
+            const err = new Error('Non-JSON response from server');
+            err.nonJson = true;
+            throw err;
+        }
+    }
+
     // =========================================================================
     // 3B. GENUINE PHYSICAL FILE DOWNLOAD GENERATOR (PDF & DOCX)
     // =========================================================================
@@ -1407,6 +1421,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (uploadMatForm) {
         uploadMatForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            // Client-side file checks: PDF/DOCX/PPTX only, max 10 MB
+            const chosenFile = uploadMatForm.querySelector('input[type="file"]')?.files?.[0];
+            if (chosenFile) {
+                const ext = (chosenFile.name.split('.').pop() || '').toLowerCase();
+                if (!['pdf', 'docx', 'pptx'].includes(ext)) {
+                    showStudentToast('Unsupported file format. Only PDF, DOCX, and PPTX files are allowed.', 'danger');
+                    return;
+                }
+                if (chosenFile.size > 10 * 1024 * 1024) {
+                    showStudentToast(`File is too large (${(chosenFile.size / 1048576).toFixed(1)} MB). The maximum upload size is 10 MB.`, 'danger');
+                    return;
+                }
+            }
             const title = uploadMatForm.querySelector('input[type="text"]')?.value.trim() || 'Study Material';
             const faculty = uploadMatForm.querySelector('select')?.value || 'Computing';
             fetch('../../backend/controllers/student_controller.php?action=upload_material', {
@@ -1688,7 +1715,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const res = await fetch(`../../backend/controllers/calendar_controller.php?action=get_events&year=${studentCalYear}&month=${studentCalMonth}`);
                 if (res.ok) {
-                    const data = await res.json();
+                    const data = await readJson(res);
                     if (data && data.success) {
                         eventsMap = data.events_by_date || {};
                         studentMonthEventsCache[cacheKey] = eventsMap;
@@ -2393,7 +2420,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedUid = localStorage.getItem('nsbm_current_user_id') || '';
     const dashUrl = '../../backend/controllers/student_controller.php?action=dashboard_data' + (savedUid ? `&user_id=${encodeURIComponent(savedUid)}` : '');
     fetch(dashUrl)
-        .then(res => res.json())
+        .then(res => readJson(res))
         .then(data => {
             if (!data || !data.success) return;
 

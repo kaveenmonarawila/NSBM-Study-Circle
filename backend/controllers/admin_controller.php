@@ -612,7 +612,9 @@ switch ($action) {
         echo json_encode([
             'success' => true,
             'database' => DB_NAME,
-            'phpmyadmin_url' => 'http://localhost/phpmyadmin/index.php?route=/database/structure&db=' . DB_NAME
+            'phpmyadmin_url' => (defined('APP_IS_LOCAL') && APP_IS_LOCAL)
+                ? 'http://localhost/phpmyadmin/index.php?route=/database/structure&db=' . DB_NAME
+                : 'https://dash.infinityfree.com/'
         ]);
         break;
 }

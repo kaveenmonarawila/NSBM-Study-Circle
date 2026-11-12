@@ -1,0 +1,13 @@
+# --- Secrets: real online DB credentials (template: db_credentials.example.php)
+backend/config/db_credentials.php
+
+# --- Output of deploy-infinityfree/build.ps1 (manual FTP fallback)
+deploy-infinityfree/htdocs/
+
+# --- Editor / OS / tooling noise
+.vscode/
+node_modules/
+__pycache__/
+*.pyc
+Thumbs.db
+.DS_Store

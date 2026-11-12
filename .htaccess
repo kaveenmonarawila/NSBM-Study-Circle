@@ -1,0 +1,55 @@
+# ============================================================================
+# NSBM STUDY CIRCLE - ROOT .htaccess
+# Works on InfinityFree (/htdocs) and on local XAMPP (any sub-folder).
+# Keep this file under 10 KB (InfinityFree limit).
+# ============================================================================
+
+Options -Indexes
+DirectoryIndex index.php index.html
+
+# "/" opens index.php, which redirects to frontend/index.php (the home page).
+# (A relative PHP redirect is used so it also works in a XAMPP sub-folder.)
+
+# ----------------------------------------------------------------------------
+# HTTPS - uncomment these 4 lines ONLY after SSL is active on InfinityFree
+# (Control Panel -> SSL/TLS -> certificate issued and installed).
+# ----------------------------------------------------------------------------
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTPS} !=on
+#     RewriteCond %{HTTP:X-Forwarded-Proto} !https
+#     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# ----------------------------------------------------------------------------
+# Block files that must never be served: dumps, docs, scripts, logs, data
+# ----------------------------------------------------------------------------
+<FilesMatch "(?i)^(?!robots\.txt$).*(\.(sql|md|bat|cmd|ps1|sh|py|pyc|log|ini|bak|old|orig|swp|env|txt|json|lock|yml|yaml|dist)|~)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Deny,Allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Setup / migration / seed / test scripts and credential files
+<FilesMatch "(?i)^(setup_.*|seed_.*|.*_migration|run_migration|update_admin_credentials|test_.*|db_credentials.*)\.php$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Deny,Allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ----------------------------------------------------------------------------
+# Block whole folders that are only ever include()d by PHP, never browsed:
+# backend/config, backend/models, backend/database, backend/tests, backend/helpers
+# plus repo-only folders in case they are ever uploaded by mistake.
+# (mod_alias: always available, case-insensitive so XAMPP on Windows is covered too)
+# ----------------------------------------------------------------------------
+RedirectMatch 403 (?i)/backend/(config|models|database|tests|helpers)(/|$)
+RedirectMatch 403 (?i)/(\.git|\.github|\.vscode|deploy-infinityfree|database/changes|__pycache__|node_modules)(/|$)

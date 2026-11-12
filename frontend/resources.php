@@ -354,7 +354,7 @@ if ($isLoggedIn) {
                         </div>
 
                         <div class="mb-3">
-                            <label for="uploadFile" class="form-label fw-semibold small">Document File (PDF, DOCX, PPTX - Max 25MB) <span class="text-danger">*</span></label>
+                            <label for="uploadFile" class="form-label fw-semibold small">Document File (PDF, DOCX, PPTX - Max 10MB) <span class="text-danger">*</span></label>
                             <input type="file" class="form-control" id="uploadFile" name="resource_file" accept=".pdf,.docx,.pptx" required>
                             <small class="text-muted" style="font-size:0.75rem;">Verified community uploads are scanned for security and academic integrity.</small>
                         </div>

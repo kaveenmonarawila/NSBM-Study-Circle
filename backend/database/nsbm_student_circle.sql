@@ -463,6 +463,11 @@ ON DUPLICATE KEY UPDATE
     degree_program = VALUES(degree_program),
     status = VALUES(status);
 
+-- 1b. Default Super Administrator (login: admin.nsbmstudycircle@gmail.com / admin@nsbmsc)
+--     CHANGE THIS PASSWORD after deploying. INSERT IGNORE never overwrites an existing account.
+INSERT IGNORE INTO users (name, email, password, role, admin_type, faculty, degree_program, academic_year, status) VALUES
+('System Administrator', 'admin.nsbmstudycircle@gmail.com', '$2y$10$yvaehJfr4R6it5SOa1spCO7V/R0WpzRn7JYxXalolemG25QWRGuGi', 'admin', 'Super administrator', 'Computing', 'Platform Administration', 'Staff', 'Active');
+
 -- 2. Seed Academic Areas
 INSERT INTO academic_areas (id, code, name, description, level, status) VALUES
 (1, 'COM', 'Computing', 'Faculty of Computing - Software Engineering, Computer Science, AI & Data Science', 'Year 1 - 4', 'Active'),

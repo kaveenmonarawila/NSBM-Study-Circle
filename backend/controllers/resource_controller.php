@@ -31,6 +31,17 @@ function sendApiResponse($success, $message, $data = [], $statusCode = 200) {
     exit();
 }
 
+// Maximum size of one uploaded study material (InfinityFree stores files up to 10 MB)
+define('RESOURCE_MAX_UPLOAD_MB', 10);
+
+// A request bigger than PHP's post_max_size arrives with empty $_POST and $_FILES,
+// so report it clearly instead of silently falling through to the 'list' action.
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && empty($_POST) && empty($_FILES)
+    && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0
+    && stripos($_SERVER['CONTENT_TYPE'] ?? '', 'multipart/form-data') !== false) {
+    sendApiResponse(false, 'File is too large. The maximum upload size is ' . RESOURCE_MAX_UPLOAD_MB . ' MB.', [], 413);
+}
+
 $action = $_POST['action'] ?? ($_GET['action'] ?? 'list');
 $userId = $_SESSION['user_id'] ?? null;
 $userRole = $_SESSION['role'] ?? null;
@@ -253,14 +264,18 @@ switch ($action) {
         }
 
         // Validate File Upload
-        if (!isset($_FILES['resource_file']) || $_FILES['resource_file']['error'] !== UPLOAD_ERR_OK) {
+        $uploadError = $_FILES['resource_file']['error'] ?? UPLOAD_ERR_NO_FILE;
+        if ($uploadError === UPLOAD_ERR_INI_SIZE || $uploadError === UPLOAD_ERR_FORM_SIZE) {
+            sendApiResponse(false, 'File is too large. The maximum upload size is ' . RESOURCE_MAX_UPLOAD_MB . ' MB.', [], 413);
+        }
+        if ($uploadError !== UPLOAD_ERR_OK) {
             sendApiResponse(false, 'Please attach a valid file for upload.', [], 400);
         }
 
         $file = $_FILES['resource_file'];
-        $maxBytes = 25 * 1024 * 1024; // 25 MB
+        $maxBytes = RESOURCE_MAX_UPLOAD_MB * 1024 * 1024;
         if ($file['size'] > $maxBytes) {
-            sendApiResponse(false, 'File size exceeds 25 MB limit.', [], 400);
+            sendApiResponse(false, 'File is too large. The maximum upload size is ' . RESOURCE_MAX_UPLOAD_MB . ' MB.', [], 413);
         }
 
         $origName = $file['name'];
@@ -272,9 +287,9 @@ switch ($action) {
         }
 
         // Target storage directory
-        $targetDir = __DIR__ . '/../../backend/uploads/resources/';
-        if (!is_dir($targetDir)) {
-            mkdir($targetDir, 0777, true);
+        $targetDir = __DIR__ . '/../uploads/resources/';
+        if (!is_dir($targetDir) && !@mkdir($targetDir, 0755, true) && !is_dir($targetDir)) {
+            sendApiResponse(false, 'Upload folder is not available on the server. Please contact an administrator.', [], 500);
         }
 
         // Unique filename to prevent overwrite and directory traversal

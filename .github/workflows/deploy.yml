@@ -1,0 +1,74 @@
+# ============================================================================
+# NSBM Study Circle - auto-deploy to InfinityFree over FTP
+# Runs on every push to `main` and manually from the Actions tab.
+#
+# Required repository secrets (Settings -> Secrets and variables -> Actions):
+#   FTP_SERVER    e.g. ftpupload.net        (InfinityFree Control Panel -> FTP Details)
+#   FTP_USERNAME  e.g. if0_XXXXXXXX
+#   FTP_PASSWORD  your hosting account (vPanel) password
+#
+# Only changed files are uploaded (sync state is kept on the server in
+# /htdocs/.ftp-deploy-sync-state.json). Files that students upload on the live
+# site are never touched: the upload folders are excluded below, and the action
+# only deletes files that it uploaded itself.
+# Keep the exclude list in sync with deploy-infinityfree/build.ps1.
+# ============================================================================
+name: Deploy to InfinityFree
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never run two FTP deployments at the same time
+concurrency:
+  group: infinityfree-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: FTP deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Upload changed files to /htdocs/
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          local-dir: ./
+          server-dir: /htdocs/
+          timeout: 120000
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            **/.vscode/**
+            **/node_modules/**
+            **/__pycache__/**
+            **/*.md
+            **/*.bat
+            **/*.sql
+            **/*.ps1
+            **/*.py
+            **/*.pyc
+            **/*.json
+            **/*.txt
+            deploy-infinityfree/**
+            database/**
+            HTML/**
+            backend/database/**
+            backend/tests/**
+            backend/config/test_db_connection.php
+            backend/config/db_credentials.php
+            backend/config/db_credentials.example.php
+            backend/uploads/resources/**
+            uploads/resources/**

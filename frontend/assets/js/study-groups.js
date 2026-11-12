@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id: groupId })
                 });
-                const data = await response.json();
+                const data = await readJson(response);
                 
                 // Update member count display if present
                 const memberCountEl = document.getElementById('detailsMemberCount');
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                const res = await response.json();
+                const res = await readJson(response);
                 if (res.success) {
                     showGroupToast('Study Group created successfully! Redirecting...');
                     setTimeout(() => {
@@ -210,6 +210,20 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             toast.style.transform = 'translateY(120px)';
         }, 3200);
+    }
+
+    // Parse a fetch() response as JSON. Some hosts (e.g. InfinityFree's browser
+    // check) can answer with an HTML page instead, so never trust response.json().
+    async function readJson(response) {
+        const text = await response.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            showGroupToast('Something went wrong loading data. Please refresh the page and try again.');
+            const err = new Error('Non-JSON response from server');
+            err.nonJson = true;
+            throw err;
+        }
     }
 });
 

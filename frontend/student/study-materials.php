@@ -585,8 +585,8 @@ if (file_exists($db_path)) {
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Select File (PDF, DOCX, PPTX - Max 50MB)</label>
-                        <input type="file" class="form-control" required>
+                        <label class="form-label small fw-bold">Select File (PDF, DOCX, PPTX - Max 10MB)</label>
+                        <input type="file" class="form-control" accept=".pdf,.docx,.pptx" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Description / Topics Covered</label>

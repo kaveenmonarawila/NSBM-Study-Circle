@@ -404,7 +404,15 @@ if (!in_array($initialRole, ['student', 'admin'])) {
                             role: formRoleInput.value
                         })
                     })
-                    .then(res => res.json())
+                    .then(res => res.text())
+                    .then(text => {
+                        // The host can answer with an HTML page (browser check) instead of JSON
+                        try { return JSON.parse(text); } catch (e) {
+                            const err = new Error('Non-JSON response from server');
+                            err.nonJson = true;
+                            throw err;
+                        }
+                    })
                     .then(data => {
                         if (data && data.success) {
                             localStorage.removeItem('nsbm_student_profile');
@@ -422,7 +430,14 @@ if (!in_array($initialRole, ['student', 'admin'])) {
                             showError((data && data.message) ? data.message : 'Invalid credentials.');
                         }
                     })
-                    .catch(() => {
+                    .catch((err) => {
+                        if (err && err.nonJson) {
+                            if (submitBtn) submitBtn.disabled = false;
+                            if (btnSpinner) btnSpinner.classList.add('d-none');
+                            if (btnText) btnText.textContent = 'Log in';
+                            showError('Something went wrong. Please refresh the page and try again.');
+                            return;
+                        }
                         // Fallback to traditional form submission
                         loginForm.submit();
                     });

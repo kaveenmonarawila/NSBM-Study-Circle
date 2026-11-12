@@ -136,68 +136,9 @@ if ($action === 'login') {
 
     ensureLoginLogsTable();
 
-    // ========================================================================
-    // PRIMARY DESIGNATED ADMIN CREDENTIALS:
-    // email: admin.nsbmstudycircle@gmail.com
-    // password: admin@nsbmsc
-    // ========================================================================
-    if (strcasecmp($identifier, 'admin.nsbmstudycircle@gmail.com') === 0) {
-        if ($password !== 'admin@nsbmsc') {
-            recordLoginEvent(null, null, $identifier, 'admin', 'Login', 'Failed');
-            sendResponse(false, 'Invalid credentials.');
-        }
-
-        // Credentials match! Ensure account is active and correctly configured in MySQL `users`
-        $chkAdmin = $conn->prepare("SELECT id, name, email, password, role, admin_type, status FROM users WHERE email = 'admin.nsbmstudycircle@gmail.com' LIMIT 1");
-        $chkAdmin->execute();
-        $adminRes = $chkAdmin->get_result();
-        $adminUser = ($adminRes && $adminRes->num_rows === 1) ? $adminRes->fetch_assoc() : null;
-        $chkAdmin->close();
-
-        if (!$adminUser) {
-            $hashed = password_hash('admin@nsbmsc', PASSWORD_BCRYPT);
-            $ins = $conn->prepare("INSERT INTO users (name, email, password, role, admin_type, faculty, status, created_at) VALUES ('System Administrator', 'admin.nsbmstudycircle@gmail.com', ?, 'admin', 'Super administrator', 'Computing', 'Active', NOW())");
-            if ($ins) {
-                $ins->bind_param("s", $hashed);
-                $ins->execute();
-                $ins->close();
-            }
-            $chkAdmin2 = $conn->prepare("SELECT id, name, email, password, role, admin_type, status FROM users WHERE email = 'admin.nsbmstudycircle@gmail.com' LIMIT 1");
-            $chkAdmin2->execute();
-            $adminUser = $chkAdmin2->get_result()->fetch_assoc();
-            $chkAdmin2->close();
-        } else if ($adminUser['role'] !== 'admin' || $adminUser['status'] !== 'Active' || !password_verify('admin@nsbmsc', $adminUser['password'])) {
-            $hashed = password_hash('admin@nsbmsc', PASSWORD_BCRYPT);
-            $conn->query("UPDATE users SET password = '{$hashed}', role = 'admin', admin_type = 'Super administrator', status = 'Active', last_active_at = NOW() WHERE id = " . (int)$adminUser['id']);
-            $adminUser['role'] = 'admin';
-            $adminUser['status'] = 'Active';
-            $adminUser['admin_type'] = 'Super administrator';
-        }
-
-        // Record successful admin login in MySQL audit logs
-        recordLoginEvent($adminUser['id'], $adminUser['name'], $adminUser['email'], 'admin', 'Login', 'Success');
-
-        session_regenerate_id(true);
-        $_SESSION['user_id'] = (int)$adminUser['id'];
-        $_SESSION['name'] = $adminUser['name'];
-        $_SESSION['email'] = $adminUser['email'];
-        $_SESSION['role'] = 'admin';
-        $_SESSION['admin_type'] = $adminUser['admin_type'] ?? 'Super administrator';
-        $_SESSION['faculty'] = 'Computing';
-        $_SESSION['degree_program'] = 'BSc (Hons) in Information Technology';
-        $_SESSION['student_id'] = null;
-        $_SESSION['logged_in_at'] = time();
-
-        sendResponse(true, 'Admin login successful!', '../../frontend/admin/index.php', [
-            'user' => [
-                'id' => (int)$adminUser['id'],
-                'name' => $adminUser['name'],
-                'email' => $adminUser['email'],
-                'role' => 'admin',
-                'faculty' => 'Computing'
-            ]
-        ]);
-    }
+    // NOTE: Administrators log in through the normal `users` table check below.
+    // The default admin account is seeded by the SQL import (see database/changes/001_default_admin.sql);
+    // change its password after deploying - it is no longer hard-coded or reset here.
 
     // Query existing user by email or student_id
     $stmt = $conn->prepare("SELECT id, name, email, password, role, admin_type, student_id, faculty, degree_program, academic_year, status FROM users WHERE email = ? OR student_id = ? LIMIT 1");
@@ -219,15 +160,19 @@ if ($action === 'login') {
             sendResponse(false, 'Invalid credentials.');
         }
 
-        // Strict password verification (hashed bcrypt or plaintext legacy fallback)
-        $passwordValid = password_verify($password, $user['password']) || ($password === $user['password']);
+        // Strict password verification (hashed bcrypt or plaintext legacy fallback).
+        // The plaintext fallback only applies when the stored value is NOT a hash - otherwise
+        // typing a (public) hash string as the password would log you in.
+        $isLegacyPlaintext = empty(password_get_info($user['password'])['algo']);
+        $passwordValid = password_verify($password, $user['password'])
+            || ($isLegacyPlaintext && hash_equals((string)$user['password'], (string)$password));
         if (!$passwordValid) {
             recordLoginEvent($user['id'], $user['name'], $user['email'], $user['role'], 'Login', 'Failed');
             sendResponse(false, 'Invalid credentials.');
         }
 
         // Upgrade legacy plaintext password to secure bcrypt hash
-        if ($password === $user['password'] && !password_verify($password, $user['password'])) {
+        if ($isLegacyPlaintext) {
             $newHash = password_hash($password, PASSWORD_BCRYPT);
             $upd = $conn->prepare("UPDATE users SET password = ?, last_active_at = NOW() WHERE id = ?");
             if ($upd) {
@@ -341,8 +286,8 @@ else if ($action === 'register') {
     }
 
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-    $requestedRole = strtolower(trim($input['role'] ?? 'student'));
-    $roleToSave = ($requestedRole === 'admin') ? 'admin' : 'student';
+    // Public sign-up always creates student accounts (admins are promoted from the admin console / phpMyAdmin)
+    $roleToSave = 'student';
     $adminType = ($roleToSave === 'admin') ? 'Super administrator' : null;
 
     // Insert user into `users` table

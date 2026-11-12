@@ -113,6 +113,20 @@
         }, 3000);
     }
 
+    // Parse a fetch() response as JSON. Some hosts (e.g. InfinityFree's browser
+    // check) can answer with an HTML page instead, so never trust response.json().
+    async function readJson(response) {
+        const text = await response.text();
+        try {
+            return JSON.parse(text);
+        } catch (e) {
+            showToast('Something went wrong loading data. Please refresh the page and try again.', false);
+            const err = new Error('Non-JSON response from server');
+            err.nonJson = true;
+            throw err;
+        }
+    }
+
     // =========================================================================
     // 1. DISCUSSIONS LIST PAGE
     // =========================================================================
@@ -140,7 +154,7 @@
             try {
                 const response = await fetch(`${API_BASE}?${params.toString()}`);
                 if (response.ok) {
-                    const data = await response.json();
+                    const data = await readJson(response);
                     if (data.success && Array.isArray(data.discussions)) {
                         renderDiscussions(data.discussions);
                         return;
@@ -288,7 +302,7 @@
                     fd.append('action', 'ask');
 
                     const response = await fetch(API_BASE, { method: 'POST', body: fd });
-                    const res = await response.json();
+                    const res = await readJson(response);
 
                     if (res.success) {
                         showToast(res.message || 'Question posted successfully!', true);
@@ -307,6 +321,7 @@
                         showToast(res.message || 'Failed to post question', false);
                     }
                 } catch (err) {
+                    if (err && err.nonJson) return; // friendly toast already shown
                     showToast('Question posted (offline demo mode)!', true);
                     const modalEl = document.getElementById('askQuestionModal');
                     if (modalEl && window.bootstrap) {
@@ -412,7 +427,7 @@
                     fd.append('body', body);
 
                     const resp = await fetch(API_BASE, { method: 'POST', body: fd });
-                    const res = await resp.json();
+                    const res = await readJson(resp);
 
                     if (res.success) {
                         showToast('Your answer has been posted!', true);
@@ -447,6 +462,7 @@
                         showToast(res.message || 'Failed to submit answer', false);
                     }
                 } catch (err) {
+                    if (err && err.nonJson) return; // friendly toast already shown
                     // Local fallback
                     showToast('Your answer has been posted (Demo)!', true);
                     if (answersList) {

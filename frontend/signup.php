@@ -516,6 +516,7 @@ if (isset($_SESSION['user_id'])) {
 
                 // Send registration payload to backend/controllers/auth_controller.php to save in MySQL (`users` & `login_logs`)
                 const btnComplete = document.getElementById('btnCompleteSignup');
+                const btnCompleteHtml = btnComplete.innerHTML;
                 btnComplete.disabled = true;
                 btnComplete.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> Creating account...';
 
@@ -539,7 +540,15 @@ if (isset($_SESSION['user_id'])) {
                         academic_year: academicYearVal
                     })
                 })
-                .then(res => res.json())
+                .then(res => res.text())
+                .then(text => {
+                    // The host can answer with an HTML page (browser check) instead of JSON
+                    try { return JSON.parse(text); } catch (e) {
+                        const err = new Error('Non-JSON response from server');
+                        err.nonJson = true;
+                        throw err;
+                    }
+                })
                 .then(data => {
                     if (data && data.user) {
                         localStorage.setItem('nsbm_current_user_id', String(data.user.id));
@@ -559,7 +568,17 @@ if (isset($_SESSION['user_id'])) {
                         window.location.href = 'student/index.php';
                     }, 1000);
                 })
-                .catch(() => {
+                .catch((err) => {
+                    if (err && err.nonJson) {
+                        btnComplete.disabled = false;
+                        btnComplete.innerHTML = btnCompleteHtml;
+                        alertBox.innerHTML = `
+                            <div class="alert alert-warning border-0 rounded-3 shadow-sm py-3 mb-4" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Something went wrong. Please refresh the page and try again.
+                            </div>
+                        `;
+                        return;
+                    }
                     window.location.href = 'login.php?signup_success=1';
                 });
             });

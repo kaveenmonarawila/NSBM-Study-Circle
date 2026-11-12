@@ -1,6 +1,6 @@
 <?php
 // Event Controller - Handles event-related operations
-include '../config/db_config.php';
+require_once __DIR__ . '/../config/db_config.php';
 
 // Get all events
 // Get event by ID

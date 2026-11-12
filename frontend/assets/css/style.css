@@ -1800,8 +1800,15 @@ html {
     border: 1px solid var(--nsbm-border);
     border-radius: 16px;
     padding: 24px;
-    height: 100%;
+    height: auto;
     box-shadow: var(--nsbm-card-shadow);
+}
+
+@media (min-width: 992px) {
+    .filter-sidebar-card {
+        position: sticky;
+        top: 100px;
+    }
 }
 
 [data-bs-theme="dark"] .filter-sidebar-card {

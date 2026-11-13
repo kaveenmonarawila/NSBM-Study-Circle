@@ -23,8 +23,9 @@ if (isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - NSBM Study Circle</title>
-    <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <title>Study Circle – Create account</title>
+    <meta name="description" content="Create a Study Circle account. Study Circle is an independent, student-run study platform for sharing notes, discussions and study groups. Not affiliated with or endorsed by NSBM Green University.">
+    <!-- Website Favicon: Study Circle logo -->
     <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
     <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
@@ -95,6 +96,12 @@ if (isset($_SESSION['user_id'])) {
 
                     <!-- Alert message container -->
                     <div id="signupAlertBox"></div>
+
+                    <!-- Independence & password safety notice -->
+                    <div class="alert alert-warning small py-2 mb-3" role="note">
+                        <i class="bi bi-shield-exclamation me-1"></i>
+                        This is an independent student platform, not the official NSBM portal. Create a separate password for this site. Do not use your NSBM student portal or university email password.
+                    </div>
 
                     <!-- STEP 1 FORM: Account Details -->
                     <form id="signupStep1Form" novalidate>
@@ -224,6 +231,7 @@ if (isset($_SESSION['user_id'])) {
             <!-- Footer: Copyright, Privacy & Help -->
             <div class="signup-footer">
                 &copy; 2026 NSBM Study Circle &middot; <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy</a> &middot; <a href="contact.php">Help</a>
+                <div class="mt-1">Independent student platform. Not affiliated with or endorsed by NSBM Green University.</div>
             </div>
         </div>
 

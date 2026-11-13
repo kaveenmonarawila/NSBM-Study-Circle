@@ -237,8 +237,8 @@ if (isset($conn) && $conn && !$conn->connect_error) {
                 while ($r = $actLog->fetch_assoc()) {
                     $recentActivities[] = [
                         'type' => 'login',
-                        'title' => 'Portal ' . htmlspecialchars($r['action_type'] ?? 'Login'),
-                        'desc' => 'Logged into NSBM Study Circle with verified credentials.',
+                        'title' => 'Account ' . htmlspecialchars($r['action_type'] ?? 'Login'),
+                        'desc' => 'Logged into your NSBM Study Circle account.',
                         'time' => date('d M, g:i A', strtotime($r['logged_in_at'])),
                         'icon' => 'bi-shield-check',
                         'color' => 'student-act-indigo',
@@ -269,7 +269,7 @@ if (empty($recentActivities)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Student Portal | NSBM Study Circle</title>
+    <title>Dashboard - Student Dashboard | NSBM Study Circle</title>
     <script>(function(){const t=localStorage.getItem('study_circle_theme')||localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
     <!-- Website Favicon -->
     <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">

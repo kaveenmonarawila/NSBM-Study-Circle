@@ -28,7 +28,7 @@ if (!$group) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($group['name']); ?> - NSBM Study Circle</title>
     <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
-        <!-- Website Favicon using official NSBM Study Circle Logo -->
+        <!-- Website Favicon: Study Circle logo -->
     <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
     <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">

@@ -12,9 +12,10 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About Study Circle, an independent, student-run study platform for sharing notes, discussions and study groups. Not affiliated with or endorsed by NSBM Green University.">
     <title>About - NSBM Study Circle</title>
     <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
-        <!-- Website Favicon using official NSBM Study Circle Logo -->
+        <!-- Website Favicon: Study Circle logo -->
     <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
     <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
@@ -146,6 +147,36 @@ if (session_status() === PHP_SESSION_NONE) {
                     <h3 class="pillar-heading">Build real connection</h3>
                     <p class="pillar-desc">
                         Create groups and sessions with a clear academic purpose.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         4B. INDEPENDENCE & CONTACT (Not affiliated with NSBM Green University)
+         ==================================================================== -->
+    <section class="why-we-exist-section" id="independent">
+        <div class="container-xl">
+            <div class="row g-4 align-items-start justify-content-between">
+                <div class="col-lg-5">
+                    <span class="why-exist-label">ABOUT THIS PLATFORM</span>
+                    <h2 class="why-exist-title">
+                        Independent, student-run and unofficial.
+                    </h2>
+                </div>
+                <div class="col-lg-6">
+                    <p class="why-exist-text">
+                        Study Circle is an independent, student-run study platform for students who want to learn together: first-years finding their feet, students revising for exams, and anyone who likes explaining a topic to a classmate.
+                    </p>
+                    <p class="why-exist-text">
+                        It offers a shared library of student notes and resources, discussions for questions and answers, study groups, and study sessions you can plan and join.
+                    </p>
+                    <p class="why-exist-text">
+                        <strong>Study Circle is not affiliated with or endorsed by NSBM Green University.</strong> It is not an official university service or portal. Accounts here are separate from your university account, so please create a separate password for this site and never enter your NSBM student portal or university email password here.
+                    </p>
+                    <p class="why-exist-text mb-0">
+                        Questions or concerns? Contact the Study Circle team at <strong>[CONTACT_EMAIL]</strong>.
                     </p>
                 </div>
             </div>

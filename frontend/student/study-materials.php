@@ -26,7 +26,7 @@ if (file_exists($db_path)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Materials - Student Portal | NSBM Study Circle</title>
+    <title>Study Materials - Student Dashboard | NSBM Study Circle</title>
     <script>(function(){const t=localStorage.getItem('study_circle_theme')||localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
     <!-- Website Favicon -->
     <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">

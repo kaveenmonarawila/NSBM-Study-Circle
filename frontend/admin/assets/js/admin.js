@@ -50,7 +50,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        // 1. Theme Toggle (Synchronized across Website, Student Portal & Admin)
+        // 1. Theme Toggle (Synchronized across Website, Student Dashboard & Admin)
         const savedTheme = localStorage.getItem('theme') || localStorage.getItem('study_circle_theme') || 'light';
         document.documentElement.setAttribute('data-bs-theme', savedTheme);
         if (document.body) document.body.setAttribute('data-bs-theme', savedTheme);

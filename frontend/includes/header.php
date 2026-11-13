@@ -12,6 +12,42 @@ $isLoggedIn = isset($_SESSION['user_id']);
 $userRole = $_SESSION['role'] ?? 'student';
 $userName = $_SESSION['name'] ?? '';
 ?>
+<!-- Independence notice bar (styles inline so it shows even with an older cached style.css) -->
+<style>
+    .independence-bar {
+        position: relative;
+        z-index: 1051;
+        padding: 6px 16px;
+        font-size: 0.78rem;
+        line-height: 1.4;
+        text-align: center;
+        color: #475569;
+        background: #EEF8F3;
+        border-bottom: 1px solid #D1EADF;
+    }
+    .independence-bar a {
+        color: #047857;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .independence-bar a:hover {
+        text-decoration: underline;
+    }
+    [data-bs-theme="dark"] .independence-bar {
+        color: #A9B6C8;
+        background: #0E1A24;
+        border-bottom-color: #1C2940;
+    }
+    [data-bs-theme="dark"] .independence-bar a {
+        color: #34D399;
+    }
+</style>
+<div class="independence-bar" role="note">
+    <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+    Independent student platform. Not affiliated with NSBM Green University.
+    <a href="about.php" class="ms-1">Learn more</a>
+</div>
+
 <!-- Premium Floating Glassmorphism Navigation Header -->
 <header class="floating-header-wrapper site-header" id="mainSiteHeader">
     <nav class="navbar navbar-expand-lg floating-navbar site-navbar" id="mainFloatingHeader">

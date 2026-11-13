@@ -39,8 +39,9 @@ if (!in_array($initialRole, ['student', 'admin'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log in - NSBM Study Circle</title>
-    <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <title>Study Circle – Log in</title>
+    <meta name="description" content="Log in to Study Circle, an independent, student-run study platform for sharing notes, discussions and study groups. Not affiliated with or endorsed by NSBM Green University.">
+    <!-- Website Favicon: Study Circle logo -->
     <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
     <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
@@ -130,6 +131,12 @@ if (!in_array($initialRole, ['student', 'admin'])) {
                         <?php endif; ?>
                     </div>
 
+                    <!-- Independence & password safety notice -->
+                    <div class="alert alert-warning small py-2 mb-3" role="note">
+                        <i class="bi bi-shield-exclamation me-1"></i>
+                        This is an independent student platform, not the official NSBM portal. Create a separate password for this site. Do not use your NSBM student portal or university email password.
+                    </div>
+
                     <!-- Login Form -->
                     <form id="loginForm" action="../backend/controllers/auth_controller.php" method="POST" novalidate>
                         <input type="hidden" name="action" value="login">
@@ -196,6 +203,7 @@ if (!in_array($initialRole, ['student', 'admin'])) {
             <!-- Left Footer -->
             <div class="login-footer">
                 &copy; <?php echo date('Y'); ?> NSBM Study Circle · <a href="#privacy" class="login-footer-link" id="privacyLink">Privacy</a> · <a href="#help" class="login-footer-link" id="helpLink">Help</a>
+                <div class="mt-1">Independent student platform. Not affiliated with or endorsed by NSBM Green University.</div>
             </div>
         </div>
 

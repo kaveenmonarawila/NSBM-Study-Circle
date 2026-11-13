@@ -7,10 +7,10 @@ if (empty($studentInitials)) {
 }
 $studentRole = !empty($currentUserDegree) ? $currentUserDegree : (!empty($_SESSION['degree_program']) ? $_SESSION['degree_program'] : 'NSBM Student Member');
 ?>
-<!-- Student Portal Top Bar -->
+<!-- Student Dashboard Top Bar -->
 <header class="student-topbar">
     <div>
-        <div class="student-topbar-breadcrumb">STUDENT PORTAL</div>
+        <div class="student-topbar-breadcrumb">STUDENT DASHBOARD</div>
         <h1 class="student-topbar-title"><?= htmlspecialchars($page_title) ?></h1>
     </div>
 

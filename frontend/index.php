@@ -40,9 +40,10 @@ $avatarColors = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="GVyRPWkr5Q-xd8N8B2opT6UGopNCuw6GNGCSQV9Vpdc" />
+    <meta name="description" content="Study Circle is an independent, student-run study platform for sharing notes, discussions and study groups. Not affiliated with or endorsed by NSBM Green University.">
     <title>NSBM Study Circle - Learn Together. Grow Together.</title>
     <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
-    <!-- Website Favicon using official NSBM Study Circle Logo -->
+    <!-- Website Favicon: Study Circle logo -->
     <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     <link rel="alternate icon" type="image/jpeg" href="assets/images/logo.jpg">
     <link rel="apple-touch-icon" href="assets/images/logo.svg">
@@ -70,7 +71,7 @@ $avatarColors = [
                 <!-- Eyebrow Badge with Pulse Indicator -->
                 <div class="hero-eyebrow-badge">
                     <span class="badge-pulse-dot"></span>
-                    <span>YOUR UNIVERSITY LEARNING COMMUNITY</span>
+                    <span>INDEPENDENT STUDENT LEARNING COMMUNITY</span>
                 </div>
 
                 <!-- 3-line Headline with Emerald Accent -->
@@ -475,7 +476,7 @@ $avatarColors = [
 
             <!-- Bottom Line -->
             <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div>&copy; 2026 NSBM Study Circle. An independent student-run platform. Not affiliated with or endorsed by NSBM Green University.</div>
                 <div class="d-flex gap-3">
                     <a href="contact.php" class="text-muted text-decoration-none">Privacy</a>
                     <a href="contact.php" class="text-muted text-decoration-none">Terms</a>

@@ -906,6 +906,10 @@ a.btn {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
+    /* Extend the clipped gradient area so descenders (e.g. "g") aren't cut off,
+       then cancel the extra space so layout is unchanged. */
+    padding-bottom: 0.15em;
+    margin-bottom: -0.15em;
 }
 
 .hero-subtitle {

@@ -39,6 +39,7 @@ $avatarColors = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="GVyRPWkr5Q-xd8N8B2opT6UGopNCuw6GNGCSQV9Vpdc" />
     <title>NSBM Study Circle - Learn Together. Grow Together.</title>
     <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
     <!-- Website Favicon using official NSBM Study Circle Logo -->
@@ -488,4 +489,3 @@ $avatarColors = [
     <script src="assets/js/main.js"></script>
 </body>
 </html>
-

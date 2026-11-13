@@ -823,7 +823,7 @@ a.btn {
     min-height: calc(88vh - 70px);
     padding-top: 48px;
     padding-bottom: 60px;
-    background: url('../images/homepagephoto.jpeg') no-repeat center center;
+    background: url('../../../src/homepagephoto.jpg') no-repeat center center;
     background-size: cover;
     display: flex;
     flex-direction: column;

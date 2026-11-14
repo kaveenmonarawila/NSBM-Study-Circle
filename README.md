@@ -1,171 +1,161 @@
-# 🎓 NSBM StudyCircle
+# NSBM Student Circle
 
-**A Student Community Platform for Notes, Knowledge Sharing, and Collaborative Learning.**
+A collaborative web platform where NSBM students share study materials, discuss academic questions, form study groups and schedule sessions, with an admin panel for moderation and reporting.
 
-NSBM StudyCircle is a web-based student collaboration platform designed to help university students share study materials, exchange knowledge, ask academic questions, and collaborate with fellow students. The platform provides a centralized space where students can access learning resources, participate in discussions, form study groups, and organize study sessions.
+Built for the Web and Mobile Application Development final project, Faculty of Computing, NSBM Green University.
 
-## 📌 Project Overview
+| | |
+|---|---|
+| Live site | https://nsbm-study-circle.42web.io |
+| Repository | https://github.com/kaveenmonarawila/NSBM-Study-Circle |
 
-University Students often face difficulties finding study materials, sharing lecture notes, and collaborating with other students in one place. NSBM StudyCircle aims to address these challenges by providing an organized and user-friendly platform for academic collaboration.
+## Contents
 
-### 🎯 Project objectives
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Database](#database)
+- [Getting Started](#getting-started)
+- [Deployment](#deployment)
 
-* Provide a centralized platform for sharing study materials and lecture notes.
-* Allow students to ask academic questions and share knowledge.
-* Support collaborative learning through study groups.
-* Enable students to schedule and organize study sessions.
-* Make learning resources easier to discover through search and filtering.
-* Provide administrators with tools to manage users and platform content.
+## Overview
 
-## ✨ Key Features
+Student Circle gives each faculty a single place to share lecture notes, get answers from peers and organise group study. The system has two separate interfaces:
 
-* **🔐 User Authentication** – Secure registration and login.
-* **📚 Study Material Sharing** – Upload and access academic resources.
-* **💬 Academic Q&A** – Ask questions and share answers.
-* **👥 Study Groups** – Create or join groups for collaborative learning.
-* **📅 Study Session Scheduling** – Organize group study sessions.
-* **🔎 Search and Filtering** – Find relevant study materials efficiently.
-* **🛠️ Admin Dashboard** – Manage users and platform content.
-* **📱 Responsive Design** – Support desktop, tablet, and mobile screens.
+- **Student portal** for uploading and downloading materials, joining discussions, and managing study groups and sessions.
+- **Admin panel** for approving content, managing users and subjects, moderating the forum and viewing engagement reports.
 
-*Note: Features will be implemented according to the final project requirements and development progress.*
+## Features
 
-## 🛠️ Technologies Used
+### Student portal
 
-| Technology  | Purpose                              |
-| ----------- | ------------------------------------ |
-| HTML5       | Structure of web pages               |
-| CSS3        | Styling and layout                   |
-| JavaScript  | Client-side interactivity            |
-| PHP         | Server-side development              |
-| MySQL       | Database management                  |
-| Bootstrap 5 | Responsive user interface components |
+| Area | Capabilities |
+|---|---|
+| Account | Register, log in, edit profile, notification and privacy settings |
+| Study materials | Upload notes (PDF, DOCX), browse and filter by subject, download, save for later |
+| Feedback | Rate and review shared resources |
+| Discussions | Ask questions, post answers and replies, vote |
+| Study groups | Create or join groups, view members and activity |
+| Study sessions | Schedule group sessions, join and view upcoming sessions |
+| Dashboard | Schedule, notifications, uploads, downloads and saved items |
 
-## 👤 User Roles
+### Admin panel
 
-### 1. Student
+| Area | Capabilities |
+|---|---|
+| Users | Create, view, edit, deactivate and delete users |
+| Approvals | Approve or reject uploaded resources |
+| Academic data | Manage subjects, categories and academic areas |
+| Moderation | Review discussions and reported content |
+| Content | Manage announcements and events |
+| Reports | Resource usage and engagement reports |
+| Settings | Platform-wide settings |
 
-* Register and log in to the platform.
-* Browse and search study materials.
-* Share academic resources.
-* Ask and answer academic questions.
-* Create or join study groups.
-* View and organize study sessions.
+All modules support full CRUD operations with server-side validation.
 
-### 2. Administrator
+## Tech Stack
 
-* Manage student accounts.
-* Monitor uploaded study materials.
-* Manage platform content.
-* Maintain the quality and proper use of the platform.
+| Layer | Technology |
+|---|---|
+| Frontend | HTML5, CSS3, JavaScript, Bootstrap 5 |
+| Backend | PHP (MVC-style: controllers, models, helpers) |
+| Database | MySQL / MariaDB, accessed through MySQLi and PDO |
+| Local environment | XAMPP (Apache, MySQL) |
+| Hosting | InfinityFree |
 
-## 🗂️ Project Structure
+## Project Structure
 
-```text
-NSBM-StudyCircle/
-│
-├── assets/
-│   ├── css/
-│   ├── js/
-│   └── images/
-│
-├── config/
-│   └── database.php
-│
-├── includes/
-│
-├── admin/
-│
-├── student/
-│
-├── uploads/
-│
+```
+.
 ├── index.php
-├── login.php
-├── register.php
-├── README.md
-└── .gitignore
+├── backend/
+│   ├── config/         Application and database configuration
+│   ├── controllers/    Request handling (auth, admin, student, resources, discussions, groups, events)
+│   ├── models/         Data layer (User, Resource, Discussion, StudyGroup, StudySession, Event, Announcement)
+│   ├── helpers/        Session, upload and validation helpers
+│   ├── database/       SQL schema and migration scripts
+│   └── uploads/        User-uploaded files
+├── frontend/
+│   ├── admin/          Admin panel (pages, includes, assets)
+│   ├── student/        Student portal (pages, includes, assets)
+│   ├── assets/         Shared CSS, JS, images and Bootstrap
+│   ├── includes/       Shared layout components
+│   └── *.php           Public pages (home, about, contact, login, signup, resources, discussions, groups, sessions)
+└── uploads/            Sample study materials
 ```
 
-*The directory structure may change as development progresses.*
+## Database
 
-## ⚙️ Installation and Setup
+Database name: `nsbm_student_circle` (25 tables). The schema and sample data are in [`backend/database/nsbm_student_circle.sql`](backend/database/nsbm_student_circle.sql).
 
-Follow these steps to run the project locally.
+| Module | Tables |
+|---|---|
+| Users and access | `users`, `login_logs`, `platform_settings` |
+| Academic structure | `academic_areas`, `subjects`, `categories` |
+| Resources | `resources`, `resource_downloads`, `resource_reviews`, `saved_resources` |
+| Discussions | `discussions`, `discussion_answers`, `discussion_replies`, `discussion_votes` |
+| Study groups | `study_groups`, `study_group_members`, `study_group_coordinators`, `study_group_activities` |
+| Study sessions | `study_sessions`, `study_session_attendees` |
+| Communication | `announcements`, `events`, `notifications`, `contact_messages`, `reported_content` |
+
+## Getting Started
 
 ### Prerequisites
 
-* XAMPP or another compatible PHP development environment.
-* PHP.
-* MySQL.
-* A modern web browser.
-* Git (optional, for cloning the repository).
+- XAMPP (or any Apache, PHP and MySQL stack)
+- PHP 7.4 or later
+- A web browser
 
-### Step 1: Clone The Repository
+### Installation
 
-```bash
-git clone https://github.com/YOUR-USERNAME/NSBM-StudyCircle.git
-```
+1. Clone the repository into your web root.
 
-### Step 2: Move the Project
+   ```bash
+   cd C:\xampp\htdocs
+   git clone https://github.com/kaveenmonarawila/NSBM-Study-Circle.git nsbm-student-circle
+   ```
 
-Place the project folder inside the XAMPP `htdocs` directory.
+2. Start **Apache** and **MySQL** from the XAMPP control panel.
 
-### Step 3: Configure the Database
+3. Create the database. Either:
+   - open `http://localhost/phpmyadmin`, create a database named `nsbm_student_circle` and import `backend/database/nsbm_student_circle.sql`, or
+   - open the site once. If the database does not exist, `db_config.php` creates it and imports the SQL file automatically.
 
-1. Start Apache and MySQL using the XAMPP Control Panel.
-2. Open phpMyAdmin in your browser.
-3. Create a database for the project.
-4. Import the project's SQL file if one is provided.
-5. Update the database connection settings in the configuration file.
+4. Review the configuration files.
 
-### Step 4: Run the Application
+   `backend/config/db_config.php` (defaults for XAMPP)
 
-Open the following address in your browser:
+   ```php
+   DB_HOST = '127.0.0.1'
+   DB_PORT = 3306
+   DB_USER = 'root'
+   DB_PASS = ''
+   DB_NAME = 'nsbm_student_circle'
+   ```
 
-```text
-http://localhost/NSBM-StudyCircle/
-```
+   `backend/config/app_config.php`
 
-*Setup instructions may be updated to match the final project structure and database configuration.*
+   ```php
+   SITE_URL = 'http://localhost/nsbm-student-circle'
+   ```
 
-## 🔒 Security Considerations
+5. Open `http://localhost/nsbm-student-circle`.
 
-* Validate user inputs on both the client and server sides.
-* Use password hashing for stored passwords.
-* Use prepared statements for database queries.
-* Apply role-based access control.
-* Restrict access to administrative features.
-* Validate uploaded files and apply appropriate file-size limits.
+To verify the database connection, visit `http://localhost/nsbm-student-circle/backend/config/test_db_connection.php`. It returns the connection status, table list and row counts as JSON.
 
-## 🚀 Future Improvements
+## Deployment
 
-* Notifications for new questions and study sessions.
-* Student profiles and academic interests.
-* Bookmarking useful study materials.
-* Rating and feedback for shared resources.
-* Advanced search by subject, module, or resource type.
-* Integration of AI-powered study assistance.
+The live site runs on InfinityFree.
 
-## 🎓 Academic Project
+1. Upload the project files to the `htdocs` directory.
+2. Create a MySQL database in the hosting control panel and import the SQL file through phpMyAdmin.
+3. Set `DB_HOST`, `DB_USER`, `DB_PASS` and `DB_NAME` in `backend/config/db_config.php` to the values shown in the panel.
+4. Set `SITE_URL` in `backend/config/app_config.php` to the live URL.
 
-This project is developed as part of the **Web and Mobile Application Development** module at **NSBM Green University**.
+Hosting credentials should only exist on the server and should not be committed to the repository.
 
-**Project Name:** NSBM StudyCircle
-**Project Type:** Web Application
-**Target Users:** University Students and Administrators
-**Development Stack:** HTML, CSS, JavaScript, PHP, and MySQL
+## Academic Context
 
-## 👨‍💻 Contributors
-
-This project is developed collaboratively by our student team.
-
-* Add team member names and GitHub profiles here.
-
-## 📄 License
-
-This project is developed for academic purposes. Licensing and reuse permissions can be specified by the project team.
-
----
-
-**NSBM StudyCircle — Learn Together. Share Knowledge. Grow Together.**
+Module: Web and Mobile Application Development  
+Faculty of Computing, NSBM Green University

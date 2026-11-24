@@ -6,7 +6,7 @@ Built for the Web and Mobile Application Development final project, Faculty of C
 
 | | |
 |---|---|
-| Live site | https://YOUR-NEW-DOMAIN.free.nf |
+| Live site | https://studycirclelk.free.nf |
 | Repository | https://github.com/kaveenmonarawila/NSBM-Study-Circle |
 
 ## Contents

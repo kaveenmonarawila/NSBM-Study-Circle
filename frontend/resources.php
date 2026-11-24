@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../backend/config/app_config.php'; // SITE_NAME
 // ============================================================================
 // NSBM STUDY CIRCLE - DYNAMIC RESOURCES PAGE (PHP + MySQL)
 // ============================================================================
@@ -35,15 +36,15 @@ if ($isLoggedIn) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resource Library - NSBM Study Circle</title>
+    <title>Resource Library - <?= htmlspecialchars(SITE_NAME) ?></title>
     <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
         <!-- Website Favicon: Study Circle logo -->
-    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
-    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
-    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
-    <link rel="apple-touch-icon" href="assets/images/logo.svg"><link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
-    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
-    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="alternate icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="apple-touch-icon" href="assets/images/study-circle-icon.svg"><link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="alternate icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="apple-touch-icon" href="assets/images/study-circle-icon.svg">
 
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -246,14 +247,14 @@ if ($isLoggedIn) {
                         <div class="border-top pt-3 text-center">
                             <?php if ($isLoggedIn): ?>
                                 <a href="student/uploads.php" class="btn btn-outline-success w-100 fw-bold btn-sm py-2 rounded-3 d-flex align-items-center justify-content-center gap-2">
-                                    <i class="bi bi-cloud-arrow-up"></i> Upload Study Material
+                                    <i class="bi bi-link-45deg"></i> Share Study Material
                                 </a>
                             <?php else: ?>
                                 <button type="button" class="btn btn-outline-success w-100 fw-bold btn-sm py-2 rounded-3 d-flex align-items-center justify-content-center gap-2" onclick="promptLoginRequired('upload')">
-                                    <i class="bi bi-lock-fill text-muted"></i> Upload Study Material
+                                    <i class="bi bi-lock-fill text-muted"></i> Share Study Material
                                 </button>
                             <?php endif; ?>
-                            <small class="text-muted d-block mt-2" style="font-size: 0.72rem;">Share your notes with the NSBM community</small>
+                            <small class="text-muted d-block mt-2" style="font-size: 0.72rem;">Share a Google Drive or OneDrive link to your notes</small>
                         </div>
                     </div>
                 </div>
@@ -302,19 +303,19 @@ if ($isLoggedIn) {
                 <div class="modal-header border-bottom px-4 pt-4 pb-3">
                     <div>
                         <h5 class="modal-title fw-bold text-dark" id="uploadResourceModalLabel">
-                            <i class="bi bi-cloud-arrow-up text-success me-2"></i> Upload Study Material
+                            <i class="bi bi-link-45deg text-success me-2"></i> Share Study Material
                         </h5>
-                        <p class="text-secondary small mb-0">Contribute your lecture summaries, revision guides, or formula books.</p>
+                        <p class="text-secondary small mb-0">Share a link to your lecture summaries, revision guides, or formula books. An administrator reviews every link before it is published.</p>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                
-                <form id="resourceUploadForm" enctype="multipart/form-data">
+
+                <form id="resourceUploadForm" novalidate>
                     <div class="modal-body p-4">
                         <?php if (!$isLoggedIn): ?>
                             <div class="alert alert-warning d-flex align-items-center gap-2 mb-3">
                                 <i class="bi bi-exclamation-triangle-fill flex-shrink-0"></i>
-                                <div>You need to be logged in to upload materials. <a href="login.php" class="fw-bold alert-link">Log in here</a></div>
+                                <div>You need to be logged in to share materials. <a href="login.php" class="fw-bold alert-link">Log in here</a></div>
                             </div>
                         <?php endif; ?>
 
@@ -354,15 +355,15 @@ if ($isLoggedIn) {
                         </div>
 
                         <div class="mb-3">
-                            <label for="uploadFile" class="form-label fw-semibold small">Document File (PDF, DOCX, PPTX - Max 10MB) <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control" id="uploadFile" name="resource_file" accept=".pdf,.docx,.pptx" required>
-                            <small class="text-muted" style="font-size:0.75rem;">Verified community uploads are scanned for security and academic integrity.</small>
+                            <label for="uploadLink" class="form-label fw-semibold small">Google Drive or OneDrive share link <span class="text-danger">*</span></label>
+                            <input type="url" class="form-control" id="uploadLink" name="resource_link" inputmode="url" maxlength="500" placeholder="https://drive.google.com/file/d/..." required>
+                            <small class="text-muted" style="font-size:0.75rem;">Set the file to "Anyone with the link can view", then paste the link here. Only drive.google.com, docs.google.com, onedrive.live.com, 1drv.ms and sharepoint.com links are accepted.</small>
                         </div>
                     </div>
                     <div class="modal-footer border-top px-4 py-3 bg-light rounded-bottom-4">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-success fw-bold px-4" <?= !$isLoggedIn ? 'disabled' : '' ?>>
-                            <i class="bi bi-upload me-1"></i> Submit Upload
+                            <i class="bi bi-send me-1"></i> Submit for Review
                         </button>
                     </div>
                 </form>
@@ -380,10 +381,10 @@ if ($isLoggedIn) {
                 <div class="col-lg-4 col-md-6">
                     <a href="index.php" class="brand-logo-container mb-3 text-decoration-none">
                         <div class="brand-logo-wrapper">
-                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                            <img src="assets/images/study-circle-icon.svg" alt="<?= htmlspecialchars(SITE_NAME) ?> Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/study-circle-icon.svg';">
                         </div>
                         <div class="brand-text-group">
-                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-title"><?= htmlspecialchars(SITE_NAME) ?></span>
                             <span class="brand-subtitle">Learn Together. Grow Together.</span>
                         </div>
                     </a>
@@ -421,7 +422,7 @@ if ($isLoggedIn) {
 
             <!-- Bottom Line -->
             <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div>&copy; 2026 <?= htmlspecialchars(SITE_NAME) ?>. An independent student learning platform.</div>
                 <div class="d-flex gap-3">
                     <a href="contact.php" class="text-muted text-decoration-none">Privacy</a>
                     <a href="contact.php" class="text-muted text-decoration-none">Terms</a>
@@ -515,5 +516,6 @@ if ($isLoggedIn) {
 
     <!-- Resources Logic Script -->
     <script src="assets/js/resources.js"></script>
+<?php include __DIR__ . '/includes/site_disclaimer.php'; ?>
 </body>
 </html>

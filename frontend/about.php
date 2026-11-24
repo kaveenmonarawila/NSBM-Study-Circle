@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../backend/config/app_config.php'; // SITE_NAME
 // ============================================================================
 // NSBM STUDY CIRCLE - ABOUT PAGE (PDF SCREENSHOTS PAGES 1 - 5)
 // ============================================================================
@@ -12,14 +13,14 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="About Study Circle, an independent, student-run study platform for sharing notes, discussions and study groups. Not affiliated with or endorsed by NSBM Green University.">
-    <title>About - NSBM Study Circle</title>
+    <meta name="description" content="About Study Circle, an independent, student-run study platform for sharing notes, discussions and study groups. Not affiliated with or endorsed by any university.">
+    <title>About - <?= htmlspecialchars(SITE_NAME) ?></title>
     <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
         <!-- Website Favicon: Study Circle logo -->
-    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
-    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
-    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
-    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="alternate icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="apple-touch-icon" href="assets/images/study-circle-icon.svg">
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,10 +44,10 @@ if (session_status() === PHP_SESSION_NONE) {
          ==================================================================== -->
     <header class="about-hero">
         <div class="container-xl">
-            <span class="about-hero-label">ABOUT NSBM STUDY CIRCLE</span>
+            <span class="about-hero-label">ABOUT <?= htmlspecialchars(strtoupper(SITE_NAME)) ?></span>
             <h1 class="about-hero-title">A clearer way to learn together</h1>
             <p class="about-hero-desc">
-                NSBM Study Circle is an independent student learning community designed around useful knowledge, focused collaboration, and academic integrity.
+                <?= htmlspecialchars(SITE_NAME) ?> is an independent student learning community designed around useful knowledge, focused collaboration, and academic integrity.
             </p>
         </div>
     </header>
@@ -69,7 +70,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         Useful notes often stay hidden in private folders. Excellent questions disappear in message threads. Students who could help one another do not always know where to meet.
                     </p>
                     <p class="why-exist-text">
-                        NSBM Study Circle brings those moments into one organized, welcoming place—without replacing lectures, official learning systems, or independent academic work.
+                        <?= htmlspecialchars(SITE_NAME) ?> brings those moments into one organized, welcoming place—without replacing lectures, official learning systems, or independent academic work.
                     </p>
                 </div>
             </div>
@@ -154,7 +155,7 @@ if (session_status() === PHP_SESSION_NONE) {
     </section>
 
     <!-- ====================================================================
-         4B. INDEPENDENCE & CONTACT (Not affiliated with NSBM Green University)
+         4B. INDEPENDENCE & CONTACT (independent, unofficial student project)
          ==================================================================== -->
     <section class="why-we-exist-section" id="independent">
         <div class="container-xl">
@@ -164,6 +165,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     <h2 class="why-exist-title">
                         Independent, student-run and unofficial.
                     </h2>
+                    <p class="small text-secondary mt-2 mb-0">Made by students, for NSBM students.</p>
                 </div>
                 <div class="col-lg-6">
                     <p class="why-exist-text">
@@ -173,7 +175,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         It offers a shared library of student notes and resources, discussions for questions and answers, study groups, and study sessions you can plan and join.
                     </p>
                     <p class="why-exist-text">
-                        <strong>Study Circle is not affiliated with or endorsed by NSBM Green University.</strong> It is not an official university service or portal. Accounts here are separate from your university account, so please create a separate password for this site and never enter your NSBM student portal or university email password here.
+                        <strong><?= htmlspecialchars(SITE_NAME) ?> is not affiliated with or endorsed by any university.</strong> It is not an official university service or portal. Accounts here are separate from your university account, so please create a separate password for this site and never enter your university portal or email password here.
                     </p>
                     <p class="why-exist-text mb-0">
                         Questions or concerns? Contact the Study Circle team at <strong>[CONTACT_EMAIL]</strong>.
@@ -213,10 +215,10 @@ if (session_status() === PHP_SESSION_NONE) {
                 <div class="col-lg-4 col-md-6">
                     <a href="index.php" class="brand-logo-container mb-3 text-decoration-none">
                         <div class="brand-logo-wrapper">
-                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                            <img src="assets/images/study-circle-icon.svg" alt="<?= htmlspecialchars(SITE_NAME) ?> Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/study-circle-icon.svg';">
                         </div>
                         <div class="brand-text-group">
-                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-title"><?= htmlspecialchars(SITE_NAME) ?></span>
                             <span class="brand-subtitle">Learn Together. Grow Together.</span>
                         </div>
                     </a>
@@ -254,7 +256,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
             <!-- Bottom Line -->
             <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div>&copy; 2026 <?= htmlspecialchars(SITE_NAME) ?>. An independent student learning platform.</div>
                 <div class="d-flex gap-3">
                     <a href="contact.php" class="text-muted text-decoration-none">Privacy</a>
                     <a href="contact.php" class="text-muted text-decoration-none">Terms</a>
@@ -266,6 +268,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
+<?php include __DIR__ . '/includes/site_disclaimer.php'; ?>
 </body>
 </html>
 

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../backend/config/app_config.php'; // SITE_NAME
 // NSBM STUDY CIRCLE - Student Portal Student Profile
 include_once __DIR__ . '/includes/auth_check.php';
 $page_title = 'Student profile';
@@ -23,9 +24,9 @@ if (isset($conn) && $conn && !$conn->connect_error) {
     }
 }
 
-$userBio = !empty($currentUser['bio']) ? $currentUser['bio'] : 'NSBM undergraduate student collaborating and sharing resources on the NSBM Study Circle platform.';
+$userBio = !empty($currentUser['bio']) ? $currentUser['bio'] : 'Student collaborating and sharing resources on ' . SITE_NAME . '.';
 $userInterests = !empty($currentUser['academic_interests']) ? $currentUser['academic_interests'] : 'Algorithms, Databases, Web Technologies';
-$userVisibility = !empty($currentUser['profile_visibility']) ? $currentUser['profile_visibility'] : 'NSBM Study Circle members';
+$userVisibility = !empty($currentUser['profile_visibility']) ? $currentUser['profile_visibility'] : 'Members only';
 $facultyDisplay = (strpos(strtolower($currentUserFaculty), 'faculty') === 0) ? $currentUserFaculty : "Faculty of {$currentUserFaculty}";
 ?>
 <!DOCTYPE html>
@@ -33,11 +34,11 @@ $facultyDisplay = (strpos(strtolower($currentUserFaculty), 'faculty') === 0) ? $
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student profile - Student Dashboard | NSBM Study Circle</title>
+    <title>Student profile - Student Dashboard | <?= htmlspecialchars(SITE_NAME) ?></title>
     <script>(function(){const t=localStorage.getItem('study_circle_theme')||localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
     <!-- Website Favicon -->
-    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
-    <link rel="icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
     <!-- Google Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -145,7 +146,7 @@ $facultyDisplay = (strpos(strtolower($currentUserFaculty), 'faculty') === 0) ? $
                                 <i class="bi bi-patch-check"></i>
                             </div>
                             <div>
-                                <h4 class="student-act-title mb-1" style="font-size: 0.88rem;">Verified NSBM Student Account</h4>
+                                <h4 class="student-act-title mb-1" style="font-size: 0.88rem;"><?= htmlspecialchars(SITE_NAME) ?> member account</h4>
                                 <p class="student-act-desc mb-0" style="font-size: 0.78rem;">Email: <?= htmlspecialchars($currentUser['email']) ?> · Student ID: <?= htmlspecialchars($currentUser['student_id'] ?? 'CB-Verified') ?></p>
                             </div>
                         </div>
@@ -270,7 +271,7 @@ $facultyDisplay = (strpos(strtolower($currentUserFaculty), 'faculty') === 0) ? $
                     <div class="mb-3">
                         <label class="form-label small fw-bold" for="profileEditVisibility">Profile Visibility</label>
                         <select id="profileEditVisibility" class="form-select" style="border-radius: 8px;">
-                            <option value="NSBM Study Circle members" <?= $userVisibility === 'NSBM Study Circle members' ? 'selected' : '' ?>>NSBM Study Circle members</option>
+                            <option value="Members only" <?= $userVisibility === 'Members only' ? 'selected' : '' ?>><?= htmlspecialchars(SITE_NAME) ?> members</option>
                             <option value="Only enrolled course peers" <?= $userVisibility === 'Only enrolled course peers' ? 'selected' : '' ?>>Only enrolled course peers</option>
                             <option value="Private (Only group leaders)" <?= $userVisibility === 'Private (Only group leaders)' ? 'selected' : '' ?>>Private (Only group leaders)</option>
                         </select>
@@ -296,5 +297,6 @@ $facultyDisplay = (strpos(strtolower($currentUserFaculty), 'faculty') === 0) ? $
 <!-- Bootstrap 5 JS Bundle & Student script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/student.js"></script>
+<?php include __DIR__ . '/../includes/site_disclaimer.php'; ?>
 </body>
 </html>

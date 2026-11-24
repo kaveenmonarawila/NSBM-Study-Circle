@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../backend/config/app_config.php'; // SITE_NAME
 // ============================================================================
 // NSBM STUDY CIRCLE - ADMIN CONSOLE: RESOURCE APPROVALS (PDF PAGES 5 & 6)
 // ============================================================================
@@ -9,10 +10,10 @@ include_once __DIR__ . '/includes/auth_check.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resource Approvals - NSBM Study Circle</title>
+    <title>Resource Approvals - <?= htmlspecialchars(SITE_NAME) ?></title>
     <script>(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
-    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
-    <link rel="alternate icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
+    <link rel="alternate icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -28,168 +29,90 @@ include_once __DIR__ . '/includes/auth_check.php';
             <?php include __DIR__ . '/includes/topbar.php'; ?>
 
             <main class="admin-content">
+<?php
+require_once __DIR__ . '/../../backend/helpers/link_helper.php';
+
+// Real approval queue: every resource waiting for review (newest first)
+$pendingQueue = [];
+if (isset($conn) && $conn && !$conn->connect_error) {
+    $qRes = @$conn->query("
+        SELECT r.id, r.title, r.description, r.faculty, r.module_code, r.academic_year,
+               r.external_url, r.file_path, r.created_at, u.name AS author_name, u.email AS author_email
+        FROM resources r
+        LEFT JOIN users u ON r.uploaded_by = u.id
+        WHERE r.status = 'Pending'
+        ORDER BY r.created_at DESC, r.id DESC
+    ");
+    if ($qRes) {
+        while ($row = $qRes->fetch_assoc()) {
+            $pendingQueue[] = $row;
+        }
+    }
+}
+?>
                 <!-- Page Header -->
                 <div class="admin-page-header">
                     <div>
                         <h1 class="admin-page-title">Resource approvals</h1>
-                        <p class="admin-page-subtitle">Review submitted study materials before publication.</p>
+                        <p class="admin-page-subtitle">New study materials are shared as Google Drive / OneDrive links. Open each link, check it, then approve or reject it. Only approved resources are visible to students.</p>
                     </div>
-                    <span class="admin-last-updated">Last updated just now</span>
+                    <span class="status-pill pill-amber" id="pendingCountPill"><?= count($pendingQueue) ?> pending</span>
                 </div>
 
-                <!-- 2-Column Split Layout (PDF Pages 5 & 6) -->
-                <div class="row g-4 align-items-start">
-                    <!-- Left Queue Column -->
-                    <div class="col-lg-4">
-                        <div class="approval-queue-card">
-                            <div class="d-flex align-items-center justify-content-between mb-3">
-                                <span class="fw-bold text-dark" style="font-size:0.9rem;">Pending review</span>
-                                <span class="status-pill pill-amber">7 items</span>
-                            </div>
-
-                            <div class="approval-queue-item active">
-                                <div class="table-item-icon mt-1"><i class="bi bi-file-earmark-text"></i></div>
-                                <div class="approval-item-body">
-                                    <div class="approval-item-title">Data Structures — Complete Revision Guide</div>
-                                    <div class="approval-item-meta">Nethmi Perera · Computing</div>
-                                    <div class="approval-item-time">2 hours ago</div>
-                                </div>
-                            </div>
-
-                            <div class="approval-queue-item">
-                                <div class="table-item-icon mt-1"><i class="bi bi-file-earmark-text"></i></div>
-                                <div class="approval-item-body">
-                                    <div class="approval-item-title">Financial Accounting Formula Book</div>
-                                    <div class="approval-item-meta">Kavindu Silva · Business</div>
-                                    <div class="approval-item-time">5 hours ago</div>
-                                </div>
-                            </div>
-
-                            <div class="approval-queue-item">
-                                <div class="table-item-icon mt-1"><i class="bi bi-file-earmark-text"></i></div>
-                                <div class="approval-item-body">
-                                    <div class="approval-item-title">Engineering Mechanics — First-Year Guide</div>
-                                    <div class="approval-item-meta">Ravindu Mendis · Engineering</div>
-                                    <div class="approval-item-time">Yesterday</div>
-                                </div>
-                            </div>
-
-                            <div class="approval-queue-item">
-                                <div class="table-item-icon mt-1"><i class="bi bi-file-earmark-text"></i></div>
-                                <div class="approval-item-body">
-                                    <div class="approval-item-title">Laboratory Skills Handbook</div>
-                                    <div class="approval-item-meta">Dinara Jayasinghe · Science</div>
-                                    <div class="approval-item-time">Yesterday</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right Detail & Preview Panel -->
-                    <div class="col-lg-8">
-                        <div class="admin-card overflow-hidden">
-                            <!-- Top Resource Header -->
-                            <div class="d-flex align-items-start justify-content-between gap-3">
-                                <div class="d-flex align-items-start gap-3 min-w-0 flex-grow-1">
-                                    <div class="admin-kpi-icon kpi-icon-blue" style="width:42px;height:42px;font-size:1.15rem;">
-                                        <i class="bi bi-file-earmark-text"></i>
-                                    </div>
-                                    <div class="min-w-0 flex-grow-1">
-                                        <span class="status-pill pill-blue mb-2" id="approvalDetailFacultyBadge">Computing</span>
-                                        <h2 class="fw-bold text-dark mb-1" style="font-size:1.15rem;overflow-wrap:break-word;" id="approvalDetailTitle">Data Structures — Complete Revision Guide</h2>
-                                        <p class="text-secondary mb-0" style="font-size:0.8rem;overflow-wrap:break-word;" id="approvalDetailMeta">Submitted by Nethmi Perera · PDF · 5.8 MB</p>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn-row-dots flex-shrink-0" title="More options"><i class="bi bi-three-dots"></i></button>
-                            </div>
-
-                            <!-- 4 Verification Check Cards -->
-                            <div class="approval-check-grid">
-                                <div class="approval-check-box">
-                                    <div class="approval-check-title">
-                                        <i class="bi bi-check2"></i>
-                                        <span>Ownership declaration</span>
-                                    </div>
-                                    <div class="approval-check-sub">Confirmed</div>
-                                </div>
-
-                                <div class="approval-check-box">
-                                    <div class="approval-check-title">
-                                        <i class="bi bi-check2"></i>
-                                        <span>File scan</span>
-                                    </div>
-                                    <div class="approval-check-sub">No threats detected</div>
-                                </div>
-
-                                <div class="approval-check-box">
-                                    <div class="approval-check-title">
-                                        <i class="bi bi-check2"></i>
-                                        <span>Duplicate check</span>
-                                    </div>
-                                    <div class="approval-check-sub">No close matches</div>
-                                </div>
-
-                                <div class="approval-check-box">
-                                    <div class="approval-check-title">
-                                        <i class="bi bi-check2"></i>
-                                        <span>Required fields</span>
-                                    </div>
-                                    <div class="approval-check-sub">Complete</div>
-                                </div>
-                            </div>
-
-                            <!-- Document Preview Box -->
-                            <div class="approval-preview-wrapper">
-                                <div class="approval-preview-topbar">
-                                    <span id="approvalPreviewPages">Preview · Page 1 of 42</span>
-                                    <a href="#" class="text-decoration-none fw-bold d-inline-flex align-items-center gap-1" style="color:#0284C7;" onclick="event.preventDefault(); window.showAdminToast('Opened full-screen document preview.');">
-                                        <i class="bi bi-eye"></i> Full screen
-                                    </a>
-                                </div>
-
-                                <div class="approval-preview-sheet">
-                                    <div class="sheet-tag">STUDYCIRCLE NOTES</div>
-                                    <div class="sheet-title" id="approvalSheetTitle">Data Structures — Complete<br>Revision Guide</div>
-                                    <div class="sheet-divider"></div>
-                                    <p class="sheet-desc">A structured academic resource with clear explanations, worked examples, and revision prompts.</p>
-                                </div>
-                            </div>
-
-                            <!-- Resource Metadata (PDF Page 6) -->
-                            <div class="mb-4">
-                                <h3 class="fw-bold text-dark mb-3" style="font-size:0.86rem;">Resource metadata</h3>
-                                <div class="row g-3 mb-3">
-                                    <div class="col-6 col-md-3">
-                                        <div class="fw-bold text-dark" style="font-size:0.78rem;">Subject</div>
-                                        <div class="text-secondary" style="font-size:0.82rem;" id="approvalMetaSubject">Computing</div>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <div class="fw-bold text-dark" style="font-size:0.78rem;">Module</div>
-                                        <div class="text-secondary" style="font-size:0.82rem;" id="approvalMetaModule">CS2102</div>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <div class="fw-bold text-dark" style="font-size:0.78rem;">Academic year</div>
-                                        <div class="text-secondary" style="font-size:0.82rem;" id="approvalMetaYear">Year 2</div>
-                                    </div>
-                                    <div class="col-6 col-md-3">
-                                        <div class="fw-bold text-dark" style="font-size:0.78rem;">Language</div>
-                                        <div class="text-secondary" style="font-size:0.82rem;">English</div>
-                                    </div>
-                                </div>
-
-                                <div class="fw-bold text-dark mb-1" style="font-size:0.78rem;">Description</div>
-                                <p class="text-secondary mb-0" style="font-size:0.82rem;" id="approvalMetaDesc">
-                                    Comprehensive module-aligned notes prepared for revision, including diagrams, examples, and a final exam checklist.
-                                </p>
-                            </div>
-
-                            <!-- Action Buttons Row -->
-                            <div class="d-flex align-items-center justify-content-end gap-2 pt-3 border-top">
-                                <button type="button" class="btn-admin-outline" id="btnRequestChanges">Request changes</button>
-                                <button type="button" class="btn-admin-reject" id="btnRejectResource">Reject</button>
-                                <button type="button" class="btn-admin-green" id="btnApproveResource">Approve resource</button>
-                            </div>
-                        </div>
+                <div class="admin-table-card">
+                    <div class="table-responsive">
+                        <table class="admin-table" id="approvalQueueTable">
+                            <thead>
+                                <tr>
+                                    <th>RESOURCE</th>
+                                    <th>SUBMITTED BY</th>
+                                    <th>LINK</th>
+                                    <th class="text-end">DECISION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php if (empty($pendingQueue)): ?>
+                                <tr id="approvalQueueEmpty">
+                                    <td colspan="4" class="text-center text-secondary py-4">Nothing to review. New link submissions will appear here.</td>
+                                </tr>
+                            <?php endif; ?>
+                            <?php foreach ($pendingQueue as $item):
+                                $link = validateResourceLink($item['external_url'] ?? '');
+                            ?>
+                                <tr data-resource-row="<?= (int)$item['id'] ?>">
+                                    <td style="max-width: 360px;">
+                                        <div class="fw-bold text-dark"><?= htmlspecialchars($item['title']) ?></div>
+                                        <div class="small text-secondary">
+                                            <?= htmlspecialchars($item['faculty']) ?> · <?= htmlspecialchars($item['module_code'] ?? '') ?> · <?= htmlspecialchars($item['academic_year'] ?? '') ?>
+                                            · <?= htmlspecialchars(date('d M Y, H:i', strtotime($item['created_at'] ?? 'now'))) ?>
+                                        </div>
+                                        <?php if (!empty($item['description'])): ?>
+                                            <div class="small text-secondary mt-1"><?= htmlspecialchars(mb_strimwidth($item['description'], 0, 180, '…')) ?></div>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <div class="small fw-semibold text-dark"><?= htmlspecialchars($item['author_name'] ?? 'Unknown') ?></div>
+                                        <div class="small text-secondary"><?= htmlspecialchars($item['author_email'] ?? '') ?></div>
+                                    </td>
+                                    <td>
+                                        <?php if ($link['ok']): ?>
+                                            <a href="<?= htmlspecialchars($link['url'], ENT_QUOTES) ?>" target="_blank" rel="noopener noreferrer" class="small fw-semibold">
+                                                <i class="bi bi-box-arrow-up-right me-1"></i>Open on <?= htmlspecialchars($link['provider']) ?>
+                                            </a>
+                                        <?php elseif (!empty($item['file_path'])): ?>
+                                            <span class="small text-secondary">Old file stored on server</span>
+                                        <?php else: ?>
+                                            <span class="small text-danger">No valid link - reject</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td class="text-end text-nowrap">
+                                        <button type="button" class="btn-admin-reject" data-moderate="Rejected" data-id="<?= (int)$item['id'] ?>">Reject</button>
+                                        <button type="button" class="btn-admin-green" data-moderate="Approved" data-id="<?= (int)$item['id'] ?>" <?= $link['ok'] || !empty($item['file_path']) ? '' : 'disabled' ?>>Approve</button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </main>
@@ -198,5 +121,44 @@ include_once __DIR__ . '/includes/auth_check.php';
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/admin.js"></script>
+    <script>
+    // Approve / reject one resource by id (admin_controller.php?action=moderate_resource)
+    document.addEventListener('click', async (e) => {
+        const btn = e.target.closest('[data-moderate][data-id]');
+        if (!btn) return;
+        const id = parseInt(btn.dataset.id, 10);
+        const status = btn.dataset.moderate;
+        const row = btn.closest('tr');
+        const title = row?.querySelector('.fw-bold')?.textContent.trim() || ('#' + id);
+        if (status === 'Rejected' && !confirm(`Reject "${title}"? Students will not see it.`)) return;
+
+        row?.querySelectorAll('button').forEach(b => b.disabled = true);
+        const toast = (msg, type) => (window.showAdminToast ? window.showAdminToast(msg, type) : alert(msg));
+        try {
+            const res = await fetch('../../backend/controllers/admin_controller.php?action=moderate_resource', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, status })
+            });
+            let data = null;
+            try { data = JSON.parse(await res.text()); } catch (err) { /* non-JSON (e.g. host browser check) */ }
+            if (!data || !data.success) throw new Error((data && data.message) || 'Request failed');
+
+            row?.remove();
+            const left = document.querySelectorAll('[data-resource-row]').length;
+            const pill = document.getElementById('pendingCountPill');
+            if (pill) pill.textContent = `${left} pending`;
+            if (!left) {
+                const tbody = document.querySelector('#approvalQueueTable tbody');
+                if (tbody) tbody.innerHTML = '<tr><td colspan="4" class="text-center text-secondary py-4">Nothing to review. New link submissions will appear here.</td></tr>';
+            }
+            toast(status === 'Approved' ? `Approved "${title}". It is now visible to students.` : `Rejected "${title}".`, status === 'Approved' ? 'success' : 'danger');
+        } catch (err) {
+            row?.querySelectorAll('button').forEach(b => b.disabled = false);
+            toast(`Could not update "${title}": ${err.message}. Please refresh and try again.`, 'danger');
+        }
+    });
+    </script>
+<?php include __DIR__ . '/../includes/site_disclaimer.php'; ?>
 </body>
 </html>

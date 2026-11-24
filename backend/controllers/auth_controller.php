@@ -70,7 +70,7 @@ function deriveNameFromEmail(string $email): string {
     $local = explode('@', $email)[0] ?? 'Student';
     $parts = preg_split('/[._\-]+/', $local);
     $formatted = array_map(fn($p) => ucfirst(strtolower(trim($p))), array_filter($parts));
-    return !empty($formatted) ? implode(' ', $formatted) : 'NSBM Student';
+    return !empty($formatted) ? implode(' ', $formatted) : 'Student';
 }
 
 function isJsonRequest() {
@@ -203,7 +203,7 @@ if ($action === 'login') {
         $_SESSION['student_id'] = $user['student_id'] ?? null;
         $_SESSION['bio'] = $user['bio'] ?? '';
         $_SESSION['academic_interests'] = $user['academic_interests'] ?? '';
-        $_SESSION['profile_visibility'] = $user['profile_visibility'] ?? 'NSBM Study Circle members';
+        $_SESSION['profile_visibility'] = $user['profile_visibility'] ?? 'Members only';
         $_SESSION['logged_in_at'] = time();
 
         $redirectUrl = ($user['role'] === 'admin')
@@ -314,7 +314,7 @@ else if ($action === 'register') {
         $_SESSION['student_id'] = $studentId;
         $_SESSION['bio'] = '';
         $_SESSION['academic_interests'] = '';
-        $_SESSION['profile_visibility'] = 'NSBM Study Circle members';
+        $_SESSION['profile_visibility'] = 'Members only';
         $_SESSION['logged_in_at'] = time();
 
         $redirectUrl = ($roleToSave === 'admin') ? '../../frontend/admin/index.php' : '../../frontend/student/index.php';

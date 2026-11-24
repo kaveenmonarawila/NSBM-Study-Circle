@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../backend/config/app_config.php'; // SITE_NAME
 // NSBM STUDY CIRCLE - Student Portal Study Materials
 include_once __DIR__ . '/includes/auth_check.php';
 $page_title = 'Study Materials';
@@ -26,11 +27,11 @@ if (file_exists($db_path)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Materials - Student Dashboard | NSBM Study Circle</title>
+    <title>Study Materials - Student Dashboard | <?= htmlspecialchars(SITE_NAME) ?></title>
     <script>(function(){const t=localStorage.getItem('study_circle_theme')||localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
     <!-- Website Favicon -->
-    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
-    <link rel="icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
     <!-- Google Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -131,7 +132,7 @@ if (file_exists($db_path)) {
                         <i class="bi bi-arrow-clockwise me-1"></i> Refresh Library
                     </button>
                     <button type="button" class="student-btn-green" data-bs-toggle="modal" data-bs-target="#uploadMaterialModal">
-                        <i class="bi bi-cloud-arrow-up me-1"></i> Upload Material
+                        <i class="bi bi-link-45deg me-1"></i> Share Material
                     </button>
                 </div>
             </div>
@@ -555,28 +556,29 @@ if (file_exists($db_path)) {
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius: 14px; border: 1px solid var(--student-card-border);">
             <div class="modal-header border-bottom-0 pb-0">
-                <h5 class="modal-title fw-bold" id="uploadMaterialModalLabel">Upload Study Material</h5>
+                <h5 class="modal-title fw-bold" id="uploadMaterialModalLabel">Share Study Material</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="uploadMaterialForm">
+                <form id="uploadMaterialForm" novalidate>
+                    <p class="small text-muted mb-3">Share a link to your notes on Google Drive or OneDrive. Files are not uploaded to this site, and an administrator reviews every link before other students can see it.</p>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Title / Document Name</label>
-                        <input type="text" class="form-control" placeholder="e.g. Distributed Systems Revision Notes" required>
+                        <label class="form-label small fw-bold" for="umTitle">Title / Document Name</label>
+                        <input type="text" class="form-control" id="umTitle" name="title" maxlength="255" placeholder="e.g. Distributed Systems Revision Notes" required>
                     </div>
                     <div class="row g-2 mb-3">
                         <div class="col-6">
-                            <label class="form-label small fw-bold">Faculty</label>
-                            <select class="form-select">
-                                <option>Faculty of Computing</option>
-                                <option>Faculty of Business</option>
-                                <option>Faculty of Science</option>
-                                <option>Faculty of Engineering</option>
+                            <label class="form-label small fw-bold" for="umFaculty">Faculty</label>
+                            <select class="form-select" id="umFaculty" name="faculty">
+                                <option value="Computing">Faculty of Computing</option>
+                                <option value="Business">Faculty of Business</option>
+                                <option value="Science">Faculty of Science</option>
+                                <option value="Engineering">Faculty of Engineering</option>
                             </select>
                         </div>
                         <div class="col-6">
-                            <label class="form-label small fw-bold">Academic Year</label>
-                            <select class="form-select">
+                            <label class="form-label small fw-bold" for="umYear">Academic Year</label>
+                            <select class="form-select" id="umYear" name="academic_year">
                                 <option>Year 1</option>
                                 <option>Year 2</option>
                                 <option>Year 3</option>
@@ -585,18 +587,24 @@ if (file_exists($db_path)) {
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Select File (PDF, DOCX, PPTX - Max 10MB)</label>
-                        <input type="file" class="form-control" accept=".pdf,.docx,.pptx" required>
+                        <label class="form-label small fw-bold" for="umModule">Module Code</label>
+                        <input type="text" class="form-control" id="umModule" name="module_code" maxlength="30" placeholder="e.g. CS2102" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Description / Topics Covered</label>
-                        <textarea class="form-control" rows="3" placeholder="Briefly describe what students will learn from this material..."></textarea>
+                        <label class="form-label small fw-bold" for="umLink">Google Drive or OneDrive share link</label>
+                        <input type="url" class="form-control" id="umLink" name="resource_link" inputmode="url" maxlength="500" placeholder="https://drive.google.com/file/d/..." required>
+                        <small class="text-muted d-block mt-1" style="font-size:0.75rem;">Set sharing to "Anyone with the link can view". Accepted: drive.google.com, docs.google.com, onedrive.live.com, 1drv.ms, sharepoint.com.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold" for="umDesc">Description / Topics Covered</label>
+                        <textarea class="form-control" id="umDesc" name="description" rows="3" placeholder="Briefly describe what students will learn from this material..."></textarea>
                     </div>
                     <div class="d-flex justify-content-end gap-2 pt-2">
                         <button type="button" class="student-btn-outline" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="student-btn-green">Submit for Review</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
@@ -694,5 +702,6 @@ if (file_exists($db_path)) {
         });
     });
 </script>
+<?php include __DIR__ . '/../includes/site_disclaimer.php'; ?>
 </body>
 </html>

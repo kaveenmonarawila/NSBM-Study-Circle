@@ -66,7 +66,7 @@ if ($action === 'get_events' || $action === 'get_month_events') {
                 SELECT ss.id, ss.title, ss.description, ss.module_code, ss.faculty, 
                        ss.session_date, ss.duration_mins, ss.format_type, ss.location_details, 
                        ss.capacity, ss.enrolled_count, ss.status,
-                       COALESCE(u.name, 'NSBM Student Leader') AS host_name
+                       COALESCE(u.name, 'Student Leader') AS host_name
                 FROM study_sessions ss
                 LEFT JOIN users u ON ss.host_id = u.id
                 WHERE ss.session_date BETWEEN ? AND ?
@@ -176,7 +176,7 @@ if ($action === 'get_week_events') {
                 SELECT ss.id, ss.title, ss.description, ss.module_code, ss.faculty, 
                        ss.session_date, ss.duration_mins, ss.format_type, ss.location_details, 
                        ss.capacity, ss.enrolled_count, ss.status,
-                       COALESCE(u.name, 'NSBM Student Leader') AS host_name
+                       COALESCE(u.name, 'Student Leader') AS host_name
                 FROM study_sessions ss
                 LEFT JOIN users u ON ss.host_id = u.id
                 WHERE ss.session_date BETWEEN ? AND ?
@@ -235,7 +235,7 @@ if ($action === 'get_day_events') {
                 SELECT ss.id, ss.title, ss.description, ss.module_code, ss.faculty, 
                        ss.session_date, ss.duration_mins, ss.format_type, ss.location_details, 
                        ss.capacity, ss.enrolled_count, ss.status,
-                       COALESCE(u.name, 'NSBM Student Leader') AS host_name
+                       COALESCE(u.name, 'Student Leader') AS host_name
                 FROM study_sessions ss
                 LEFT JOIN users u ON ss.host_id = u.id
                 WHERE ss.session_date BETWEEN ? AND ?

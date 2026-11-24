@@ -45,6 +45,8 @@ $Exclude = @(
     '**/*.pyc'
     '**/*.json'
     '**/*.txt'
+    '**/*.log'
+    '**/*.html'
     'deploy-infinityfree/**'
     'database/**'
     'HTML/**'
@@ -55,6 +57,11 @@ $Exclude = @(
     'backend/config/db_credentials.example.php'
     'backend/uploads/resources/**'
     'uploads/resources/**'
+    'frontend/assets/images/banners/nsbm-landing.jpeg'
+    'frontend/assets/images/logo.svg'
+    'frontend/assets/images/logo.jpg'
+    'src/logo.svg'
+    'src/homepagephoto.jpeg'
 )
 
 function Convert-GlobToRegex([string]$Glob) {

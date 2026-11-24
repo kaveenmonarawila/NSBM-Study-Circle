@@ -218,9 +218,17 @@
         }
     }
 
-    // Must match RESOURCE_MAX_UPLOAD_MB in backend/controllers/resource_controller.php
-    const MAX_UPLOAD_MB = 10;
-    const ALLOWED_UPLOAD_EXTS = ['pdf', 'docx', 'pptx'];
+    // Study materials are shared as links, never uploaded. Quick client-side check;
+    // the server (backend/helpers/link_helper.php) enforces the same rules.
+    const LINK_ERROR = 'Please paste a Google Drive or OneDrive share link that starts with https:// (allowed sites: drive.google.com, docs.google.com, onedrive.live.com, 1drv.ms, sharepoint.com).';
+    function isAllowedShareLink(value) {
+        let u;
+        try { u = new URL(String(value || '').trim()); } catch (e) { return false; }
+        if (u.protocol !== 'https:' || u.username || u.password || (u.port && u.port !== '443')) return false;
+        const host = u.hostname.toLowerCase().replace(/\.$/, '');
+        return ['drive.google.com', 'docs.google.com', 'onedrive.live.com', '1drv.ms', 'sharepoint.com'].includes(host)
+            || /^[a-z0-9-]+(\.[a-z0-9-]+)*\.sharepoint\.com$/.test(host);
+    }
 
     // =========================================================================
     // 1. RESOURCES LIST PAGE (resources.html & resources.php)
@@ -529,31 +537,29 @@
                     return;
                 }
 
-                // Client-side file checks (the server enforces the same rules)
-                const fileInput = uploadForm.querySelector('input[type="file"]');
-                const chosenFile = fileInput && fileInput.files ? fileInput.files[0] : null;
-                if (chosenFile) {
-                    const ext = (chosenFile.name.split('.').pop() || '').toLowerCase();
-                    if (!ALLOWED_UPLOAD_EXTS.includes(ext)) {
-                        showToast('Unsupported file format. Only PDF, DOCX, and PPTX files are allowed.', false);
-                        return;
-                    }
-                    if (chosenFile.size > MAX_UPLOAD_MB * 1024 * 1024) {
-                        showToast(`File is too large (${(chosenFile.size / 1048576).toFixed(1)} MB). The maximum upload size is ${MAX_UPLOAD_MB} MB.`, false);
-                        return;
-                    }
+                // Client-side checks (the server enforces the same rules)
+                const titleVal = (uploadForm.querySelector('[name="title"]')?.value || '').trim();
+                const moduleVal = (uploadForm.querySelector('[name="module_code"]')?.value || '').trim();
+                const linkVal = (uploadForm.querySelector('[name="resource_link"]')?.value || '').trim();
+                if (!titleVal || !moduleVal) {
+                    showToast('Please provide a resource title and module code.', false);
+                    return;
+                }
+                if (!isAllowedShareLink(linkVal)) {
+                    showToast(LINK_ERROR, false);
+                    return;
                 }
 
                 const submitBtn = uploadForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn ? submitBtn.innerHTML : 'Upload';
+                const originalText = submitBtn ? submitBtn.innerHTML : 'Submit';
                 if (submitBtn) {
                     submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Uploading...';
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
                 }
 
                 try {
                     const formData = new FormData(uploadForm);
-                    formData.append('action', 'upload');
+                    formData.append('action', 'submit_link');
 
                     const response = await fetch(API_BASE, {
                         method: 'POST',
@@ -562,14 +568,14 @@
                     });
 
                     if (response.status === 401) {
-                        showToast('Please log in to upload materials.', false);
+                        showToast('Please log in to share materials.', false);
                         setTimeout(() => { window.location.href = 'login.php'; }, 1500);
                         return;
                     }
 
                     const data = await readJson(response);
                     if (data.success) {
-                        showToast(data.message || 'Resource uploaded successfully!', true);
+                        showToast(data.message || 'Link submitted for review.', true);
                         uploadForm.reset();
                         // Close modal if bootstrap modal
                         const modalEl = document.getElementById('uploadResourceModal');
@@ -580,11 +586,11 @@
                         // Refresh grid
                         fetchResources();
                     } else {
-                        showToast(data.message || 'Upload failed.', false);
+                        showToast(data.message || 'Could not submit the link.', false);
                     }
                 } catch (err) {
                     if (err && err.nonJson) return; // friendly toast already shown
-                    showToast('Connection error during upload. Please check your network.', false);
+                    showToast('Connection error while submitting. Please check your network.', false);
                 } finally {
                     if (submitBtn) {
                         submitBtn.disabled = false;
@@ -703,7 +709,7 @@
             if (ratingVal) ratingVal.textContent = rScore;
             if (ratingsCount) ratingsCount.textContent = `(${resource.ratings_count || 0} ratings)`;
             if (specSize) specSize.textContent = resource.file_size_mb || '3.5 MB';
-            if (specPages) specPages.textContent = resource.page_count || 24;
+            if (specPages) specPages.textContent = resource.is_link ? '—' : (resource.page_count || 24);
             if (specDownloads) specDownloads.textContent = parseInt(resource.downloads || 0, 10).toLocaleString();
             if (specLanguage) specLanguage.textContent = resource.language || 'English';
 

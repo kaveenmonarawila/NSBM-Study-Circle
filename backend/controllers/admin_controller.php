@@ -252,9 +252,20 @@ switch ($action) {
         $status = in_array($statusRaw, ['Approved', 'Pending', 'Rejected', 'Archived']) ? $statusRaw : 'Approved';
 
         if ($id > 0) {
+            // Preferred: moderate exactly one resource by id (used by approvals.php)
             $stmt = $conn->prepare("UPDATE resources SET status = ? WHERE id = ?");
             $stmt->bind_param("si", $status, $id);
             $stmt->execute();
+            $check = $conn->prepare("SELECT status FROM resources WHERE id = ?");
+            $check->bind_param("i", $id);
+            $check->execute();
+            $current = $check->get_result()->fetch_assoc();
+            if (!$current || $current['status'] !== $status) {
+                echo json_encode(['success' => false, 'message' => "Resource #$id was not found."]);
+                break;
+            }
+            echo json_encode(['success' => true, 'id' => $id, 'status' => $status, 'message' => "Resource #$id is now $status."]);
+            break;
         } elseif (!empty($title)) {
             $stmt = $conn->prepare("UPDATE resources SET status = ? WHERE title LIKE ?");
             $like = "%$title%";

@@ -79,12 +79,12 @@ switch ($action) {
             $user = ($userRes && $userRes->num_rows > 0) ? $userRes->fetch_assoc() : [
                 'id' => $userId,
                 'name' => $_SESSION['name'] ?? 'Student',
-                'email' => $_SESSION['email'] ?? 'student@nsbm.ac.lk',
+                'email' => $_SESSION['email'] ?? 'student@example.com',
                 'faculty' => $_SESSION['faculty'] ?? 'Computing',
                 'degree_program' => $_SESSION['degree_program'] ?? 'BSc (Hons) Computer Science · Year 1',
                 'bio' => '',
                 'academic_interests' => '',
-                'profile_visibility' => 'NSBM Study Circle members'
+                'profile_visibility' => 'Members only'
             ];
             $userId = (int)$user['id'];
         }
@@ -106,6 +106,7 @@ switch ($action) {
             SELECT r.*, u.name AS author_name, u.degree_program AS author_role
             FROM resources r
             LEFT JOIN users u ON r.uploaded_by = u.id
+            WHERE r.status = 'Approved' OR r.uploaded_by = $userId
             ORDER BY r.id ASC
         ");
         if ($resQuery) {
@@ -265,7 +266,7 @@ switch ($action) {
         }
         $bio = trim($input['bio'] ?? '');
         $interests = trim($input['interests'] ?? '');
-        $visibility = trim($input['visibility'] ?? 'NSBM Study Circle members');
+        $visibility = trim($input['visibility'] ?? 'Members only');
 
         $stmt = $conn->prepare("UPDATE users SET name = ?, degree_program = ?, faculty = ?, bio = ?, academic_interests = ?, profile_visibility = ? WHERE id = ?");
         if ($stmt) {
@@ -361,10 +362,16 @@ switch ($action) {
     // =========================================================================
     // 5. UPLOAD / EDIT / DELETE STUDY MATERIAL (`resources` table)
     // =========================================================================
+    case 'submit_link':
     case 'upload_material':
-        $title = trim($input['title'] ?? 'Uploaded Study Material');
-        $moduleCode = trim($input['module'] ?? 'CS2102');
-        $facultyRaw = trim($input['faculty'] ?? 'Computing');
+        // Study materials are shared as Google Drive / OneDrive links. No file is
+        // ever uploaded or stored; new links wait for administrator approval.
+        require_once __DIR__ . '/../models/Resource.php';
+        require_once __DIR__ . '/../helpers/link_helper.php';
+
+        $title = trim((string)($input['title'] ?? ''));
+        $moduleCode = trim((string)($input['module'] ?? ($input['module_code'] ?? '')));
+        $facultyRaw = trim((string)($input['faculty'] ?? 'Computing'));
         $faculty = 'Computing';
         foreach (['Computing', 'Business', 'Engineering', 'Science'] as $fac) {
             if (stripos($facultyRaw, $fac) !== false) {
@@ -372,17 +379,42 @@ switch ($action) {
                 break;
             }
         }
-        $desc = trim($input['description'] ?? 'Student-contributed revision material.');
-        $filePath = 'uploads/resources/' . strtolower(preg_replace('/[^a-zA-Z0-9]+/', '_', $title)) . '.pdf';
+        $yearRaw = trim((string)($input['academic_year'] ?? 'Year 1'));
+        $academicYear = in_array($yearRaw, ['Year 1', 'Year 2', 'Year 3', 'Year 4'], true) ? $yearRaw : 'Year 1';
+        $desc = trim((string)($input['description'] ?? ''));
 
-        $stmt = $conn->prepare("INSERT INTO resources (title, description, module_code, faculty, file_path, file_type, file_size_mb, page_count, uploaded_by, status) VALUES (?, ?, ?, ?, ?, 'PDF', 2.40, 15, ?, 'Pending')");
-        if ($stmt) {
-            $stmt->bind_param("sssssi", $title, $desc, $moduleCode, $faculty, $filePath, $userId);
-            $stmt->execute();
-            echo json_encode(['success' => true, 'id' => $stmt->insert_id, 'message' => 'Material saved to database']);
+        if ($title === '' || $moduleCode === '') {
+            echo json_encode(['success' => false, 'message' => 'Please provide a resource title and module code.']);
             exit();
         }
-        echo json_encode(['success' => false, 'message' => 'Could not save material']);
+        if (mb_strlen($title) > 255 || mb_strlen($moduleCode) > 30) {
+            echo json_encode(['success' => false, 'message' => 'The title (max 255 characters) or module code (max 30 characters) is too long.']);
+            exit();
+        }
+
+        $link = validateResourceLink($input['resource_link'] ?? '');
+        if (!$link['ok']) {
+            echo json_encode(['success' => false, 'message' => $link['error']]);
+            exit();
+        }
+
+        $newId = (new ResourceModel($conn))->createResource([
+            'title' => $title,
+            'description' => $desc,
+            'faculty' => $faculty,
+            'module_code' => $moduleCode,
+            'academic_year' => $academicYear,
+            'external_url' => $link['url'],
+            'uploaded_by' => $userId,
+            'about_text' => $desc,
+        ]);
+
+        if ($newId) {
+            echo json_encode(['success' => true, 'id' => $newId, 'status' => 'Pending',
+                'message' => 'Thanks! Your resource link was submitted and is waiting for an administrator to approve it.']);
+            exit();
+        }
+        echo json_encode(['success' => false, 'message' => 'Could not save the resource link. Please try again.']);
         break;
 
     case 'edit_upload':
@@ -399,13 +431,13 @@ switch ($action) {
             }
         }
         if ($resId > 0) {
-            $stmt = $conn->prepare("UPDATE resources SET title = ?, module_code = ?, faculty = ? WHERE id = ?");
-            $stmt->bind_param("sssi", $title, $moduleCode, $faculty, $resId);
+            $stmt = $conn->prepare("UPDATE resources SET title = ?, module_code = ?, faculty = ? WHERE id = ? AND uploaded_by = ?");
+            $stmt->bind_param("sssii", $title, $moduleCode, $faculty, $resId, $userId);
             $stmt->execute();
         } elseif (!empty($oldTitle)) {
-            $stmt = $conn->prepare("UPDATE resources SET title = ?, module_code = ?, faculty = ? WHERE title LIKE ?");
+            $stmt = $conn->prepare("UPDATE resources SET title = ?, module_code = ?, faculty = ? WHERE title LIKE ? AND uploaded_by = ?");
             $like = "%$oldTitle%";
-            $stmt->bind_param("ssss", $title, $moduleCode, $faculty, $like);
+            $stmt->bind_param("ssssi", $title, $moduleCode, $faculty, $like, $userId);
             $stmt->execute();
         }
         echo json_encode(['success' => true, 'message' => 'Resource updated in database']);
@@ -415,13 +447,13 @@ switch ($action) {
         $resId = (int)($input['resource_id'] ?? 0);
         $title = trim($input['title'] ?? '');
         if ($resId > 0) {
-            $stmt = $conn->prepare("DELETE FROM resources WHERE id = ?");
-            $stmt->bind_param("i", $resId);
+            $stmt = $conn->prepare("DELETE FROM resources WHERE id = ? AND uploaded_by = ?");
+            $stmt->bind_param("ii", $resId, $userId);
             $stmt->execute();
         } elseif (!empty($title)) {
-            $stmt = $conn->prepare("DELETE FROM resources WHERE title LIKE ? LIMIT 1");
+            $stmt = $conn->prepare("DELETE FROM resources WHERE title LIKE ? AND uploaded_by = ? LIMIT 1");
             $like = "%$title%";
-            $stmt->bind_param("s", $like);
+            $stmt->bind_param("si", $like, $userId);
             $stmt->execute();
         }
         echo json_encode(['success' => true, 'message' => 'Upload removed from database']);

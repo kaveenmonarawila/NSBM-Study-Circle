@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../backend/config/app_config.php'; // SITE_NAME
 // NSBM STUDY CIRCLE - Student Portal Account Settings
 include_once __DIR__ . '/includes/auth_check.php';
 $page_title = 'Account settings';
@@ -8,11 +9,11 @@ $page_title = 'Account settings';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account settings - Student Dashboard | NSBM Study Circle</title>
+    <title>Account settings - Student Dashboard | <?= htmlspecialchars(SITE_NAME) ?></title>
     <script>(function(){const t=localStorage.getItem('study_circle_theme')||localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
     <!-- Website Favicon -->
-    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
-    <link rel="icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
     <!-- Google Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -126,7 +127,7 @@ $page_title = 'Account settings';
                                 </div>
                             </div>
                             <div class="d-flex align-items-center justify-content-between py-2">
-                                <span class="fw-semibold small">NSBM Study Circle product news</span>
+                                <span class="fw-semibold small"><?= htmlspecialchars(SITE_NAME) ?> product news</span>
                                 <div class="form-check form-switch mb-0">
                                     <input class="form-check-input" type="checkbox" role="switch">
                                 </div>
@@ -142,7 +143,7 @@ $page_title = 'Account settings';
                         <div class="mb-4" style="max-width: 480px;">
                             <label class="form-label small fw-bold">Profile visibility</label>
                             <select class="form-select">
-                                <option selected>NSBM Study Circle members</option>
+                                <option value="Members only" selected><?= htmlspecialchars(SITE_NAME) ?> members</option>
                                 <option>Only enrolled course peers</option>
                                 <option>Private (Only group leaders)</option>
                             </select>
@@ -195,7 +196,7 @@ $page_title = 'Account settings';
             </div>
             <div class="modal-body">
                 <p class="text-secondary small mb-3">
-                    Are you sure you want to permanently delete your NSBM Study Circle account? This action is <strong>irreversible</strong> and will immediately delete:
+                    Are you sure you want to permanently delete your <?= htmlspecialchars(SITE_NAME) ?> account? This action is <strong>irreversible</strong> and will immediately delete:
                 </p>
                 <ul class="text-secondary small mb-3">
                     <li>Your student profile details, bio, and academic identity</li>
@@ -222,5 +223,6 @@ $page_title = 'Account settings';
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/student.js"></script>
+<?php include __DIR__ . '/../includes/site_disclaimer.php'; ?>
 </body>
 </html>

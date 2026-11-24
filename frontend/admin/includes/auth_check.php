@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../../backend/config/app_config.php'; // SITE_NAME
 // ============================================================================
 // NSBM STUDY CIRCLE - ADMIN CONSOLE AUTHENTICATION & ACCESS CONTROL BRIDGE
 // Strict Role-Based Security: Prevents Students & Logged-Out Users from Accessing Admin
@@ -83,6 +84,6 @@ if (!$currentAdmin && isset($conn) && $conn && !$conn->connect_error) {
 }
 
 $currentAdminName = !empty($_SESSION['name']) ? $_SESSION['name'] : 'Administrator';
-$currentAdminEmail = !empty($_SESSION['email']) ? $_SESSION['email'] : 'admin@nsbm.lk';
+$currentAdminEmail = !empty($_SESSION['email']) ? $_SESSION['email'] : 'admin@example.com';
 $currentAdminType = !empty($_SESSION['admin_type']) ? $_SESSION['admin_type'] : 'Super administrator';
 ?>

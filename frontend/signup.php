@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../backend/config/app_config.php'; // SITE_NAME
 // ============================================================================
 // NSBM STUDY CIRCLE - DEDICATED SIGNUP PAGE
 // Matches Visual Reference Screenshots: 2-Column Split Layout, 2-Step Flow
@@ -24,12 +25,12 @@ if (isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study Circle – Create account</title>
-    <meta name="description" content="Create a Study Circle account. Study Circle is an independent, student-run study platform for sharing notes, discussions and study groups. Not affiliated with or endorsed by NSBM Green University.">
+    <meta name="description" content="Create a Study Circle account. Study Circle is an independent, student-run study platform for sharing notes, discussions and study groups. Not a university service.">
     <!-- Website Favicon: Study Circle logo -->
-    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
-    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
-    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
-    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="alternate icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="apple-touch-icon" href="assets/images/study-circle-icon.svg">
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,12 +53,12 @@ if (isset($_SESSION['user_id'])) {
         <div class="signup-left-panel">
             <!-- Top Bar: Logo & Brand + Theme Toggle & Back to Website -->
             <div class="signup-top-bar">
-                <a href="index.php" class="signup-brand" aria-label="NSBM Study Circle Home">
+                <a href="index.php" class="signup-brand" aria-label="<?= htmlspecialchars(SITE_NAME) ?> Home">
                     <div class="signup-brand-logo-wrapper">
-                        <img src="assets/images/logo.svg" onerror="this.src='../src/logo.jpg'" alt="NSBM Study Circle Logo" class="signup-brand-logo-img">
+                        <img src="assets/images/study-circle-icon.svg" onerror="this.src='assets/images/study-circle-icon.svg'" alt="<?= htmlspecialchars(SITE_NAME) ?> Logo" class="signup-brand-logo-img">
                     </div>
                     <div>
-                        <div class="signup-brand-title">NSBM Study Circle</div>
+                        <div class="signup-brand-title"><?= htmlspecialchars(SITE_NAME) ?></div>
                         <div class="signup-brand-subtitle">Learn Together. Grow Together.</div>
                     </div>
                 </a>
@@ -100,13 +101,13 @@ if (isset($_SESSION['user_id'])) {
                     <!-- Independence & password safety notice -->
                     <div class="alert alert-warning small py-2 mb-3" role="note">
                         <i class="bi bi-shield-exclamation me-1"></i>
-                        This is an independent student platform, not the official NSBM portal. Create a separate password for this site. Do not use your NSBM student portal or university email password.
+                        This is an independent, student-run site, not a university portal. Create a separate password for this site and never reuse your university portal or email password.
                     </div>
 
                     <!-- STEP 1 FORM: Account Details -->
                     <form id="signupStep1Form" novalidate>
                         <div class="signup-eyebrow">JOIN THE COMMUNITY</div>
-                        <h1 class="signup-title">Create your NSBM Study Circle account</h1>
+                        <h1 class="signup-title">Create your <?= htmlspecialchars(SITE_NAME) ?> account</h1>
                         <p class="signup-desc">Start with your basic account information.</p>
 
                         <!-- First Name and Last Name Side-by-Side -->
@@ -230,8 +231,8 @@ if (isset($_SESSION['user_id'])) {
 
             <!-- Footer: Copyright, Privacy & Help -->
             <div class="signup-footer">
-                &copy; 2026 NSBM Study Circle &middot; <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy</a> &middot; <a href="contact.php">Help</a>
-                <div class="mt-1">Independent student platform. Not affiliated with or endorsed by NSBM Green University.</div>
+                &copy; 2026 <?= htmlspecialchars(SITE_NAME) ?> &middot; <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy</a> &middot; <a href="contact.php">Help</a>
+                <div class="mt-1">Independent student platform. Not a university service.</div>
             </div>
         </div>
 
@@ -293,7 +294,7 @@ if (isset($_SESSION['user_id'])) {
                 <div class="modal-header border-bottom pb-3">
                     <div class="d-flex align-items-center gap-2">
                         <i class="bi bi-shield-check text-success fs-4"></i>
-                        <h5 class="modal-title fw-bold" id="guidelinesModalLabel">NSBM Community Guidelines &amp; Terms</h5>
+                        <h5 class="modal-title fw-bold" id="guidelinesModalLabel">Community Guidelines &amp; Terms</h5>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -568,7 +569,7 @@ if (isset($_SESSION['user_id'])) {
                                 <i class="bi bi-check-circle-fill text-success fs-5"></i>
                                 <span class="fw-bold">Registration Saved to MySQL!</span>
                             </div>
-                            <p class="small text-muted mb-0">Welcome to NSBM Study Circle, <strong>${fullName}</strong>! Redirecting to your Student Dashboard...</p>
+                            <p class="small text-muted mb-0">Welcome to <?= htmlspecialchars(SITE_NAME) ?>, <strong>${fullName}</strong>! Redirecting to your Student Dashboard...</p>
                         </div>
                     `;
                     step2Form.style.display = 'none';
@@ -592,6 +593,7 @@ if (isset($_SESSION['user_id'])) {
             });
         });
     </script>
+<?php include __DIR__ . '/includes/site_disclaimer.php'; ?>
 </body>
 </html>
 

@@ -106,8 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     // 3B. GENUINE PHYSICAL FILE DOWNLOAD GENERATOR (PDF & DOCX)
     // =========================================================================
-    window.downloadStudyMaterial = function (title, faculty, format = 'PDF', moduleCode = 'Academic Resource', author = 'NSBM Contributor') {
-        const cleanTitle = (title || 'NSBM Study Material').replace(/[^\w\s\-\.]/gi, '').trim();
+    window.downloadStudyMaterial = function (title, faculty, format = 'PDF', moduleCode = 'Academic Resource', author = 'Student Contributor') {
+        // Site name comes from SITE_NAME in backend/config/app_config.php (set in site_disclaimer.php)
+        const siteName = String(window.__SITE_NAME || 'Study Circle').replace(/[()\\]/g, '');
+        const cleanTitle = (title || 'Study Material').replace(/[^\w\s\-\.]/gi, '').trim();
         const fileSlug = cleanTitle.replace(/\s+/g, '_');
         const isDocx = (format && format.toUpperCase().includes('DOCX'));
         const ext = isDocx ? 'docx' : 'pdf';
@@ -116,14 +118,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let blob;
         if (isDocx) {
             const docText = `========================================================\n` +
-                `NSBM GREEN UNIVERSITY - STUDY CIRCLE ACADEMIC ARCHIVE\n` +
+                `${siteName.toUpperCase()} - STUDENT-SHARED STUDY NOTES\n` +
                 `Learn Together. Grow Together.\n` +
                 `========================================================\n\n` +
                 `Resource Title : ${cleanTitle}\n` +
                 `Faculty        : ${faculty || 'General'}\n` +
                 `Module Code    : ${moduleCode || 'Academic'}\n` +
-                `Shared By      : ${author || 'NSBM Student Contributor'}\n` +
-                `Downloaded By  : ${(window.__NSBM_CURRENT_USER?.name || 'NSBM Student')} (${(window.__NSBM_CURRENT_USER?.role || 'Student Contributor')})\n` +
+                `Shared By      : ${author || 'Student Contributor'}\n` +
+                `Downloaded By  : ${(window.__NSBM_CURRENT_USER?.name || 'Student')} (${(window.__NSBM_CURRENT_USER?.role || 'Student Contributor')})\n` +
                 `Download Date  : ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}\n\n` +
                 `--------------------------------------------------------\n` +
                 `COURSE SUMMARY & LEARNING OBJECTIVES\n` +
@@ -131,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `1. Foundational Core Principles & Theory\n` +
                 `2. Worked Practical Problems & Past Paper Solutions\n` +
                 `3. High-Yield Exam Review & Formula Reference\n\n` +
-                `NSBM Study Circle - Independent student-shared resource. Not affiliated with NSBM Green University.\n`;
+                `${siteName} - Student-run project, not an official NSBM website.\n`;
             blob = new Blob([docText], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
         } else {
             // Generate authentic, valid PDF 1.4 binary stream
@@ -139,17 +141,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const pdfTitle = cleanTitle.substring(0, 48);
             const pdfFaculty = (faculty || 'Faculty of Computing').substring(0, 40);
             const pdfModule = (moduleCode || 'CS2102').substring(0, 20);
-            const pdfAuthor = (author || 'NSBM Contributor').substring(0, 30);
+            const pdfAuthor = (author || 'Student Contributor').substring(0, 30);
 
             const streamContent = 
                 'BT\n' +
-                '/F1 20 Tf 50 740 Td (NSBM STUDY CIRCLE) Tj\n' +
-                '/F2 11 Tf 0 -20 Td (INDEPENDENT STUDENT STUDY RESOURCE - NOT AFFILIATED WITH NSBM GREEN UNIVERSITY) Tj\n' +
+                '/F1 20 Tf 50 740 Td (' + siteName.toUpperCase() + ') Tj\n' +
+                '/F2 11 Tf 0 -20 Td (STUDENT-RUN PROJECT, NOT AN OFFICIAL NSBM WEBSITE) Tj\n' +
                 '/F2 9 Tf 0 -15 Td (Learn Together. Grow Together. | Faculty: ' + pdfFaculty + ') Tj\n' +
                 '0 -30 Td () Tj\n' +
                 '/F1 15 Tf 0 -10 Td (' + pdfTitle + ') Tj\n' +
                 '/F2 11 Tf 0 -22 Td (Module Reference: ' + pdfModule + ' | Author: ' + pdfAuthor + ') Tj\n' +
-                '0 -18 Td (Downloaded by: ' + (window.__NSBM_CURRENT_USER?.name || 'NSBM Student') + ' on ' + dateStr + ') Tj\n' +
+                '0 -18 Td (Downloaded by: ' + (window.__NSBM_CURRENT_USER?.name || 'Student') + ' on ' + dateStr + ') Tj\n' +
                 '0 -18 Td (Status: Student-shared revision material) Tj\n' +
                 '0 -35 Td (------------------------------------------------------------------------------------------------------) Tj\n' +
                 '/F1 13 Tf 0 -25 Td (1. Syllabus Overview & Key Concepts) Tj\n' +
@@ -160,13 +162,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 '/F1 13 Tf 0 -10 Td (2. High-Yield Revision Points & Exam Advice) Tj\n' +
                 '/F2 10 Tf 0 -18 Td (- Review foundational definitions, terminology, and standard problem classifications.) Tj\n' +
                 '0 -16 Td (- Allocate 15 minutes to review sample past exam questions and time management strategies.) Tj\n' +
-                '0 -16 Td (- Join the weekly study session and discussion forums on NSBM Study Circle for peer support.) Tj\n' +
+                '0 -16 Td (- Join the weekly study session and discussion forums on ' + siteName + ' for peer support.) Tj\n' +
                 '0 -28 Td () Tj\n' +
                 '/F1 13 Tf 0 -10 Td (3. Student Study Circle Notice) Tj\n' +
                 '/F2 10 Tf 0 -18 Td (Shared in goodwill by student peers for educational and revision purposes.) Tj\n' +
                 '0 -16 Td (For additional modules, past papers, and discussion forums, visit your Study Circle dashboard.) Tj\n' +
                 '0 -25 Td () Tj\n' +
-                '/F2 9 Tf 0 -15 Td (Generated by NSBM Study Circle, an independent student platform - https://nsbm-study-circle.42web.io - Document ID: NSBM-SC-' + Math.floor(100000 + Math.random() * 900000) + ') Tj\n' +
+                '/F2 9 Tf 0 -15 Td (Generated by ' + siteName + ', an independent student platform - ' + window.location.origin + ' - Document ID: SC-' + Math.floor(100000 + Math.random() * 900000) + ') Tj\n' +
                 'ET';
 
             const streamBytes = streamContent.length;
@@ -814,7 +816,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const format = downloadActionBtn.getAttribute('data-format') || 
                            (resData ? resData.format : 'PDF');
             const moduleCode = resData ? resData.module : 'CS2102';
-            const author = resData ? resData.author : 'NSBM Contributor';
+            const author = resData ? resData.author : 'Student Contributor';
             downloadStudyMaterial(title, faculty, format, moduleCode, author);
             return;
         }
@@ -1297,7 +1299,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const faculty = document.getElementById('profileEditFaculty')?.value || 'Faculty of Computing';
             const bio = document.getElementById('profileEditBio')?.value.trim() || '';
             const interests = document.getElementById('profileEditInterests')?.value.trim() || '';
-            const visibility = document.getElementById('profileEditVisibility')?.value || 'NSBM Study Circle members';
+            const visibility = document.getElementById('profileEditVisibility')?.value || 'Members only';
 
             // Calculate avatar initials
             const parts = name.split(/\s+/).filter(Boolean);
@@ -1416,35 +1418,62 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Upload Material Modal Form in Study Materials / Uploads
+    // Share Material Modal Form in Study Materials / Uploads.
+    // Materials are shared as Google Drive / OneDrive links - no file is uploaded.
+    // The server (backend/helpers/link_helper.php) enforces the same link rules.
     const uploadMatForm = document.getElementById('uploadMaterialForm');
     if (uploadMatForm) {
-        uploadMatForm.addEventListener('submit', (e) => {
+        const isAllowedShareLink = (value) => {
+            let u;
+            try { u = new URL(String(value || '').trim()); } catch (err) { return false; }
+            if (u.protocol !== 'https:' || u.username || u.password || (u.port && u.port !== '443')) return false;
+            const host = u.hostname.toLowerCase().replace(/\.$/, '');
+            return ['drive.google.com', 'docs.google.com', 'onedrive.live.com', '1drv.ms', 'sharepoint.com'].includes(host)
+                || /^[a-z0-9-]+(\.[a-z0-9-]+)*\.sharepoint\.com$/.test(host);
+        };
+
+        uploadMatForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            // Client-side file checks: PDF/DOCX/PPTX only, max 10 MB
-            const chosenFile = uploadMatForm.querySelector('input[type="file"]')?.files?.[0];
-            if (chosenFile) {
-                const ext = (chosenFile.name.split('.').pop() || '').toLowerCase();
-                if (!['pdf', 'docx', 'pptx'].includes(ext)) {
-                    showStudentToast('Unsupported file format. Only PDF, DOCX, and PPTX files are allowed.', 'danger');
-                    return;
-                }
-                if (chosenFile.size > 10 * 1024 * 1024) {
-                    showStudentToast(`File is too large (${(chosenFile.size / 1048576).toFixed(1)} MB). The maximum upload size is 10 MB.`, 'danger');
-                    return;
-                }
+            const val = (name) => (uploadMatForm.querySelector(`[name="${name}"]`)?.value || '').trim();
+            const payload = {
+                title: val('title'),
+                faculty: val('faculty') || 'Computing',
+                academic_year: val('academic_year') || 'Year 1',
+                module_code: val('module_code'),
+                resource_link: val('resource_link'),
+                description: val('description')
+            };
+            if (!payload.title || !payload.module_code) {
+                showStudentToast('Please provide a resource title and module code.', 'danger');
+                return;
             }
-            const title = uploadMatForm.querySelector('input[type="text"]')?.value.trim() || 'Study Material';
-            const faculty = uploadMatForm.querySelector('select')?.value || 'Computing';
-            fetch('../../backend/controllers/student_controller.php?action=upload_material', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, faculty })
-            }).catch(() => {});
-            const modal = bootstrap.Modal.getInstance(document.getElementById('uploadMaterialModal'));
-            if (modal) modal.hide();
-            uploadMatForm.reset();
-            showStudentToast('Study material uploaded successfully! Sent to academic peer review.', 'success');
+            if (!isAllowedShareLink(payload.resource_link)) {
+                showStudentToast('Please paste a Google Drive or OneDrive share link that starts with https:// (allowed sites: drive.google.com, docs.google.com, onedrive.live.com, 1drv.ms, sharepoint.com).', 'danger');
+                return;
+            }
+
+            const submitBtn = uploadMatForm.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = true;
+            try {
+                const res = await fetch('../../backend/controllers/student_controller.php?action=submit_link', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await readJson(res);
+                if (data && data.success) {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('uploadMaterialModal'));
+                    if (modal) modal.hide();
+                    uploadMatForm.reset();
+                    showStudentToast(data.message || 'Link submitted. An administrator will review it before it is published.', 'success');
+                } else {
+                    showStudentToast((data && data.message) || 'Could not submit the link. Please try again.', 'danger');
+                }
+            } catch (err) {
+                if (!(err && err.nonJson)) showStudentToast('Connection error while submitting. Please try again.', 'danger');
+            } finally {
+                if (submitBtn) submitBtn.disabled = false;
+            }
         });
     }
 
@@ -2445,7 +2474,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     faculty: facFull,
                     bio: u.bio || 'Focused on algorithms, database systems, and building clear revision notes.',
                     interests: u.academic_interests || 'Data Structures, Web Engineering, SQL, Peer mentoring',
-                    visibility: u.profile_visibility || 'NSBM Study Circle members',
+                    visibility: u.profile_visibility || 'Members only',
                     initials: u.initials || (window.__NSBM_CURRENT_USER?.initials || 'ST')
                 });
             }
@@ -2461,15 +2490,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         title: r.title,
                         module: r.module_code || 'CS2102',
                         faculty: facName,
-                        author: r.author_name || 'NSBM Student Contributor',
+                        author: r.author_name || 'Student Contributor',
                         authorInitials: r.author_initials || 'NS',
-                        authorRole: r.author_role || 'NSBM Student Contributor',
+                        authorRole: r.author_role || 'Student Contributor',
                         year: `${r.academic_year || 'Year 2'} &bull; ${r.semester || 'Semester 1'}`,
                         format: `${r.file_type || 'PDF'} Document`,
                         size: `${r.file_size_mb || '4.2'} MB`,
                         downloads: `${Number(r.downloads || 0).toLocaleString()} downloads`,
                         rating: `${r.rating || '4.9'} / 5.0 (${r.reviews_count || 32} reviews)`,
-                        desc: r.description || 'Comprehensive peer-reviewed study material aligned with NSBM module outcomes.',
+                        desc: r.description || 'Comprehensive peer-reviewed study material aligned with module outcomes.',
                         topics: ["Core Syllabus Principles", "Worked Past-Paper Solutions", "High-Yield Exam Checklist"]
                     };
                 });

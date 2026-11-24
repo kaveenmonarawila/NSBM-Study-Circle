@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <div class="res-card-footer">
                                 <div><i class="bi bi-star-fill text-warning me-1"></i>${item.rating} &nbsp; <i class="bi bi-download text-muted me-1"></i>${item.downloads}</div>
-                                <a href="login.html" class="text-success fw-bold text-decoration-none">View resource</a>
+                                <a href="login.php" class="text-success fw-bold text-decoration-none">View resource</a>
                             </div>
                         </div>
                     </div>

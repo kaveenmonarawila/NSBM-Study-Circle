@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../backend/config/app_config.php'; // SITE_NAME
 // ============================================================================
 // NSBM STUDY CIRCLE - CONTACT & HELP (PDF SCREENSHOTS PAGES 6 - 9)
 // ============================================================================
@@ -12,13 +13,13 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact & Help - NSBM Study Circle</title>
+    <title>Contact & Help - <?= htmlspecialchars(SITE_NAME) ?></title>
     <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
         <!-- Website Favicon: Study Circle logo -->
-    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
-    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
-    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
-    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="alternate icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="apple-touch-icon" href="assets/images/study-circle-icon.svg">
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -110,7 +111,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <span class="help-hero-label">CONTACT & HELP</span>
             <h1 class="fw-bold mb-3" style="font-size: 2.5rem;">What can we help you with?</h1>
             <p class="text-white-50" style="font-size: 1.05rem; max-width: 600px;">
-                Find quick answers, learn how NSBM Study Circle works, or send the team a detailed message.
+                Find quick answers, learn how <?= htmlspecialchars(SITE_NAME) ?> works, or send the team a detailed message.
             </p>
         </div>
     </header>
@@ -205,7 +206,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     </p>
                 </div>
                 <div class="col-lg-8">
-                    <form id="contactForm" onsubmit="event.preventDefault(); alert('Thank you! Your message has been sent to the NSBM Study Circle support team.'); this.reset();">
+                    <form id="contactForm" onsubmit="event.preventDefault(); alert('Thank you! Your message has been sent to the <?= htmlspecialchars(SITE_NAME) ?> support team.'); this.reset();">
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold text-secondary">Your name</label>
@@ -249,10 +250,10 @@ if (session_status() === PHP_SESSION_NONE) {
                 <div class="col-lg-4 col-md-6">
                     <a href="index.php" class="brand-logo-container mb-3 text-decoration-none">
                         <div class="brand-logo-wrapper">
-                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                            <img src="assets/images/study-circle-icon.svg" alt="<?= htmlspecialchars(SITE_NAME) ?> Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/study-circle-icon.svg';">
                         </div>
                         <div class="brand-text-group">
-                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-title"><?= htmlspecialchars(SITE_NAME) ?></span>
                             <span class="brand-subtitle">Learn Together. Grow Together.</span>
                         </div>
                     </a>
@@ -290,7 +291,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
             <!-- Bottom Line -->
             <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div>&copy; 2026 <?= htmlspecialchars(SITE_NAME) ?>. An independent student learning platform.</div>
                 <div class="d-flex gap-3">
                     <a href="contact.php" class="text-muted text-decoration-none">Privacy</a>
                     <a href="contact.php" class="text-muted text-decoration-none">Terms</a>
@@ -301,6 +302,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
+<?php include __DIR__ . '/includes/site_disclaimer.php'; ?>
 </body>
 </html>
 

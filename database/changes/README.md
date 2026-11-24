@@ -26,8 +26,9 @@ numbered SQL file in this folder. Never edit a file that has already been run.
    Test the site locally.
 2. **InfinityFree:** Control Panel -> **MySQL Databases** -> **phpMyAdmin** next to
    your `if0_XXXXXXXX_...` database -> **Import** the same file.
-3. Also fold the change into `backend/database/nsbm_student_circle.sql` and
-   `deploy-infinityfree/nsbm_infinityfree.sql`, so a fresh install gets the full schema.
+3. Also fold the change into `backend/database/nsbm_student_circle.sql`,
+   `deploy-infinityfree/nsbm_infinityfree.sql` and `database/infinityfree_import.sql`,
+   so a fresh install gets the full schema.
 4. Commit the new file together with the code that needs it.
 
 InfinityFree keeps **no backups**: before a risky change, use phpMyAdmin

@@ -1,5 +1,16 @@
 # Uploaded files are data, never code: block script execution in this folder.
 
+# 0. No direct web access at all. Files are only served through
+#    backend/controllers/resource_controller.php?action=download (login required),
+#    which reads them with PHP. This stops the folder being used as public file hosting.
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order Deny,Allow
+    Deny from all
+</IfModule>
+
 # 1. Refuse any request for script-like files (also covers double extensions like file.php.pdf)
 <FilesMatch "(?i)\.(php\d?|phtml|phar|pht|phps|cgi|pl|py|sh|exe|asp|aspx|jsp|htaccess)(\.|$)">
     <IfModule mod_authz_core.c>

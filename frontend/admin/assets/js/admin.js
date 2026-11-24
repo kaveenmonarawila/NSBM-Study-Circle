@@ -462,7 +462,7 @@
             generalSettingsForm.addEventListener('submit', function (e) {
                 e.preventDefault();
                 const settingsPayload = {
-                    platform_name: document.getElementById('platformNameInput')?.value || 'NSBM Study Circle',
+                    platform_name: document.getElementById('platformNameInput')?.value || (window.__SITE_NAME || 'Study Circle'),
                     support_email: document.getElementById('supportEmailInput')?.value || 'support@example.com',
                     default_language: document.getElementById('defaultLangSelect')?.value || 'English',
                     timezone: document.getElementById('timeZoneSelect')?.value || 'Asia/Colombo',
@@ -602,7 +602,7 @@
                     icon: 'bi-download text-secondary',
                     label: 'Download submitted PDF',
                     action: () => {
-                        const blob = new Blob([`NSBM Study Circle Resource Submission\nTitle: ${resTitle}\nFaculty: ${resFaculty}\nModule: ${resModule}\n${resMeta}\n`], { type: 'text/plain;charset=utf-8' });
+                        const blob = new Blob([`${window.__SITE_NAME || 'Study Circle'} Resource Submission\nTitle: ${resTitle}\nFaculty: ${resFaculty}\nModule: ${resModule}\n${resMeta}\n`], { type: 'text/plain;charset=utf-8' });
                         const url = URL.createObjectURL(blob);
                         const a = document.createElement('a');
                         a.href = url;

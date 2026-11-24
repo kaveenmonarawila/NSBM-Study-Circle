@@ -73,7 +73,7 @@ try {
 
             if (!@$conn->select_db(DB_NAME)) {
                 // Local only: create `nsbm_student_circle` and import the schema on first run.
-                // (InfinityFree does not allow CREATE DATABASE - import nsbm_infinityfree.sql in phpMyAdmin instead.)
+                // (InfinityFree does not allow CREATE DATABASE - import database/infinityfree_import.sql in phpMyAdmin instead.)
                 if (!APP_IS_LOCAL) {
                     $conn = null;
                     break;

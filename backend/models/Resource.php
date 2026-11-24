@@ -5,6 +5,7 @@
 // ============================================================================
 
 require_once __DIR__ . '/../config/db_config.php';
+require_once __DIR__ . '/../helpers/link_helper.php';
 
 class ResourceModel {
     private $conn;
@@ -12,6 +13,33 @@ class ResourceModel {
     public function __construct($dbConnection = null) {
         global $conn;
         $this->conn = $dbConnection ?? $conn;
+    }
+
+    /**
+     * Who may see a resource: everyone if it is Approved; otherwise only the
+     * student who submitted it and administrators (Pending / Rejected / Archived).
+     */
+    public static function canView($resource, $userId, $userRole): bool {
+        if (!is_array($resource)) return false;
+        if (($resource['status'] ?? 'Approved') === 'Approved') return true;
+        if ($userRole === 'admin') return true;
+        return $userId && (int)($resource['uploaded_by'] ?? 0) === (int)$userId;
+    }
+
+    /**
+     * Adds link info for the UI. A resource is either an external share link
+     * (new system) or an old file stored on the server (kept read-only).
+     */
+    private function decorateLinkFields(array $row): array {
+        $url = $row['external_url'] ?? '';
+        $row['is_link'] = ($url !== '' && $url !== null && isAllowedResourceLink($url));
+        $row['link_provider'] = $row['is_link'] ? resourceLinkProvider($url) : '';
+        if (!$row['is_link']) {
+            $row['external_url'] = null; // never hand an unvalidated link to the browser
+        } else {
+            $row['file_size_mb'] = $row['link_provider']; // "Google Drive" instead of "0.00 MB"
+        }
+        return $row;
     }
 
     /**
@@ -23,7 +51,7 @@ class ResourceModel {
         }
 
         $query = "SELECT r.id, r.title, r.description, r.faculty, r.module_code, r.academic_year, 
-                         r.file_type, r.file_size_mb, r.downloads, r.rating, r.ratings_count, r.created_at,
+                         r.file_type, r.file_size_mb, r.external_url, r.downloads, r.rating, r.ratings_count, r.created_at,
                          r.about_text, r.whats_included, r.preview_badge, r.preview_heading, r.preview_subheading,
                          u.name AS author_name, u.faculty AS author_faculty, u.degree_program AS author_role
                   FROM resources r
@@ -115,7 +143,7 @@ class ResourceModel {
             $row['rating'] = (float)$row['rating'];
             $row['downloads'] = (int)$row['downloads'];
             $row['file_size_mb'] = $row['file_size_mb'] . ' MB';
-            $resources[] = $row;
+            $resources[] = $this->decorateLinkFields($row);
         }
 
         return !empty($resources) ? $resources : $this->filterFallbackResources($subject, $format, $year, $search, $sort);
@@ -171,7 +199,7 @@ class ResourceModel {
 
                     // Fetch reviews
                     $row['feedback'] = $this->getReviewsByResourceId($id);
-                    return $row;
+                    return $this->decorateLinkFields($row);
                 }
             }
         }
@@ -185,17 +213,22 @@ class ResourceModel {
     }
 
     /**
-     * Create a new resource from Student Upload
+     * Create a new resource from a student's link submission.
+     * New resources are always external share links (no file is stored on the
+     * server) and start as 'Pending' until an administrator approves them.
      */
     public function createResource($data) {
         if (!$this->conn || $this->conn->connect_error) return false;
 
+        $link = validateResourceLink($data['external_url'] ?? '');
+        if (!$link['ok']) return false;
+
         $stmt = $this->conn->prepare("
             INSERT INTO resources (
-                title, description, faculty, module_code, academic_year, 
-                file_path, file_type, file_size_mb, page_count, uploaded_by, 
+                title, description, faculty, module_code, academic_year,
+                file_path, external_url, file_type, file_size_mb, page_count, uploaded_by,
                 status, about_text, whats_included, preview_badge, preview_heading, preview_subheading
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
         if (!$stmt) return false;
@@ -205,12 +238,12 @@ class ResourceModel {
         $faculty = $data['faculty'] ?? 'Computing';
         $moduleCode = trim($data['module_code'] ?? 'COM101');
         $academicYear = $data['academic_year'] ?? 'Year 1';
-        $filePath = $data['file_path'];
-        $fileType = strtoupper($data['file_type'] ?? 'PDF');
-        $fileSizeMb = (float)($data['file_size_mb'] ?? 1.5);
-        $pageCount = (int)($data['page_count'] ?? 12);
+        $externalUrl = $link['url'];
+        $fileType = 'LINK';
+        $fileSizeMb = 0.0;
+        $pageCount = 0;
         $uploadedBy = (int)$data['uploaded_by'];
-        $status = $data['status'] ?? 'Approved'; // Can be 'Pending' if approval required
+        $status = 'Pending'; // always reviewed by an administrator first
         $aboutText = $data['about_text'] ?? $description;
         $whatsIncluded = is_array($data['whats_included'] ?? null) ? json_encode($data['whats_included']) : ($data['whats_included'] ?? null);
         $previewBadge = strtoupper($faculty);
@@ -218,9 +251,9 @@ class ResourceModel {
         $previewSubheading = $description;
 
         $stmt->bind_param(
-            "ssssssdiisssssss",
+            "sssssssdiissssss", // 7 strings, size (d), pages (i), uploaded_by (i), 6 strings
             $title, $description, $faculty, $moduleCode, $academicYear,
-            $filePath, $fileType, $fileSizeMb, $pageCount, $uploadedBy,
+            $externalUrl, $fileType, $fileSizeMb, $pageCount, $uploadedBy,
             $status, $aboutText, $whatsIncluded, $previewBadge, $previewHeading, $previewSubheading
         );
 

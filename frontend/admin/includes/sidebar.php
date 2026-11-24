@@ -6,10 +6,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
 <aside class="admin-sidebar" id="adminSidebar">
     <a href="index.php" class="admin-sidebar-brand">
         <div class="admin-brand-icon">
-            <img src="../assets/images/logo.svg" alt="NSBM Study Circle" onerror="this.onerror=null; this.src='../assets/images/logo.jpg';">
+            <img src="../assets/images/study-circle-icon.svg" alt="<?= htmlspecialchars(SITE_NAME) ?>" onerror="this.onerror=null; this.src='../assets/images/study-circle-icon.svg';">
         </div>
         <div>
-            <h6 class="admin-brand-title">NSBM Study Circle</h6>
+            <h6 class="admin-brand-title"><?= htmlspecialchars(SITE_NAME) ?></h6>
             <p class="admin-brand-tagline">ADMIN CONSOLE</p>
         </div>
     </a>

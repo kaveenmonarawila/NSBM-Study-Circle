@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../backend/config/app_config.php'; // SITE_NAME
 // ============================================================================
 // NSBM STUDY CIRCLE - ADMIN CONSOLE: USER MANAGEMENT (PDF PAGES 3 & 4)
 // ============================================================================
@@ -9,10 +10,10 @@ include_once __DIR__ . '/includes/auth_check.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management - NSBM Study Circle</title>
+    <title>User Management - <?= htmlspecialchars(SITE_NAME) ?></title>
     <script>(function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
-    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
-    <link rel="alternate icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
+    <link rel="alternate icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -190,5 +191,6 @@ include_once __DIR__ . '/includes/auth_check.php';
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/admin.js"></script>
+<?php include __DIR__ . '/../includes/site_disclaimer.php'; ?>
 </body>
 </html>

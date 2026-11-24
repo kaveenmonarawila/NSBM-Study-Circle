@@ -6,7 +6,7 @@ Built for the Web and Mobile Application Development final project, Faculty of C
 
 | | |
 |---|---|
-| Live site | https://nsbm-study-circle.42web.io |
+| Live site | https://YOUR-NEW-DOMAIN.free.nf |
 | Repository | https://github.com/kaveenmonarawila/NSBM-Study-Circle |
 
 ## Contents
@@ -148,12 +148,11 @@ To verify the database connection, visit `http://localhost/nsbm-student-circle/b
 
 The live site runs on InfinityFree.
 
-1. Upload the project files to the `htdocs` directory.
-2. Create a MySQL database in the hosting control panel and import the SQL file through phpMyAdmin.
-3. Set `DB_HOST`, `DB_USER`, `DB_PASS` and `DB_NAME` in `backend/config/db_config.php` to the values shown in the panel.
-4. Set `SITE_URL` in `backend/config/app_config.php` to the live URL.
+1. Create a MySQL database in the hosting control panel, open phpMyAdmin for it and import `database/infinityfree_import.sql`.
+2. Copy `backend/config/db_credentials.example.php` to `backend/config/db_credentials.php`, fill in the host, port, database, user and password from the panel, and upload it once by FTP to `/htdocs/backend/config/`. This file is gitignored and is never deployed by GitHub Actions.
+3. Add the `FTP_SERVER`, `FTP_USERNAME` and `FTP_PASSWORD` repository secrets. Every push to `main` then uploads the site to `/htdocs/` via `.github/workflows/deploy.yml`. If FTP from GitHub fails, run `deploy-infinityfree/build.ps1` and upload `deploy-infinityfree/htdocs/` with FileZilla.
 
-Hosting credentials should only exist on the server and should not be committed to the repository.
+`SITE_URL` is detected from the request automatically, so no URL needs to be configured. Hosting credentials should only exist on the server and should not be committed to the repository.
 
 ## Academic Context
 

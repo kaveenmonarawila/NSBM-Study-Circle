@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../backend/config/app_config.php'; // SITE_NAME
 require_once __DIR__ . '/includes/auth_check.php';
 $page_title = 'Discussions';
 ?>
@@ -7,11 +8,11 @@ $page_title = 'Discussions';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discussions - Student Dashboard | NSBM Study Circle</title>
+    <title>Discussions - Student Dashboard | <?= htmlspecialchars(SITE_NAME) ?></title>
     <script>(function(){const t=localStorage.getItem('study_circle_theme')||localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
-    <link rel="icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -601,7 +602,7 @@ $page_title = 'Discussions';
                             <div class="student-avatar" style="width: 30px; height: 30px; font-size: 0.75rem;">${window.__NSBM_CURRENT_USER?.initials || 'ST'}</div>
                             <div>
                                 <span class="fw-semibold small d-block leading-tight">${window.__NSBM_CURRENT_USER?.name || 'Student'} (You)</span>
-                                <span class="text-muted" style="font-size: 0.75rem;">${window.__NSBM_CURRENT_USER?.role || 'NSBM Student'}</span>
+                                <span class="text-muted" style="font-size: 0.75rem;">${window.__NSBM_CURRENT_USER?.role || 'Student'}</span>
                             </div>
                         </div>
                         <div class="d-flex align-items-center gap-3">
@@ -699,5 +700,6 @@ $page_title = 'Discussions';
         }
     });
     </script>
+<?php include __DIR__ . '/../includes/site_disclaimer.php'; ?>
 </body>
 </html>

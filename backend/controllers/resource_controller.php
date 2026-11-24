@@ -9,6 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once __DIR__ . '/../config/db_config.php';
+require_once __DIR__ . '/../config/app_config.php'; // SITE_NAME
 require_once __DIR__ . '/../models/Resource.php';
 
 $resourceModel = new ResourceModel();
@@ -31,16 +32,9 @@ function sendApiResponse($success, $message, $data = [], $statusCode = 200) {
     exit();
 }
 
-// Maximum size of one uploaded study material (InfinityFree stores files up to 10 MB)
-define('RESOURCE_MAX_UPLOAD_MB', 10);
-
-// A request bigger than PHP's post_max_size arrives with empty $_POST and $_FILES,
-// so report it clearly instead of silently falling through to the 'list' action.
-if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && empty($_POST) && empty($_FILES)
-    && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0
-    && stripos($_SERVER['CONTENT_TYPE'] ?? '', 'multipart/form-data') !== false) {
-    sendApiResponse(false, 'File is too large. The maximum upload size is ' . RESOURCE_MAX_UPLOAD_MB . ' MB.', [], 413);
-}
+// File uploads are disabled: study materials are shared as Google Drive /
+// OneDrive links (see backend/helpers/link_helper.php). This controller never
+// reads $_FILES and never writes files to the server.
 
 $action = $_POST['action'] ?? ($_GET['action'] ?? 'list');
 $userId = $_SESSION['user_id'] ?? null;
@@ -90,7 +84,8 @@ switch ($action) {
         }
 
         $resource = $resourceModel->getResourceById($id);
-        if (!$resource) {
+        if (!$resource || !ResourceModel::canView($resource, $userId, $userRole)) {
+            // Pending / rejected resources are only visible to their author and admins
             sendApiResponse(false, 'Resource not found', [], 404);
         }
 
@@ -133,13 +128,21 @@ switch ($action) {
         }
 
         $resource = $resourceModel->getResourceById($id);
-        if (!$resource) {
+        if (!$resource || !ResourceModel::canView($resource, $userId, $userRole)) {
             die('Resource not found.');
         }
 
         // Increment download counters in MySQL for authenticated student
         $resourceModel->incrementDownloads($id, $userId);
 
+        // New system: the material lives on Google Drive / OneDrive. Send the
+        // browser there (a plain redirect - the file never passes through this server).
+        if (!empty($resource['is_link']) && !empty($resource['external_url'])) {
+            header('Location: ' . $resource['external_url'], true, 302);
+            exit();
+        }
+
+        // Old files already stored on the server: still served read-only.
         $filePath = __DIR__ . '/../../' . ($resource['file_path'] ?? '');
         $fileName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $resource['title']) . '.' . strtolower($resource['file_type'] ?? 'pdf');
 
@@ -167,7 +170,7 @@ switch ($action) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/pdf');
             header('Content-Disposition: attachment; filename="' . $fileName . '"');
-            echo "%PDF-1.4\n% NSBM Study Circle - Study Guide\nTitle: " . $resource['title'] . "\nAuthor: " . ($resource['author_name'] ?? 'NSBM Academic Community') . "\n%%EOF";
+            echo "%PDF-1.4\n% " . SITE_NAME . " - Study Guide\nTitle: " . $resource['title'] . "\nAuthor: " . ($resource['author_name'] ?? 'Student Community') . "\n%%EOF";
             exit();
         }
         break;
@@ -238,70 +241,52 @@ switch ($action) {
         break;
 
     // =========================================================================
-    // 6. UPLOAD RESOURCE SYSTEM
+    // 6. SUBMIT A RESOURCE LINK (Google Drive / OneDrive) - NO FILE UPLOADS
+    // 'upload' is kept as an alias so older pages still reach this handler.
     // =========================================================================
+    case 'submit_link':
     case 'upload':
         if (!$userId) {
             if (isApiJsonRequest()) {
-                sendApiResponse(false, 'Authentication required. Please log in to upload study materials.', [
+                sendApiResponse(false, 'Authentication required. Please log in to share study materials.', [
                     'require_login' => true,
                     'redirect' => 'login.php'
                 ], 401);
             } else {
-                header("Location: ../../frontend/login.php?error=" . urlencode("Please log in to upload study materials."));
+                header("Location: ../../frontend/login.php?error=" . urlencode("Please log in to share study materials."));
                 exit();
             }
         }
 
+        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
+            sendApiResponse(false, 'Please submit the form to share a resource.', [], 405);
+        }
+
+        // Anything that still tries to send a file is refused (nothing is ever saved to disk)
+        if (!empty($_FILES)) {
+            sendApiResponse(false, 'File uploads are no longer accepted. Please paste a Google Drive or OneDrive share link instead.', [], 400);
+        }
+
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
-        $faculty = $_POST['faculty'] ?? ($_SESSION['faculty'] ?? 'Computing');
-        $moduleCode = trim($_POST['module_code'] ?? 'COM101');
-        $academicYear = $_POST['academic_year'] ?? 'Year 1';
+        $facultyRaw = $_POST['faculty'] ?? ($_SESSION['faculty'] ?? 'Computing');
+        $faculty = in_array($facultyRaw, ['Computing', 'Business', 'Engineering', 'Science'], true) ? $facultyRaw : 'Computing';
+        $moduleCode = trim($_POST['module_code'] ?? '');
+        $yearRaw = $_POST['academic_year'] ?? 'Year 1';
+        $academicYear = in_array($yearRaw, ['Year 1', 'Year 2', 'Year 3', 'Year 4'], true) ? $yearRaw : 'Year 1';
 
-        if (empty($title) || empty($moduleCode)) {
+        if ($title === '' || $moduleCode === '') {
             sendApiResponse(false, 'Please provide a resource title and module code.', [], 400);
         }
-
-        // Validate File Upload
-        $uploadError = $_FILES['resource_file']['error'] ?? UPLOAD_ERR_NO_FILE;
-        if ($uploadError === UPLOAD_ERR_INI_SIZE || $uploadError === UPLOAD_ERR_FORM_SIZE) {
-            sendApiResponse(false, 'File is too large. The maximum upload size is ' . RESOURCE_MAX_UPLOAD_MB . ' MB.', [], 413);
-        }
-        if ($uploadError !== UPLOAD_ERR_OK) {
-            sendApiResponse(false, 'Please attach a valid file for upload.', [], 400);
+        if (mb_strlen($title) > 255 || mb_strlen($moduleCode) > 30) {
+            sendApiResponse(false, 'The title (max 255 characters) or module code (max 30 characters) is too long.', [], 400);
         }
 
-        $file = $_FILES['resource_file'];
-        $maxBytes = RESOURCE_MAX_UPLOAD_MB * 1024 * 1024;
-        if ($file['size'] > $maxBytes) {
-            sendApiResponse(false, 'File is too large. The maximum upload size is ' . RESOURCE_MAX_UPLOAD_MB . ' MB.', [], 413);
+        require_once __DIR__ . '/../helpers/link_helper.php';
+        $link = validateResourceLink($_POST['resource_link'] ?? '');
+        if (!$link['ok']) {
+            sendApiResponse(false, $link['error'], [], 400);
         }
-
-        $origName = $file['name'];
-        $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
-        $allowedExts = ['pdf', 'docx', 'pptx'];
-
-        if (!in_array($ext, $allowedExts)) {
-            sendApiResponse(false, 'Unsupported file format. Only PDF, DOCX, and PPTX files are allowed.', [], 400);
-        }
-
-        // Target storage directory
-        $targetDir = __DIR__ . '/../uploads/resources/';
-        if (!is_dir($targetDir) && !@mkdir($targetDir, 0755, true) && !is_dir($targetDir)) {
-            sendApiResponse(false, 'Upload folder is not available on the server. Please contact an administrator.', [], 500);
-        }
-
-        // Unique filename to prevent overwrite and directory traversal
-        $newFileName = 'res_' . date('Ymd_His') . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
-        $destination = $targetDir . $newFileName;
-
-        if (!move_uploaded_file($file['tmp_name'], $destination)) {
-            sendApiResponse(false, 'Failed to save uploaded file on server.', [], 500);
-        }
-
-        $fileSizeMb = round($file['size'] / (1024 * 1024), 2);
-        $fileType = strtoupper($ext);
 
         $newId = $resourceModel->createResource([
             'title' => $title,
@@ -309,12 +294,8 @@ switch ($action) {
             'faculty' => $faculty,
             'module_code' => $moduleCode,
             'academic_year' => $academicYear,
-            'file_path' => 'backend/uploads/resources/' . $newFileName,
-            'file_type' => $fileType,
-            'file_size_mb' => $fileSizeMb,
-            'page_count' => ($ext === 'docx') ? 8 : 15,
+            'external_url' => $link['url'],
             'uploaded_by' => $userId,
-            'status' => 'Approved', // Auto-approved or set to 'Pending'
             'about_text' => $description,
             'whats_included' => [
                 'Student revision notes & syllabus guide',
@@ -324,17 +305,18 @@ switch ($action) {
         ]);
 
         if ($newId) {
+            $msg = 'Thanks! Your resource link was submitted and is waiting for an administrator to approve it.';
             if (isApiJsonRequest()) {
-                sendApiResponse(true, 'Resource uploaded and published successfully!', [
+                sendApiResponse(true, $msg, [
                     'resource_id' => $newId,
-                    'redirect' => 'resources.php?uploaded=1'
+                    'status' => 'Pending'
                 ]);
             } else {
-                header("Location: ../../frontend/resources.php?uploaded=1");
+                header("Location: ../../frontend/resources.php?submitted=1");
                 exit();
             }
         } else {
-            sendApiResponse(false, 'Database error while saving resource record.', [], 500);
+            sendApiResponse(false, 'Database error while saving the resource link.', [], 500);
         }
         break;
 

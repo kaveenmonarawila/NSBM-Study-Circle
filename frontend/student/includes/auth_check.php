@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../../backend/config/app_config.php'; // SITE_NAME
 // ============================================================================
 // NSBM STUDY CIRCLE - STUDENT PORTAL AUTHENTICATION & DATABASE BRIDGE
 // Connects every Student Dashboard page to MySQL (`nsbm_student_circle`)
@@ -145,9 +146,9 @@ if (empty($rawName) || strtolower($rawName) === 'undefined') {
         $local = explode('@', $emailCandidate)[0];
         $parts = preg_split('/[._\-]+/', $local);
         $formatted = array_map(fn($p) => ucfirst(strtolower(trim($p))), array_filter($parts));
-        $rawName = !empty($formatted) ? implode(' ', $formatted) : 'NSBM Student';
+        $rawName = !empty($formatted) ? implode(' ', $formatted) : 'Student';
     } else {
-        $rawName = 'NSBM Student';
+        $rawName = 'Student';
     }
 }
 
@@ -166,7 +167,7 @@ $currentUserDegree = !empty($currentUser['degree_program'])
 
 $currentUserEmail = !empty($currentUser['email']) 
     ? $currentUser['email'] 
-    : (!empty($_SESSION['email']) ? $_SESSION['email'] : 'student@nsbm.ac.lk');
+    : (!empty($_SESSION['email']) ? $_SESSION['email'] : 'student@example.com');
 
 $currentUserStudentId = !empty($currentUser['student_id']) 
     ? $currentUser['student_id'] 
@@ -174,7 +175,7 @@ $currentUserStudentId = !empty($currentUser['student_id'])
 
 $currentUserBio = !empty($currentUser['bio']) 
     ? $currentUser['bio'] 
-    : (!empty($_SESSION['bio']) ? $_SESSION['bio'] : 'NSBM undergraduate student collaborating and sharing resources on the NSBM Study Circle platform.');
+    : (!empty($_SESSION['bio']) ? $_SESSION['bio'] : 'Student collaborating and sharing resources on ' . SITE_NAME . '.');
 
 $currentUserInterests = !empty($currentUser['academic_interests']) 
     ? $currentUser['academic_interests'] 
@@ -182,9 +183,9 @@ $currentUserInterests = !empty($currentUser['academic_interests'])
 
 $currentUserVisibility = !empty($currentUser['profile_visibility']) 
     ? $currentUser['profile_visibility'] 
-    : (!empty($_SESSION['profile_visibility']) ? $_SESSION['profile_visibility'] : 'NSBM Study Circle members');
+    : (!empty($_SESSION['profile_visibility']) ? $_SESSION['profile_visibility'] : 'Members only');
 
-$currentUserRole = 'NSBM Student Contributor';
+$currentUserRole = 'Student Contributor';
 
 // Ensure complete $currentUser array representation
 if (!$currentUser) {

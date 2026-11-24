@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../backend/config/app_config.php'; // SITE_NAME
 // ============================================================================
 // NSBM STUDY CIRCLE - STUDY SESSION DETAILS PAGE (PDF SCREENSHOTS PAGES 9 - 11)
 // ============================================================================
@@ -110,13 +111,13 @@ $session = $sessionsData[$sessionId] ?? $sessionsData[1];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($session['title']); ?> - NSBM Study Circle</title>
+    <title><?php echo htmlspecialchars($session['title']); ?> - <?= htmlspecialchars(SITE_NAME) ?></title>
     <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
         <!-- Website Favicon: Study Circle logo -->
-    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
-    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
-    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
-    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="alternate icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="apple-touch-icon" href="assets/images/study-circle-icon.svg">
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -267,10 +268,10 @@ $session = $sessionsData[$sessionId] ?? $sessionsData[1];
                 <div class="col-lg-4 col-md-6">
                     <a href="index.php" class="brand-logo-container mb-3 text-decoration-none">
                         <div class="brand-logo-wrapper">
-                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                            <img src="assets/images/study-circle-icon.svg" alt="<?= htmlspecialchars(SITE_NAME) ?> Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/study-circle-icon.svg';">
                         </div>
                         <div class="brand-text-group">
-                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-title"><?= htmlspecialchars(SITE_NAME) ?></span>
                             <span class="brand-subtitle">Learn Together. Grow Together.</span>
                         </div>
                     </a>
@@ -308,7 +309,7 @@ $session = $sessionsData[$sessionId] ?? $sessionsData[1];
 
             <!-- Bottom Line -->
             <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div>&copy; 2026 <?= htmlspecialchars(SITE_NAME) ?>. An independent student learning platform.</div>
                 <div class="d-flex gap-3">
                     <a href="contact.php" class="text-muted text-decoration-none">Privacy</a>
                     <a href="contact.php" class="text-muted text-decoration-none">Terms</a>
@@ -322,6 +323,7 @@ $session = $sessionsData[$sessionId] ?? $sessionsData[1];
     <!-- Sessions JS -->
     <script src="assets/js/sessions.js"></script>
     <script src="assets/js/main.js"></script>
+<?php include __DIR__ . '/includes/site_disclaimer.php'; ?>
 </body>
 </html>
 

@@ -5,7 +5,7 @@ $studentInitials = !empty($currentUserInitials) ? $currentUserInitials : (functi
 if (empty($studentInitials)) {
     $studentInitials = 'ST';
 }
-$studentRole = !empty($currentUserDegree) ? $currentUserDegree : (!empty($_SESSION['degree_program']) ? $_SESSION['degree_program'] : 'NSBM Student Member');
+$studentRole = !empty($currentUserDegree) ? $currentUserDegree : (!empty($_SESSION['degree_program']) ? $_SESSION['degree_program'] : 'Student Member');
 ?>
 <!-- Student Dashboard Top Bar -->
 <header class="student-topbar">

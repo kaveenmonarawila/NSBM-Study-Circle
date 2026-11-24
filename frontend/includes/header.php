@@ -52,13 +52,13 @@ $userName = $_SESSION['name'] ?? '';
 <header class="floating-header-wrapper site-header" id="mainSiteHeader">
     <nav class="navbar navbar-expand-lg floating-navbar site-navbar" id="mainFloatingHeader">
         <div class="container-fluid px-0">
-            <!-- Left Branding: Custom NSBM Study Circle Logo + Brand Title + Tagline -->
-            <a class="brand-logo-container" href="index.php" aria-label="NSBM Study Circle Home">
+            <!-- Left Branding: Custom <?= htmlspecialchars(SITE_NAME) ?> Logo + Brand Title + Tagline -->
+            <a class="brand-logo-container" href="index.php" aria-label="<?= htmlspecialchars(SITE_NAME) ?> Home">
                 <div class="brand-logo-wrapper">
-                    <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img">
+                    <img src="assets/images/study-circle-icon.svg" alt="<?= htmlspecialchars(SITE_NAME) ?> Logo" class="brand-logo-img">
                 </div>
                 <div class="brand-text-group">
-                    <span class="brand-title">NSBM Study Circle</span>
+                    <span class="brand-title"><?= htmlspecialchars(SITE_NAME) ?></span>
                     <span class="brand-subtitle">Learn Together. Grow Together.</span>
                 </div>
             </a>
@@ -121,7 +121,7 @@ $userName = $_SESSION['name'] ?? '';
 
                         <!-- Primary CTA Button (Standout NSBM Green Gradient with People & Arrow Icons) -->
                         <a href="signup.php" class="btn-header-join">
-                            <i class="bi bi-people-fill me-1"></i> Join NSBM Study Circle <i class="bi bi-arrow-right ms-1"></i>
+                            <i class="bi bi-people-fill me-1"></i> Join <?= htmlspecialchars(SITE_NAME) ?> <i class="bi bi-arrow-right ms-1"></i>
                         </a>
                     <?php endif; ?>
 

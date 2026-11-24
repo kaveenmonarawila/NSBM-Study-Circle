@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../backend/config/app_config.php'; // SITE_NAME
 // NSBM STUDY CIRCLE - Student Portal Dashboard
 include_once __DIR__ . '/includes/auth_check.php';
 $page_title = 'Dashboard';
@@ -238,7 +239,7 @@ if (isset($conn) && $conn && !$conn->connect_error) {
                     $recentActivities[] = [
                         'type' => 'login',
                         'title' => 'Account ' . htmlspecialchars($r['action_type'] ?? 'Login'),
-                        'desc' => 'Logged into your NSBM Study Circle account.',
+                        'desc' => 'Logged into your ' . SITE_NAME . ' account.',
                         'time' => date('d M, g:i A', strtotime($r['logged_in_at'])),
                         'icon' => 'bi-shield-check',
                         'color' => 'student-act-indigo',
@@ -255,7 +256,7 @@ if (isset($conn) && $conn && !$conn->connect_error) {
 if (empty($recentActivities)) {
     $recentActivities[] = [
         'type' => 'welcome',
-        'title' => 'Welcome to NSBM Study Circle, ' . htmlspecialchars($userFirstName) . '!',
+        'title' => 'Welcome to ' . SITE_NAME . ', ' . htmlspecialchars($userFirstName) . '!',
         'desc' => 'Your student workspace is ready. Explore study notes, ask questions, or join peer circles.',
         'time' => 'Just now',
         'icon' => 'bi-stars',
@@ -269,11 +270,11 @@ if (empty($recentActivities)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Student Dashboard | NSBM Study Circle</title>
+    <title>Dashboard - Student Dashboard | <?= htmlspecialchars(SITE_NAME) ?></title>
     <script>(function(){const t=localStorage.getItem('study_circle_theme')||localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
     <!-- Website Favicon -->
-    <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
-    <link rel="icon" type="image/jpeg" href="../assets/images/logo.jpg">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="../assets/images/study-circle-icon.svg">
     <!-- Google Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -407,7 +408,7 @@ if (empty($recentActivities)) {
                                 <div class="flex-grow-1">
                                     <span class="<?= $badgeClass ?>"><?= htmlspecialchars($rItem['faculty'] ?? 'Computing') ?></span>
                                     <h4 class="student-item-title"><?= htmlspecialchars($rItem['title'] ?? 'Study Material') ?></h4>
-                                    <p class="student-item-subtitle"><?= htmlspecialchars($rItem['file_type'] ?? 'PDF') ?> · Shared by <?= htmlspecialchars($rItem['author_name'] ?? 'NSBM Contributor') ?></p>
+                                    <p class="student-item-subtitle"><?= htmlspecialchars($rItem['file_type'] ?? 'PDF') ?> · Shared by <?= htmlspecialchars($rItem['author_name'] ?? 'Student Contributor') ?></p>
                                 </div>
                                 <a href="javascript:void(0)" data-resource-id="<?= (int)$rItem['id'] ?>" class="student-btn-sm-view open-resource-modal">View</a>
                             </div>
@@ -646,5 +647,6 @@ if (empty($recentActivities)) {
 <!-- Bootstrap 5 JS Bundle & Student script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/student.js"></script>
+<?php include __DIR__ . '/../includes/site_disclaimer.php'; ?>
 </body>
 </html>

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../backend/config/app_config.php'; // SITE_NAME
 // ============================================================================
 // NSBM STUDY CIRCLE - DEDICATED LOGIN PAGE (PHP SERVER-RENDERED)
 // Matches Reference PDF Screenshots: 2-Column Split Layout, Role Tabs
@@ -33,6 +34,14 @@ $initialRole = strtolower($_GET['role'] ?? 'student');
 if (!in_array($initialRole, ['student', 'admin'])) {
     $initialRole = 'student';
 }
+
+// The "Prototype access" demo-credential autofill box is for local testing ONLY.
+// It fills in the real default admin password, so it must never appear on the live site.
+$loginRequestHost = strtolower(trim(preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'] ?? ''), '[]'));
+$showPrototypeHelper = $loginRequestHost === 'localhost'
+    || $loginRequestHost === '::1'
+    || strpos($loginRequestHost, '127.') === 0
+    || substr($loginRequestHost, -10) === '.localhost';
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -40,12 +49,12 @@ if (!in_array($initialRole, ['student', 'admin'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study Circle – Log in</title>
-    <meta name="description" content="Log in to Study Circle, an independent, student-run study platform for sharing notes, discussions and study groups. Not affiliated with or endorsed by NSBM Green University.">
+    <meta name="description" content="Log in to Study Circle, an independent, student-run study platform for sharing notes, discussions and study groups. Not a university service.">
     <!-- Website Favicon: Study Circle logo -->
-    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
-    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
-    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
-    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="alternate icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="apple-touch-icon" href="assets/images/study-circle-icon.svg">
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,12 +76,12 @@ if (!in_array($initialRole, ['student', 'admin'])) {
         <div class="login-left-panel">
             <!-- Top Bar -->
             <div class="login-top-bar">
-                <a class="login-brand" href="index.php" aria-label="NSBM Study Circle Home">
+                <a class="login-brand" href="index.php" aria-label="<?= htmlspecialchars(SITE_NAME) ?> Home">
                     <div class="login-brand-logo-wrapper">
-                        <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="login-brand-logo-img">
+                        <img src="assets/images/study-circle-icon.svg" alt="<?= htmlspecialchars(SITE_NAME) ?> Logo" class="login-brand-logo-img">
                     </div>
                     <div>
-                        <h1 class="login-brand-title">NSBM Study Circle</h1>
+                        <h1 class="login-brand-title"><?= htmlspecialchars(SITE_NAME) ?></h1>
                         <p class="login-brand-subtitle">Learn Together. Grow Together.</p>
                     </div>
                 </a>
@@ -93,7 +102,7 @@ if (!in_array($initialRole, ['student', 'admin'])) {
                 <div class="login-card">
                     <!-- Eyebrow & Main Headings -->
                     <span class="login-eyebrow">WELCOME BACK</span>
-                    <h2 class="login-main-heading">Log in to NSBM Study Circle</h2>
+                    <h2 class="login-main-heading">Log in to <?= htmlspecialchars(SITE_NAME) ?></h2>
                     <p class="login-subtext">Continue to your student workspace or administration console.</p>
 
                     <!-- Role Tabs Segmented Control -->
@@ -134,7 +143,7 @@ if (!in_array($initialRole, ['student', 'admin'])) {
                     <!-- Independence & password safety notice -->
                     <div class="alert alert-warning small py-2 mb-3" role="note">
                         <i class="bi bi-shield-exclamation me-1"></i>
-                        This is an independent student platform, not the official NSBM portal. Create a separate password for this site. Do not use your NSBM student portal or university email password.
+                        This is an independent, student-run site, not a university portal. Create a separate password for this site and never reuse your university portal or email password.
                     </div>
 
                     <!-- Login Form -->
@@ -188,22 +197,24 @@ if (!in_array($initialRole, ['student', 'admin'])) {
 
                         <!-- Sign Up Link -->
                         <p class="login-create-account-text">
-                            New to NSBM Study Circle? 
+                            New to <?= htmlspecialchars(SITE_NAME) ?>? 
                             <a href="signup.php" class="login-create-account-link">Create an account</a>
                         </p>
 
                         <!-- Prototype Access Callout Box -->
+                        <?php if ($showPrototypeHelper): ?>
                         <div class="login-prototype-box" id="prototypeBox" title="Click to autofill prototype demo credentials">
                             Prototype access: enter any valid email and a 6+ character password.
                         </div>
+                        <?php endif; ?>
                     </form>
                 </div>
             </div>
 
             <!-- Left Footer -->
             <div class="login-footer">
-                &copy; <?php echo date('Y'); ?> NSBM Study Circle · <a href="#privacy" class="login-footer-link" id="privacyLink">Privacy</a> · <a href="#help" class="login-footer-link" id="helpLink">Help</a>
-                <div class="mt-1">Independent student platform. Not affiliated with or endorsed by NSBM Green University.</div>
+                &copy; <?php echo date('Y'); ?> <?= htmlspecialchars(SITE_NAME) ?> · <a href="#privacy" class="login-footer-link" id="privacyLink">Privacy</a> · <a href="#help" class="login-footer-link" id="helpLink">Help</a>
+                <div class="mt-1">Independent student platform. Not a university service.</div>
             </div>
         </div>
 
@@ -338,7 +349,9 @@ if (!in_array($initialRole, ['student', 'admin'])) {
                 });
             }
 
-            // 4. Prototype Access One-Click Autofill Helper
+            // 4. Prototype Access One-Click Autofill Helper (LOCALHOST ONLY - the
+            //    credentials below are never sent to visitors of the live site)
+<?php if ($showPrototypeHelper): ?>
             const prototypeBox = document.getElementById('prototypeBox');
             if (prototypeBox) {
                 prototypeBox.style.cursor = 'pointer';
@@ -347,7 +360,7 @@ if (!in_array($initialRole, ['student', 'admin'])) {
                         emailInput.value = 'admin.nsbmstudycircle@gmail.com';
                         passwordInput.value = 'admin@nsbmsc';
                     } else {
-                        emailInput.value = 'alex.silva@nsbm.ac.lk';
+                        emailInput.value = 'alex.silva@example.com';
                         passwordInput.value = 'password123';
                     }
                     if (loginAlertBox) {
@@ -359,6 +372,7 @@ if (!in_array($initialRole, ['student', 'admin'])) {
                     }
                 });
             }
+<?php endif; ?>
 
             // 5. Client-Side Input Validation & Live Login Submission
             const loginForm = document.getElementById('loginForm');
@@ -463,5 +477,6 @@ if (!in_array($initialRole, ['student', 'admin'])) {
             }
         });
     </script>
+<?php include __DIR__ . '/includes/site_disclaimer.php'; ?>
 </body>
 </html>

@@ -3,9 +3,16 @@
 # Runs on every push to `main` and manually from the Actions tab.
 #
 # Required repository secrets (Settings -> Secrets and variables -> Actions):
-#   FTP_SERVER    e.g. ftpupload.net        (InfinityFree Control Panel -> FTP Details)
-#   FTP_USERNAME  e.g. if0_XXXXXXXX
+#   FTP_SERVER    ftpupload.net             (InfinityFree Control Panel -> FTP Details)
+#   FTP_USERNAME  if0_XXXXXXXX              (your InfinityFree account username)
 #   FTP_PASSWORD  your hosting account (vPanel) password
+# Never write these values into this file - it is public in the repository.
+#
+# Not uploaded on purpose (see `exclude`): git/editor files, docs (*.md),
+# scripts (*.py, *.bat, *.ps1), dumps and reports (*.sql, *.json, *.txt, *.log),
+# the old static *.html mock-ups (the live site uses the .php pages), and
+# backend/config/db_credentials.php (upload that once by hand with FileZilla),
+# and retired images kept only in the repo (old NSBM-style logos, campus photo).
 #
 # Only changed files are uploaded (sync state is kept on the server in
 # /htdocs/.ftp-deploy-sync-state.json). Files that students upload on the live
@@ -62,6 +69,8 @@ jobs:
             **/*.pyc
             **/*.json
             **/*.txt
+            **/*.log
+            **/*.html
             deploy-infinityfree/**
             database/**
             HTML/**
@@ -72,3 +81,8 @@ jobs:
             backend/config/db_credentials.example.php
             backend/uploads/resources/**
             uploads/resources/**
+            frontend/assets/images/banners/nsbm-landing.jpeg
+            frontend/assets/images/logo.svg
+            frontend/assets/images/logo.jpg
+            src/logo.svg
+            src/homepagephoto.jpeg

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../backend/config/app_config.php'; // SITE_NAME
 // ============================================================================
 // NSBM STUDY CIRCLE - DYNAMIC RESOURCE DETAILS (PHP + MySQL)
 // ============================================================================
@@ -14,10 +15,15 @@ $resourceModel = new ResourceModel();
 $id = (int)($_GET['id'] ?? 1);
 $resource = $resourceModel->getResourceById($id);
 
-if (!$resource) {
+// Pending / rejected resources are only visible to their author and administrators
+if (!$resource || !ResourceModel::canView($resource, $_SESSION['user_id'] ?? null, $_SESSION['role'] ?? null)) {
     header("Location: resources.php");
     exit();
 }
+
+// New resources are Google Drive / OneDrive links (validated again in the model);
+// old resources are files stored on the server and keep the Download button.
+$isLinkResource = !empty($resource['is_link']) && !empty($resource['external_url']);
 
 $isLoggedIn = isset($_SESSION['user_id']);
 $userName = $_SESSION['name'] ?? '';
@@ -34,13 +40,13 @@ if ($isLoggedIn) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($resource['title']) ?> - NSBM Study Circle</title>
+    <title><?= htmlspecialchars($resource['title']) ?> - <?= htmlspecialchars(SITE_NAME) ?></title>
     <script>(function(){const t=localStorage.getItem('theme')||localStorage.getItem('study_circle_theme')||'light';document.documentElement.setAttribute('data-bs-theme',t);})();</script>
         <!-- Website Favicon: Study Circle logo -->
-    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
-    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
-    <link rel="alternate icon" type="image/jpeg" href="../src/logo.jpg">
-    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="alternate icon" type="image/svg+xml" href="assets/images/study-circle-icon.svg">
+    <link rel="apple-touch-icon" href="assets/images/study-circle-icon.svg">
 
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -166,7 +172,7 @@ if ($isLoggedIn) {
                                     </div>
 
                                     <div class="text-muted small mt-2">
-                                        <i class="bi bi-file-earmark-lock text-secondary me-1"></i> Preview mode • Full document available on download
+                                        <i class="bi bi-file-earmark-lock text-secondary me-1"></i> Preview mode • <?= $isLinkResource ? "Full document opens on " . htmlspecialchars($resource["link_provider"]) : "Full document available on download" ?>
                                     </div>
                                 </div>
                             </div>
@@ -270,7 +276,21 @@ if ($isLoggedIn) {
 
                         <!-- Action Buttons -->
                         <div class="d-grid gap-2 mb-4">
-                            <?php if ($isLoggedIn): ?>
+                            <?php if (($resource['status'] ?? 'Approved') !== 'Approved'): ?>
+                                <div class="alert alert-warning small py-2 mb-0" role="note">
+                                    <i class="bi bi-hourglass-split me-1"></i> Status: <?= htmlspecialchars($resource['status']) ?>. Other students cannot see this resource until an administrator approves it.
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($isLinkResource && $isLoggedIn): ?>
+                                <a id="detailOpenLinkBtn" href="<?= htmlspecialchars($resource['external_url'], ENT_QUOTES) ?>" target="_blank" rel="noopener noreferrer" class="btn btn-success fw-bold py-2 rounded-3 shadow-sm d-flex align-items-center justify-content-center gap-2">
+                                    <i class="bi bi-box-arrow-up-right"></i> Open resource
+                                </a>
+                                <small class="text-muted text-center" style="font-size:0.75rem;">Opens on <?= htmlspecialchars($resource['link_provider']) ?> in a new tab</small>
+                            <?php elseif ($isLinkResource): ?>
+                                <button id="detailOpenLinkBtn" type="button" class="btn btn-success fw-bold py-2 rounded-3 shadow-sm d-flex align-items-center justify-content-center gap-2" onclick="promptLoginRequired('download', '<?= addslashes(htmlspecialchars($resource['title'])) ?>')">
+                                    <i class="bi bi-lock-fill"></i> Log In to Open Resource
+                                </button>
+                            <?php elseif ($isLoggedIn): ?>
                                 <button id="detailDownloadBtn" class="btn btn-success fw-bold py-2 rounded-3 shadow-sm d-flex align-items-center justify-content-center gap-2">
                                     <i class="bi bi-download"></i> Download <?= strtoupper($resource['file_type'] ?? 'PDF') ?>
                                 </button>
@@ -287,12 +307,12 @@ if ($isLoggedIn) {
                         <!-- 2x2 Specs Grid -->
                         <div class="specs-grid">
                             <div>
-                                <div class="specs-item-label">File size</div>
+                                <div class="specs-item-label"><?= $isLinkResource ? "Hosted on" : "File size" ?></div>
                                 <div class="specs-item-value" id="detailSpecSize"><?= htmlspecialchars($resource['file_size_mb'] ?? '4.2 MB') ?></div>
                             </div>
                             <div>
                                 <div class="specs-item-label">Pages</div>
-                                <div class="specs-item-value" id="detailSpecPages"><?= (int)($resource['page_count'] ?? 24) ?></div>
+                                <div class="specs-item-value" id="detailSpecPages"><?= $isLinkResource ? "—" : (int)($resource["page_count"] ?? 24) ?></div>
                             </div>
                             <div>
                                 <div class="specs-item-label">Downloads</div>
@@ -342,10 +362,10 @@ if ($isLoggedIn) {
                 <div class="col-lg-4 col-md-6">
                     <a href="index.php" class="brand-logo-container mb-3 text-decoration-none">
                         <div class="brand-logo-wrapper">
-                            <img src="assets/images/logo.svg" alt="NSBM Study Circle Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/logo.jpg';">
+                            <img src="assets/images/study-circle-icon.svg" alt="<?= htmlspecialchars(SITE_NAME) ?> Logo" class="brand-logo-img" onerror="this.onerror=null; this.src='assets/images/study-circle-icon.svg';">
                         </div>
                         <div class="brand-text-group">
-                            <span class="brand-title">NSBM Study Circle</span>
+                            <span class="brand-title"><?= htmlspecialchars(SITE_NAME) ?></span>
                             <span class="brand-subtitle">Learn Together. Grow Together.</span>
                         </div>
                     </a>
@@ -383,7 +403,7 @@ if ($isLoggedIn) {
 
             <!-- Bottom Line -->
             <div class="footer-bottom-line d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <div>&copy; 2026 NSBM Study Circle. An independent student learning platform.</div>
+                <div>&copy; 2026 <?= htmlspecialchars(SITE_NAME) ?>. An independent student learning platform.</div>
                 <div class="d-flex gap-3">
                     <a href="contact.php" class="text-muted text-decoration-none">Privacy</a>
                     <a href="contact.php" class="text-muted text-decoration-none">Terms</a>
@@ -477,5 +497,6 @@ if ($isLoggedIn) {
 
     <!-- Resources Details Script -->
     <script src="assets/js/resources.js"></script>
+<?php include __DIR__ . '/includes/site_disclaimer.php'; ?>
 </body>
 </html>

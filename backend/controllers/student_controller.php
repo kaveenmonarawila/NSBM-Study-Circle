@@ -463,8 +463,9 @@ switch ($action) {
     // 6. CREATE / CANCEL STUDY SESSION (`study_sessions` table)
     // =========================================================================
     case 'create_session':
-        $title = trim($input['title'] ?? 'Study Session');
-        $facultyRaw = trim($input['faculty'] ?? 'Computing');
+        // Used by the student portal (Schedule) and the public Sessions page.
+        $title = trim((string)($input['title'] ?? ''));
+        $facultyRaw = trim((string)($input['faculty'] ?? 'Computing'));
         $faculty = 'Computing';
         foreach (['Computing', 'Business', 'Engineering', 'Science'] as $fac) {
             if (stripos($facultyRaw, $fac) !== false) {
@@ -472,35 +473,77 @@ switch ($action) {
                 break;
             }
         }
-        $dateVal = trim($input['date'] ?? date('Y-m-d'));
-        $timeVal = trim($input['time'] ?? '18:30');
-        $sessionDate = $dateVal . ' ' . (strlen($timeVal) === 5 ? $timeVal . ':00' : '18:30:00');
-        $location = trim($input['format'] ?? 'Online · Microsoft Teams');
 
-        $stmt = $conn->prepare("INSERT INTO study_sessions (title, faculty, host_id, session_date, location_details, capacity, enrolled_count, status) VALUES (?, ?, ?, ?, ?, 24, 1, 'Scheduled')");
-        if ($stmt) {
-            $stmt->bind_param("ssiss", $title, $faculty, $userId, $sessionDate, $location);
-            $stmt->execute();
-            echo json_encode(['success' => true, 'id' => $stmt->insert_id, 'message' => 'Study session saved to database']);
+        if ($title === '' || mb_strlen($title) > 200) {
+            echo json_encode(['success' => false, 'message' => 'Please enter a session title (max 200 characters).']);
             exit();
         }
-        echo json_encode(['success' => false, 'message' => 'Could not save session']);
+
+        // Date: YYYY-MM-DD. Time: "18:30", "6:30 PM" or a range like "6:30 PM - 8:00 PM" (start time is used).
+        $dateVal = trim((string)($input['date'] ?? ''));
+        $dateObj = DateTime::createFromFormat('!Y-m-d', $dateVal);
+        if (!$dateObj || $dateObj->format('Y-m-d') !== $dateVal) {
+            echo json_encode(['success' => false, 'message' => 'Please choose a valid session date.']);
+            exit();
+        }
+        $timeRaw = trim((string)($input['time'] ?? ''));
+        $startPart = trim(preg_split('/\s*[-–—]\s*|\s+to\s+/i', $timeRaw)[0] ?? '');
+        $timeTs = $startPart !== '' ? strtotime('2000-01-01 ' . $startPart) : false;
+        if ($timeTs === false) {
+            echo json_encode(['success' => false, 'message' => 'Please enter a valid start time, e.g. 18:30 or 6:30 PM.']);
+            exit();
+        }
+        $sessionDate = $dateVal . ' ' . date('H:i:s', $timeTs);
+
+        $formatRaw = trim((string)($input['format'] ?? 'Online'));
+        $formatType = (stripos($formatRaw, 'physical') !== false || stripos($formatRaw, 'campus') !== false) ? 'Physical' : 'Online';
+        $location = trim(strip_tags((string)($input['location'] ?? '')));
+        if ($location === '') {
+            $location = trim(strip_tags(html_entity_decode($formatRaw))) ?: 'Online';
+        }
+        $location = mb_substr($location, 0, 255);
+        $description = trim((string)($input['description'] ?? ''));
+        $capacity = (int)($input['capacity'] ?? 24);
+        if ($capacity < 2 || $capacity > 500) $capacity = 24;
+
+        $stmt = $conn->prepare("INSERT INTO study_sessions (title, description, faculty, host_id, session_date, format_type, location_details, capacity, enrolled_count, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 'Scheduled')");
+        if ($stmt) {
+            $stmt->bind_param("sssisssi", $title, $description, $faculty, $userId, $sessionDate, $formatType, $location, $capacity);
+            if ($stmt->execute()) {
+                $newId = (int)$stmt->insert_id;
+                // The host is the first attendee
+                $att = $conn->prepare("INSERT IGNORE INTO study_session_attendees (session_id, user_id) VALUES (?, ?)");
+                if ($att) {
+                    $att->bind_param("ii", $newId, $userId);
+                    $att->execute();
+                }
+                echo json_encode(['success' => true, 'id' => $newId, 'message' => 'Study session "' . $title . '" scheduled. It is now listed on the Sessions page and in the admin panel.']);
+                exit();
+            }
+        }
+        echo json_encode(['success' => false, 'message' => 'Could not save the session. Please try again.']);
         break;
 
     case 'delete_session':
+        // Students can only cancel sessions they host
         $sessId = (int)($input['session_id'] ?? 0);
-        $title = trim($input['title'] ?? '');
+        $title = trim((string)($input['title'] ?? ''));
+        $deleted = 0;
         if ($sessId > 0) {
-            $stmt = $conn->prepare("DELETE FROM study_sessions WHERE id = ?");
-            $stmt->bind_param("i", $sessId);
+            $stmt = $conn->prepare("DELETE FROM study_sessions WHERE id = ? AND host_id = ?");
+            $stmt->bind_param("ii", $sessId, $userId);
             $stmt->execute();
-        } elseif (!empty($title)) {
-            $stmt = $conn->prepare("DELETE FROM study_sessions WHERE title LIKE ? LIMIT 1");
+            $deleted = $stmt->affected_rows;
+        } elseif ($title !== '') {
+            $stmt = $conn->prepare("DELETE FROM study_sessions WHERE title LIKE ? AND host_id = ? LIMIT 1");
             $like = "%$title%";
-            $stmt->bind_param("s", $like);
+            $stmt->bind_param("si", $like, $userId);
             $stmt->execute();
+            $deleted = $stmt->affected_rows;
         }
-        echo json_encode(['success' => true, 'message' => 'Study session removed from database']);
+        echo json_encode($deleted > 0
+            ? ['success' => true, 'message' => 'Study session removed.']
+            : ['success' => false, 'message' => 'Session not found, or you are not its host.']);
         break;
 
     // =========================================================================

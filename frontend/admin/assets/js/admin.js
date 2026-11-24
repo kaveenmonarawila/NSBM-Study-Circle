@@ -1321,6 +1321,20 @@
                     const capPill = tds[2]?.querySelector('.status-pill');
                     const statusCell = tds[3];
                     const sessStatus = statusCell?.textContent.trim() || 'Scheduled';
+                    // Rows rendered from the database carry their id (admin/sessions.php)
+                    const sessId = parseInt(tr.dataset.sessionId || '0', 10) || 0;
+                    // POST to admin_controller and return the parsed JSON (throws on failure)
+                    const postSession = async (action, payload) => {
+                        const res = await fetch(`../../backend/controllers/admin_controller.php?action=${action}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(Object.assign({ id: sessId }, payload))
+                        });
+                        let data = null;
+                        try { data = JSON.parse(await res.text()); } catch (err) { /* non-JSON (e.g. host browser check) */ }
+                        if (!data || !data.success) throw new Error((data && data.message) || 'Request failed');
+                        return data;
+                    };
                     headerLabel = sessName;
 
                     options.push({
@@ -1344,13 +1358,10 @@
                                     const titleSpan = tr.querySelector('.fw-bold.text-dark');
                                     if (newT && titleSpan) titleSpan.textContent = newT;
                                     if (newDT && dateTimeCell) dateTimeCell.textContent = newDT;
-                                    fetch('../../backend/controllers/admin_controller.php?action=moderate_session', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({ old_title: sessName, title: newT || sessName })
-                                    }).catch(() => {});
                                     bsModal.hide();
-                                    showAdminToast(`Updated session "${newT || sessName}" in MySQL.`);
+                                    postSession('moderate_session', { old_title: sessName, title: newT || sessName })
+                                        .then(() => showAdminToast(`Updated session "${newT || sessName}".`))
+                                        .catch((err) => showAdminToast(`Could not update "${sessName}": ${err.message}`, 'danger'));
                                 }
                             );
                         }
@@ -1361,13 +1372,12 @@
                             icon: 'bi-check-circle text-success',
                             label: 'Approve & Schedule session',
                             action: () => {
-                                if (statusCell) statusCell.textContent = 'Scheduled';
-                                fetch('../../backend/controllers/admin_controller.php?action=moderate_session', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ title: sessName, status: 'Scheduled' })
-                                }).catch(() => {});
-                                showAdminToast(`"${sessName}" is now Scheduled in MySQL.`);
+                                postSession('moderate_session', { status: 'Scheduled' })
+                                    .then(() => {
+                                        if (statusCell) statusCell.textContent = 'Scheduled';
+                                        showAdminToast(`"${sessName}" is now Scheduled.`);
+                                    })
+                                    .catch((err) => showAdminToast(`Could not update "${sessName}": ${err.message}`, 'danger'));
                             }
                         });
                     } else {
@@ -1375,13 +1385,12 @@
                             icon: 'bi-clock-history text-warning',
                             label: 'Hold session for Review',
                             action: () => {
-                                if (statusCell) statusCell.textContent = 'Review';
-                                fetch('../../backend/controllers/admin_controller.php?action=moderate_session', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ title: sessName, status: 'Review' })
-                                }).catch(() => {});
-                                showAdminToast(`Moved "${sessName}" to Review in MySQL.`, 'warning');
+                                postSession('moderate_session', { status: 'Review' })
+                                    .then(() => {
+                                        if (statusCell) statusCell.textContent = 'Review';
+                                        showAdminToast(`Moved "${sessName}" to Review. It is hidden from the public Sessions page.`, 'warning');
+                                    })
+                                    .catch((err) => showAdminToast(`Could not update "${sessName}": ${err.message}`, 'danger'));
                             }
                         });
                     }
@@ -1394,13 +1403,12 @@
                                 const parts = capPill.textContent.split('/').map((s) => parseInt(s.trim(), 10));
                                 if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
                                     const newCap = parts[1] + 6;
-                                    capPill.textContent = `${parts[0]} / ${newCap}`;
-                                    fetch('../../backend/controllers/admin_controller.php?action=moderate_session', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({ title: sessName, capacity: newCap })
-                                    }).catch(() => {});
-                                    showAdminToast(`Expanded capacity for "${sessName}" to ${newCap} seats in MySQL.`);
+                                    postSession('moderate_session', { capacity: newCap })
+                                        .then(() => {
+                                            capPill.textContent = `${parts[0]} / ${newCap}`;
+                                            showAdminToast(`Expanded capacity for "${sessName}" to ${newCap} seats.`);
+                                        })
+                                        .catch((err) => showAdminToast(`Could not update "${sessName}": ${err.message}`, 'danger'));
                                 }
                             }
                         }
@@ -1409,16 +1417,20 @@
                     options.push({ divider: true });
                     options.push({
                         icon: 'bi-x-circle',
-                        label: 'Cancel study session',
+                        label: 'Delete study session',
                         danger: true,
                         action: () => {
-                            fetch('../../backend/controllers/admin_controller.php?action=delete_session', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ title: sessName })
-                            }).catch(() => {});
-                            tr.remove();
-                            showAdminToast(`Cancelled session "${sessName}" in MySQL.`, 'danger');
+                            if (!sessId) {
+                                showAdminToast('This row is not linked to a saved session. Please refresh the page.', 'danger');
+                                return;
+                            }
+                            if (!confirm(`Delete "${sessName}"? This removes it for everyone and cannot be undone.`)) return;
+                            postSession('delete_session', {})
+                                .then(() => {
+                                    tr.remove();
+                                    showAdminToast(`Deleted session "${sessName}".`, 'danger');
+                                })
+                                .catch((err) => showAdminToast(`Could not delete "${sessName}": ${err.message}`, 'danger'));
                         }
                     });
 
@@ -1739,19 +1751,22 @@
                 }
 
                 // 9. Study Sessions (`sessions.php` / `sessions.html`)
-                if ((path.includes('sessions') || path.includes('manage_events')) && tableBody && Array.isArray(data.sessions) && data.sessions.length) {
+                // admin/sessions.php now renders the real rows on the server (with ids), so only
+                // fill the table here for pages that did not (data-server-rendered is absent).
+                if ((path.includes('sessions') || path.includes('manage_events')) && tableBody && !tableBody.hasAttribute('data-server-rendered') && Array.isArray(data.sessions) && data.sessions.length) {
+                    const escSess = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
                     tableBody.innerHTML = data.sessions.map((s) => {
                         return `
-                            <tr>
+                            <tr data-session-id="${parseInt(s.id, 10) || 0}">
                                 <td>
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="table-item-icon"><i class="bi bi-calendar-event"></i></div>
-                                        <span class="fw-bold text-dark">${s.title}</span>
+                                        <span class="fw-bold text-dark">${escSess(s.title)}</span>
                                     </div>
                                 </td>
-                                <td>${s.date_time_short || '24 May · 6:30 PM'}</td>
-                                <td><span class="status-pill pill-amber">${s.enrolled_count || 12} / ${s.capacity || 24}</span></td>
-                                <td class="text-secondary">${s.status || 'Scheduled'}</td>
+                                <td>${escSess(s.date_time_short || '')}</td>
+                                <td><span class="status-pill pill-amber">${parseInt(s.enrolled_count, 10) || 0} / ${parseInt(s.capacity, 10) || 24}</span></td>
+                                <td class="text-secondary">${escSess(s.status || 'Scheduled')}</td>
                                 <td class="text-end">
                                     <button type="button" class="btn-row-dots" title="Actions"><i class="bi bi-three-dots"></i></button>
                                 </td>

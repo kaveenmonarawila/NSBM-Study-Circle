@@ -463,28 +463,69 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (createSessionForm) {
-        createSessionForm.addEventListener('submit', (e) => {
+        // Saves the session to the database (student_controller.php?action=create_session).
+        // It then appears on this page and in the admin panel (admin/sessions.php).
+        createSessionForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const submitBtn = createSessionForm.querySelector('button[type="submit"]');
-            const orig = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Scheduling...';
+            const val = (name) => (createSessionForm.querySelector(`[name="${name}"]`)?.value || '').trim();
+            const payload = {
+                title: val('title'),
+                faculty: val('faculty') || 'Computing',
+                format: val('format') || 'Online',
+                date: val('session_date'),
+                time: val('session_time'),
+                location: val('location_details'),
+                capacity: parseInt(val('capacity') || '24', 10),
+                description: val('description')
+            };
+            if (!payload.title || !payload.date || !payload.time) {
+                showSessionToast('Please fill in the title, date and start time.', false);
+                return;
+            }
 
-            setTimeout(() => {
-                showSessionToast('Study session scheduled successfully! It has been posted.');
-                const modalEl = document.getElementById('createSessionModal');
-                if (modalEl && window.bootstrap) {
-                    const modal = bootstrap.Modal.getInstance(modalEl);
-                    if (modal) modal.hide();
+            const submitBtn = createSessionForm.querySelector('button[type="submit"]');
+            const orig = submitBtn ? submitBtn.innerHTML : '';
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Scheduling...';
+            }
+
+            try {
+                const res = await fetch('../backend/controllers/student_controller.php?action=create_session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (res.status === 401) {
+                    showSessionToast('Please log in to schedule a study session.', false);
+                    setTimeout(() => { window.location.href = 'login.php?error=' + encodeURIComponent('Please log in to schedule study sessions.'); }, 1500);
+                    return;
                 }
-                createSessionForm.reset();
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = orig;
-            }, 800);
+                const data = await readJson(res);
+                if (data && data.success) {
+                    const modalEl = document.getElementById('createSessionModal');
+                    if (modalEl && window.bootstrap) {
+                        const modal = bootstrap.Modal.getInstance(modalEl);
+                        if (modal) modal.hide();
+                    }
+                    createSessionForm.reset();
+                    showSessionToast(data.message || 'Study session scheduled.');
+                    setTimeout(() => window.location.reload(), 1600); // show it in the list
+                } else {
+                    showSessionToast((data && data.message) || 'Could not schedule the session. Please try again.', false);
+                }
+            } catch (err) {
+                if (!(err && err.nonJson)) showSessionToast('Connection error. The session was not saved, please try again.', false);
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = orig;
+                }
+            }
         });
     }
 
-    function showSessionToast(msg) {
+    function showSessionToast(msg, ok = true) {
         let toast = document.getElementById('sessionActionToast');
         if (!toast) {
             toast = document.createElement('div');
@@ -499,7 +540,9 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             document.body.appendChild(toast);
         }
-        toast.innerHTML = `<i class="bi bi-check-circle-fill text-success" style="font-size: 1.1rem;"></i> ${msg}`;
+        const icon = ok ? 'bi-check-circle-fill text-success' : 'bi-exclamation-circle-fill text-danger';
+        const safeMsg = String(msg).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        toast.innerHTML = `<i class="bi ${icon}" style="font-size: 1.1rem;"></i> ${safeMsg}`;
         toast.style.transform = 'translateY(0)';
         setTimeout(() => { toast.style.transform = 'translateY(140px)'; }, 3400);
     }

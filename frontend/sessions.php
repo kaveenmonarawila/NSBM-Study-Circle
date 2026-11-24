@@ -434,7 +434,7 @@ if (isset($conn) && $conn && !$conn->connect_error) {
                         <div class="row g-2 mb-3">
                             <div class="col-6">
                                 <label class="form-label small fw-bold text-secondary">Date *</label>
-                                <input type="date" name="session_date" class="form-control" value="2026-05-24" required>
+                                <input type="date" name="session_date" class="form-control" value="<?= date('Y-m-d') ?>" min="<?= date('Y-m-d') ?>" required>
                             </div>
                             <div class="col-6">
                                 <label class="form-label small fw-bold text-secondary">Time *</label>

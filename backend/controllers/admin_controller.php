@@ -564,15 +564,46 @@ switch ($action) {
     // 7. STUDY SESSIONS MODERATION (`study_sessions` table)
     // =========================================================================
     case 'moderate_session':
+        $id = (int)($input['id'] ?? 0);
         $title = trim($input['title'] ?? '');
         $oldTitle = trim($input['old_title'] ?? '');
-        $status = trim($input['status'] ?? '');
+        $statusRaw = trim($input['status'] ?? '');
+        $status = in_array($statusRaw, ['Scheduled', 'Review', 'Completed', 'Cancelled'], true) ? $statusRaw : '';
         $capacity = (int)($input['capacity'] ?? 0);
 
+        if ($id > 0) {
+            // Preferred: update exactly one session by id
+            $exists = $conn->prepare("SELECT id FROM study_sessions WHERE id = ?");
+            $exists->bind_param("i", $id);
+            $exists->execute();
+            if (!$exists->get_result()->fetch_assoc()) {
+                echo json_encode(['success' => false, 'message' => "Session #$id was not found."]);
+                break;
+            }
+            if ($status !== '') {
+                $stmt = $conn->prepare("UPDATE study_sessions SET status = ? WHERE id = ?");
+                $stmt->bind_param("si", $status, $id);
+                $stmt->execute();
+            }
+            if ($capacity > 0) {
+                $stmt = $conn->prepare("UPDATE study_sessions SET capacity = ? WHERE id = ?");
+                $stmt->bind_param("ii", $capacity, $id);
+                $stmt->execute();
+            }
+            if ($title !== '' && mb_strlen($title) <= 200) {
+                $stmt = $conn->prepare("UPDATE study_sessions SET title = ? WHERE id = ?");
+                $stmt->bind_param("si", $title, $id);
+                $stmt->execute();
+            }
+            echo json_encode(['success' => true, 'id' => $id, 'message' => "Session #$id updated."]);
+            break;
+        }
+
+        // Legacy fallback (match by title)
         $lookup = !empty($oldTitle) ? $oldTitle : $title;
         if (!empty($lookup)) {
             $like = "%$lookup%";
-            if (!empty($status)) {
+            if ($status !== '') {
                 $stmt = $conn->prepare("UPDATE study_sessions SET status = ? WHERE title LIKE ?");
                 $stmt->bind_param("ss", $status, $like);
                 $stmt->execute();
@@ -592,14 +623,24 @@ switch ($action) {
         break;
 
     case 'delete_session':
+        $id = (int)($input['id'] ?? 0);
         $title = trim($input['title'] ?? '');
-        if (!empty($title)) {
-            $stmt = $conn->prepare("DELETE FROM study_sessions WHERE title LIKE ? LIMIT 1");
-            $like = "%$title%";
-            $stmt->bind_param("s", $like);
+        $deleted = 0;
+        if ($id > 0) {
+            // Preferred: delete exactly one session by id (attendees are removed by ON DELETE CASCADE)
+            $stmt = $conn->prepare("DELETE FROM study_sessions WHERE id = ?");
+            $stmt->bind_param("i", $id);
             $stmt->execute();
+            $deleted = $stmt->affected_rows;
+        } elseif (!empty($title)) {
+            $stmt = $conn->prepare("DELETE FROM study_sessions WHERE title = ? LIMIT 1");
+            $stmt->bind_param("s", $title);
+            $stmt->execute();
+            $deleted = $stmt->affected_rows;
         }
-        echo json_encode(['success' => true, 'message' => 'Study session deleted from MySQL']);
+        echo json_encode($deleted > 0
+            ? ['success' => true, 'message' => 'Study session deleted.']
+            : ['success' => false, 'message' => 'Session not found. It may already have been deleted - please refresh the page.']);
         break;
 
     // =========================================================================

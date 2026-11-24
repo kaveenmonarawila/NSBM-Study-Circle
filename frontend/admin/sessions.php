@@ -70,66 +70,54 @@ include_once __DIR__ . '/includes/auth_check.php';
                                     <th class="text-end"></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody data-server-rendered="1">
+<?php
+// Real study sessions from the database (newest first), including ones students just created
+$adminSessions = [];
+if (isset($conn) && $conn && !$conn->connect_error) {
+    $sq = @$conn->query("
+        SELECT ss.id, ss.title, ss.faculty, ss.session_date, ss.capacity, ss.enrolled_count, ss.status,
+               ss.format_type, ss.created_at, COALESCE(u.name, 'Unknown host') AS host_name
+        FROM study_sessions ss
+        LEFT JOIN users u ON ss.host_id = u.id
+        ORDER BY ss.created_at DESC, ss.id DESC
+    ");
+    if ($sq) {
+        while ($row = $sq->fetch_assoc()) {
+            $adminSessions[] = $row;
+        }
+    }
+}
+?>
+                            <?php if (empty($adminSessions)): ?>
                                 <tr>
+                                    <td colspan="5" class="text-center text-secondary py-4">No study sessions yet. Sessions created by students will appear here.</td>
+                                </tr>
+                            <?php endif; ?>
+                            <?php foreach ($adminSessions as $sess):
+                                $ts = strtotime($sess['session_date'] ?? '');
+                                $enrolled = (int)($sess['enrolled_count'] ?? 0);
+                                $cap = max(1, (int)($sess['capacity'] ?? 24));
+                                $pill = $enrolled >= $cap ? 'pill-red' : ($enrolled >= $cap * 0.75 ? 'pill-amber' : 'pill-green');
+                            ?>
+                                <tr data-session-id="<?= (int)$sess['id'] ?>">
                                     <td>
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="table-item-icon"><i class="bi bi-calendar-event"></i></div>
-                                            <span class="fw-bold text-dark">Algorithms: Final Exam Problem Solving</span>
+                                            <div>
+                                                <span class="fw-bold text-dark"><?= htmlspecialchars($sess['title']) ?></span>
+                                                <div class="small text-secondary">Host: <?= htmlspecialchars($sess['host_name']) ?> · <?= htmlspecialchars($sess['faculty'] ?? '') ?> · <?= htmlspecialchars($sess['format_type'] ?? '') ?></div>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td>24 May · 6:30 PM</td>
-                                    <td><span class="status-pill pill-amber">18 / 24</span></td>
-                                    <td class="text-secondary">Scheduled</td>
+                                    <td><?= $ts ? htmlspecialchars(date('j M Y · g:i A', $ts)) : '—' ?></td>
+                                    <td><span class="status-pill <?= $pill ?>"><?= $enrolled ?> / <?= $cap ?></span></td>
+                                    <td class="text-secondary"><?= htmlspecialchars($sess['status'] ?? 'Scheduled') ?></td>
                                     <td class="text-end">
                                         <button type="button" class="btn-row-dots" title="Actions"><i class="bi bi-three-dots"></i></button>
                                     </td>
                                 </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="table-item-icon"><i class="bi bi-calendar-event"></i></div>
-                                            <span class="fw-bold text-dark">Marketing Strategy Case Review</span>
-                                        </div>
-                                    </td>
-                                    <td>26 May · 4:00 PM</td>
-                                    <td><span class="status-pill pill-amber">14 / 20</span></td>
-                                    <td class="text-secondary">Scheduled</td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn-row-dots" title="Actions"><i class="bi bi-three-dots"></i></button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="table-item-icon"><i class="bi bi-calendar-event"></i></div>
-                                            <span class="fw-bold text-dark">Portfolio Critique Evening</span>
-                                        </div>
-                                    </td>
-                                    <td>28 May · 5:30 PM</td>
-                                    <td><span class="status-pill pill-amber">12 / 16</span></td>
-                                    <td class="text-secondary">Scheduled</td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn-row-dots" title="Actions"><i class="bi bi-three-dots"></i></button>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="table-item-icon"><i class="bi bi-calendar-event"></i></div>
-                                            <span class="fw-bold text-dark">Research Proposal Writing Lab</span>
-                                        </div>
-                                    </td>
-                                    <td>30 May · 3:00 PM</td>
-                                    <td><span class="status-pill pill-amber">21 / 24</span></td>
-                                    <td class="text-secondary">Review</td>
-                                    <td class="text-end">
-                                        <button type="button" class="btn-row-dots" title="Actions"><i class="bi bi-three-dots"></i></button>
-                                    </td>
-                                </tr>
+                            <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>

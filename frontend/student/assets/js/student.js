@@ -1583,14 +1583,27 @@ document.addEventListener('DOMContentLoaded', () => {
                             bootstrap.Modal.getInstance(document.getElementById('scheduleSessionModal'));
         if (activeModal) activeModal.hide();
 
+        // Save to the database and report the real result (it then shows on the
+        // public Sessions page and in the admin panel).
+        const plainFormat = String(formatVal).replace(/&bull;|&middot;/g, '·');
         fetch('../../backend/controllers/student_controller.php?action=create_session', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, faculty, date: dateVal, time: timeVal, format: formatVal })
-        }).catch(() => {});
+            body: JSON.stringify({ title, faculty, date: dateVal, time: timeVal, format: plainFormat, location: plainFormat })
+        })
+            .then((res) => readJson(res))
+            .then((data) => {
+                if (data && data.success) {
+                    showStudentToast(`Study session "${title}" scheduled and saved.`, 'success');
+                } else {
+                    showStudentToast(`"${title}" was NOT saved: ${(data && data.message) || 'please try again.'}`, 'danger');
+                }
+            })
+            .catch((err) => {
+                if (!(err && err.nonJson)) showStudentToast(`"${title}" was NOT saved (connection error). Please try again.`, 'danger');
+            });
 
         form.reset();
-        showStudentToast(`Study session "${title}" successfully scheduled!`, 'success');
     };
 
     const csForm = document.getElementById('createSessionForm');

@@ -573,10 +573,11 @@ switch ($action) {
 
         if ($id > 0) {
             // Preferred: update exactly one session by id
-            $exists = $conn->prepare("SELECT id FROM study_sessions WHERE id = ?");
+            $exists = $conn->prepare("SELECT id, title, host_id, status FROM study_sessions WHERE id = ?");
             $exists->bind_param("i", $id);
             $exists->execute();
-            if (!$exists->get_result()->fetch_assoc()) {
+            $before = $exists->get_result()->fetch_assoc();
+            if (!$before) {
                 echo json_encode(['success' => false, 'message' => "Session #$id was not found."]);
                 break;
             }
@@ -584,6 +585,22 @@ switch ($action) {
                 $stmt = $conn->prepare("UPDATE study_sessions SET status = ? WHERE id = ?");
                 $stmt->bind_param("si", $status, $id);
                 $stmt->execute();
+
+                // Approval decision on a session waiting for review: tell the host
+                if ($before['status'] === 'Review' && in_array($status, ['Scheduled', 'Cancelled'], true)) {
+                    $approved = $status === 'Scheduled';
+                    $nTitle = $approved ? 'Study session approved' : 'Study session not approved';
+                    $nMsg = $approved
+                        ? 'Your session "' . $before['title'] . '" was approved and is now listed on the Sessions page.'
+                        : 'Your session "' . $before['title'] . '" was not approved by the admins.';
+                    $nLink = $approved ? '../session-details.php?id=' . $id : 'schedule.php';
+                    $hostId = (int)$before['host_id'];
+                    $n = $conn->prepare("INSERT INTO notifications (user_id, title, message, category, link_url) VALUES (?, ?, ?, 'session', ?)");
+                    if ($n) {
+                        $n->bind_param("isss", $hostId, $nTitle, $nMsg, $nLink);
+                        $n->execute();
+                    }
+                }
             }
             if ($capacity > 0) {
                 $stmt = $conn->prepare("UPDATE study_sessions SET capacity = ? WHERE id = ?");

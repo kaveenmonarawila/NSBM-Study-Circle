@@ -92,7 +92,7 @@
         // 3. Live Table Search & Status Filtering
         const tableSearchInput = document.querySelector('[data-admin-table-search]');
         const statusFilterSelect = document.querySelector('[data-admin-status-filter]');
-        const tableBody = document.querySelector('.admin-table tbody');
+        const tableBody = document.querySelector('.admin-table:not(.admin-pending-table) tbody'); // main table only (not approval panels)
 
         function filterTableRows() {
             if (!tableBody) return;
@@ -105,7 +105,8 @@
             rows.forEach((row) => {
                 const text = row.textContent.toLowerCase();
                 const statusBadge = row.querySelector('.status-pill');
-                const rowStatus = statusBadge ? statusBadge.textContent.toLowerCase().trim() : text;
+                // Rows can state their status explicitly (data-row-status); otherwise use the first pill
+                const rowStatus = row.dataset.rowStatus ? row.dataset.rowStatus.toLowerCase() : (statusBadge ? statusBadge.textContent.toLowerCase().trim() : text);
 
                 const matchesSearch = !query || text.includes(query);
                 const matchesStatus = statusVal === 'all' || statusVal === 'all statuses' || rowStatus.includes(statusVal);
@@ -166,7 +167,7 @@
             btn.addEventListener('click', function () {
                 const exportName = btn.getAttribute('data-admin-export') || 'nsbm-admin-export';
                 const rows = [];
-                const table = document.querySelector('.admin-table');
+                const table = document.querySelector('.admin-table:not(.admin-pending-table)');
 
                 if (table) {
                     const headers = Array.from(table.querySelectorAll('thead th'))
@@ -1376,10 +1377,27 @@
                                     .then(() => {
                                         if (statusCell) statusCell.textContent = 'Scheduled';
                                         showAdminToast(`"${sessName}" is now Scheduled.`);
+                                        setTimeout(() => window.location.reload(), 900); // refresh approval panel & badges
                                     })
                                     .catch((err) => showAdminToast(`Could not update "${sessName}": ${err.message}`, 'danger'));
                             }
                         });
+                        if (sessStatus === 'Awaiting approval' || sessStatus === 'Review') {
+                            options.push({
+                                icon: 'bi-x-octagon text-danger',
+                                label: 'Reject session',
+                                action: () => {
+                                    if (!confirm(`Reject "${sessName}"? It will not be published.`)) return;
+                                    postSession('moderate_session', { status: 'Cancelled' })
+                                        .then(() => {
+                                            if (statusCell) statusCell.textContent = 'Cancelled';
+                                            showAdminToast(`Rejected "${sessName}".`, 'danger');
+                                            setTimeout(() => window.location.reload(), 900);
+                                        })
+                                        .catch((err) => showAdminToast(`Could not update "${sessName}": ${err.message}`, 'danger'));
+                                }
+                            });
+                        }
                     } else {
                         options.push({
                             icon: 'bi-clock-history text-warning',

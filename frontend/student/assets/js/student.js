@@ -1594,7 +1594,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then((res) => readJson(res))
             .then((data) => {
                 if (data && data.success) {
-                    showStudentToast(`Study session "${title}" scheduled and saved.`, 'success');
+                    showStudentToast(data.message || `"${title}" was sent to the admins for approval.`, 'success');
                 } else {
                     showStudentToast(`"${title}" was NOT saved: ${(data && data.message) || 'please try again.'}`, 'danger');
                 }

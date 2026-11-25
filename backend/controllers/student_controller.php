@@ -506,7 +506,7 @@ switch ($action) {
         $capacity = (int)($input['capacity'] ?? 24);
         if ($capacity < 2 || $capacity > 500) $capacity = 24;
 
-        $stmt = $conn->prepare("INSERT INTO study_sessions (title, description, faculty, host_id, session_date, format_type, location_details, capacity, enrolled_count, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 'Scheduled')");
+        $stmt = $conn->prepare("INSERT INTO study_sessions (title, description, faculty, host_id, session_date, format_type, location_details, capacity, enrolled_count, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 'Review')"); // 'Review' = waiting for admin approval
         if ($stmt) {
             $stmt->bind_param("sssisssi", $title, $description, $faculty, $userId, $sessionDate, $formatType, $location, $capacity);
             if ($stmt->execute()) {
@@ -517,7 +517,8 @@ switch ($action) {
                     $att->bind_param("ii", $newId, $userId);
                     $att->execute();
                 }
-                echo json_encode(['success' => true, 'id' => $newId, 'message' => 'Study session "' . $title . '" scheduled. It is now listed on the Sessions page and in the admin panel.']);
+                echo json_encode(['success' => true, 'id' => $newId, 'status' => 'Review',
+                    'message' => 'Thanks! "' . $title . '" was sent to the admins for approval. It will appear on the Sessions page once it is approved.']);
                 exit();
             }
         }

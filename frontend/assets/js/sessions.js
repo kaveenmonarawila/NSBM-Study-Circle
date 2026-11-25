@@ -530,7 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     createSessionForm.reset();
                     showSessionToast(data.message || 'Study session scheduled.');
-                    setTimeout(() => window.location.reload(), 1600); // show it in the list
+                    // New sessions wait for admin approval, so they are not in the list yet
                 } else {
                     showSessionToast((data && data.message) || 'Could not schedule the session. Please try again.', false);
                 }

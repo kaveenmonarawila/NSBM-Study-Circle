@@ -1,6 +1,14 @@
 <?php
 // Determine current page for active sidebar state
 $current_page = basename($_SERVER['PHP_SELF']);
+
+// Real "waiting for a decision" counts for the badges
+$sidebarPendingResources = 0;
+$sidebarPendingSessions = 0;
+if (isset($conn) && $conn && !$conn->connect_error) {
+    if ($r = @$conn->query("SELECT COUNT(*) FROM resources WHERE status = 'Pending'")) $sidebarPendingResources = (int)$r->fetch_row()[0];
+    if ($r = @$conn->query("SELECT COUNT(*) FROM study_sessions WHERE status = 'Review'")) $sidebarPendingSessions = (int)$r->fetch_row()[0];
+}
 ?>
 <!-- Admin Console Dark Navy Sidebar -->
 <aside class="admin-sidebar" id="adminSidebar">
@@ -49,7 +57,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <a href="approvals.php" class="admin-nav-link <?= ($current_page === 'approvals.php') ? 'active' : '' ?>">
                         <i class="bi bi-check2"></i>
                         <span>Resource Approvals</span>
-                        <span class="admin-nav-badge" id="sidebarApprovalBadge">7</span>
+                        <span class="admin-nav-badge" id="sidebarApprovalBadge"<?= $sidebarPendingResources ? '' : ' style="display:none"' ?>><?= $sidebarPendingResources ?></span>
                     </a>
                 </li>
                 <li class="admin-nav-item">
@@ -93,6 +101,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <a href="sessions.php" class="admin-nav-link <?= ($current_page === 'sessions.php' || $current_page === 'manage_events.php') ? 'active' : '' ?>">
                         <i class="bi bi-calendar-event"></i>
                         <span>Study Sessions</span>
+                        <span class="admin-nav-badge" id="sidebarSessionBadge"<?= $sidebarPendingSessions ? '' : ' style="display:none"' ?> title="Sessions awaiting approval"><?= $sidebarPendingSessions ?></span>
                     </a>
                 </li>
             </ul>

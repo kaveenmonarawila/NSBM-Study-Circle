@@ -1105,34 +1105,46 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // M. Schedule Session Actions (Leave Session / Cancel Session)
-        if (e.target.tagName === 'A' && e.target.textContent.trim() === 'Leave Session') {
+        // M. Schedule Session Actions (Leave Session / Cancel Session) - saved in the database.
+        //    The card is only removed after the server confirms, so it stays gone after a refresh.
+        const schedAction = e.target.closest('[data-schedule-action][data-id]');
+        if (schedAction) {
             e.preventDefault();
-            const sessionCard = e.target.closest('.student-card');
-            if (sessionCard) {
-                sessionCard.style.opacity = '0.3';
-                setTimeout(() => sessionCard.remove(), 300);
-            }
-            showStudentToast('You have left this study session. Place released.', 'primary');
-            return;
-        }
+            const action = schedAction.dataset.scheduleAction; // 'leave' or 'cancel'
+            const sessId = parseInt(schedAction.dataset.id, 10);
+            const sessionCard = schedAction.closest('.session-item-card') || schedAction.closest('.student-card');
+            const sessTitle = sessionCard?.querySelector('.student-item-title')?.textContent.trim() || 'this session';
+            const question = action === 'cancel'
+                ? `Cancel "${sessTitle}"? It will be removed for everyone who reserved a place.`
+                : `Leave "${sessTitle}"? Your place will be released.`;
+            if (!sessId || !confirm(question)) return;
 
-        if (e.target.tagName === 'A' && e.target.textContent.trim() === 'Cancel Session') {
-            e.preventDefault();
-            if (confirm('Cancel this study session? Attendees will be notified.')) {
-                const sessionCard = e.target.closest('.student-card');
-                const sessTitle = sessionCard?.querySelector('.student-item-title')?.textContent.trim() || '';
-                fetch('../../backend/controllers/student_controller.php?action=delete_session', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ title: sessTitle })
-                }).catch(() => {});
-                if (sessionCard) {
-                    sessionCard.style.opacity = '0.3';
-                    setTimeout(() => sessionCard.remove(), 300);
-                }
-                showStudentToast('Study session has been cancelled in MySQL.', 'danger');
-            }
+            const url = action === 'cancel'
+                ? '../../backend/controllers/student_controller.php?action=delete_session'
+                : '../../backend/controllers/student_controller.php?action=reserve_session';
+            const body = action === 'cancel' ? { session_id: sessId } : { session_id: sessId, reserve: false };
+
+            fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+                .then((res) => readJson(res))
+                .then((data) => {
+                    if (!data || !data.success) {
+                        showStudentToast((data && data.message) || 'Could not update the session. Please try again.', 'danger');
+                        return;
+                    }
+                    if (sessionCard) {
+                        sessionCard.style.opacity = '0.3';
+                        setTimeout(() => {
+                            sessionCard.remove();
+                            const left = document.querySelectorAll('#upcomingSessionsList .session-item-card').length;
+                            const badge = document.getElementById('sessionCountBadge');
+                            if (badge) badge.textContent = `${left} Session${left === 1 ? '' : 's'}`;
+                        }, 300);
+                    }
+                    showStudentToast(action === 'cancel' ? `"${sessTitle}" was cancelled.` : `You left "${sessTitle}". Your place was released.`, action === 'cancel' ? 'danger' : 'primary');
+                })
+                .catch((err) => {
+                    if (!(err && err.nonJson)) showStudentToast('Connection error. Nothing was changed, please try again.', 'danger');
+                });
             return;
         }
 
@@ -1538,6 +1550,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                  (faculty.toLowerCase().includes('eng') ? 'student-badge-engineering' : 'student-badge-science'));
 
         // Build new card
+        const escTitle = String(title).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
         const newCard = document.createElement('div');
         newCard.className = 'student-card mb-3 p-3 session-item-card';
         newCard.setAttribute('data-day', dayNum);
@@ -1549,7 +1562,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="flex-grow-1">
                     <span class="${facultyBadgeClass}">${faculty}</span>
-                    <h4 class="student-item-title mt-1" style="font-size: 1.05rem;">${title}</h4>
+                    <h4 class="student-item-title mt-1" style="font-size: 1.05rem;">${escTitle}</h4>
                     <p class="student-item-subtitle"><i class="bi bi-clock me-1"></i> ${formattedTime} (${durationVal}) &bull; ${formatVal}</p>
                 </div>
                 <div class="d-flex align-items-center gap-3">
@@ -1605,11 +1618,17 @@ document.addEventListener('DOMContentLoaded', () => {
             .then((data) => {
                 if (data && data.success) {
                     showStudentToast(data.message || `"${title}" was sent to the admins for approval.`, 'success');
+                    // Reload the schedule so the list shows the real saved session (with its id)
+                    if (document.getElementById('upcomingSessionsList')) {
+                        setTimeout(() => window.location.reload(), 1800);
+                    }
                 } else {
+                    newCard.remove(); // it was not saved, so don't leave a fake card on screen
                     showStudentToast(`"${title}" was NOT saved: ${(data && data.message) || 'please try again.'}`, 'danger');
                 }
             })
             .catch((err) => {
+                newCard.remove();
                 if (!(err && err.nonJson)) showStudentToast(`"${title}" was NOT saved (connection error). Please try again.`, 'danger');
             });
 
@@ -1962,7 +1981,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openSessionModal(id) {
-        const data = SESSION_DATA[id] || SESSION_DATA['1'];
+        // Real sessions have their own database-driven page (session-details.php).
+        // Never fall back to the built-in sample data, which showed the wrong session.
+        const realId = parseInt(id, 10);
+        if (realId > 0) {
+            window.location.href = '../session-details.php?id=' + realId;
+            return;
+        }
+        const data = SESSION_DATA[id];
+        if (!data) return;
         document.getElementById('ssmTitle').textContent = data.title;
         document.getElementById('ssmModule').textContent = data.module;
         document.getElementById('ssmFaculty').textContent = data.faculty;

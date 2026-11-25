@@ -3,6 +3,56 @@ require_once __DIR__ . '/../../backend/config/app_config.php'; // SITE_NAME
 // NSBM STUDY CIRCLE - Student Portal My Schedule
 include_once __DIR__ . '/includes/auth_check.php';
 $page_title = 'My schedule';
+
+// ----------------------------------------------------------------------------
+// The student's REAL sessions from the database: ones they host + ones they
+// reserved. Cancelled / rejected sessions are not shown.
+// ----------------------------------------------------------------------------
+$scheduleUid = (int)($_SESSION['user_id'] ?? 0);
+$upcomingSessions = [];
+$pastSessions = [];
+if ($scheduleUid > 0 && isset($conn) && $conn && !$conn->connect_error) {
+    $sq = $conn->prepare("
+        SELECT ss.id, ss.title, ss.faculty, ss.session_date, ss.duration_mins, ss.format_type,
+               ss.location_details, ss.status, ss.host_id, COALESCE(u.name, 'Student host') AS host_name
+        FROM study_sessions ss
+        LEFT JOIN users u ON u.id = ss.host_id
+        WHERE ss.status <> 'Cancelled'
+          AND (ss.host_id = ? OR EXISTS (SELECT 1 FROM study_session_attendees a WHERE a.session_id = ss.id AND a.user_id = ?))
+        ORDER BY ss.session_date ASC, ss.id ASC
+    ");
+    if ($sq) {
+        $sq->bind_param("ii", $scheduleUid, $scheduleUid);
+        $sq->execute();
+        $res = $sq->get_result();
+        $nowTs = time();
+        while ($row = $res->fetch_assoc()) {
+            $row['ts'] = strtotime($row['session_date']);
+            $row['is_host'] = ((int)$row['host_id'] === $scheduleUid);
+            if ($row['ts'] >= $nowTs) {
+                $upcomingSessions[] = $row;
+            } else {
+                $pastSessions[] = $row;
+            }
+        }
+        $pastSessions = array_reverse($pastSessions); // most recent first
+    }
+}
+
+function scheduleFacultyBadge($faculty) {
+    $f = strtolower((string)$faculty);
+    if (strpos($f, 'bus') !== false) return 'student-badge-business';
+    if (strpos($f, 'eng') !== false) return 'student-badge-engineering';
+    if (strpos($f, 'sci') !== false) return 'student-badge-science';
+    return 'student-badge-computing';
+}
+
+// There is no .student-badge-engineering rule in student.css, so style it inline
+function scheduleBadgeStyle($badgeClass) {
+    return $badgeClass === 'student-badge-engineering'
+        ? ' style="background:#F5F3FF; color:#7C3AED; font-weight:700; font-size:0.75rem; padding:2px 8px; border-radius:6px;"'
+        : '';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -90,88 +140,59 @@ $page_title = 'My schedule';
                     </div>
                 </div>
 
-                <!-- Next on your schedule section -->
+                <!-- Next on your schedule (sessions you host or reserved, from the database) -->
                 <div class="mb-4">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="fw-bold mb-0" style="font-size: 0.95rem; color: var(--slate-muted);">Next on your schedule</h5>
-                        <span class="badge bg-light text-secondary border px-2 py-1" id="sessionCountBadge">3 Sessions</span>
+                        <span class="badge bg-light text-secondary border px-2 py-1" id="sessionCountBadge"><?= count($upcomingSessions) ?> Session<?= count($upcomingSessions) === 1 ? '' : 's' ?></span>
                     </div>
 
                     <div id="upcomingSessionsList">
-                        <!-- Session Item 1: Database Systems Revision -->
-                        <div class="student-card mb-3 p-3 session-item-card" data-day="19">
+                    <?php if (empty($upcomingSessions)): ?>
+                        <div class="student-card mb-3 p-4 text-center text-secondary" id="noUpcomingSessions">
+                            <i class="bi bi-calendar2-x fs-3 d-block mb-2"></i>
+                            You have no upcoming sessions. Reserve a place on the <a href="../sessions.php" class="fw-semibold">Sessions page</a> or create your own.
+                        </div>
+                    <?php endif; ?>
+                    <?php foreach ($upcomingSessions as $i => $s):
+                        $badge = scheduleFacultyBadge($s['faculty']);
+                        $place = trim(($s['location_details'] ?? '') !== '' ? $s['location_details'] : ($s['format_type'] ?: 'Online'));
+                        $isPhysical = stripos((string)$s['format_type'], 'phys') !== false || stripos((string)$s['format_type'], 'person') !== false;
+                    ?>
+                        <div class="student-card mb-3 p-3 session-item-card" data-day="<?= (int)date('j', $s['ts']) ?>" data-date="<?= date('Y-m-d', $s['ts']) ?>" data-session-card="<?= (int)$s['id'] ?>">
                             <div class="d-flex align-items-center gap-3">
-                                <div class="student-date-badge student-date-dark">
-                                    <span class="student-date-num">19</span>
-                                    <span class="student-date-month">MAY</span>
+                                <div class="student-date-badge <?= $i === 0 ? 'student-date-dark' : 'student-date-light' ?>">
+                                    <span class="student-date-num"><?= date('j', $s['ts']) ?></span>
+                                    <span class="student-date-month"><?= strtoupper(date('M', $s['ts'])) ?></span>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <span class="student-badge-computing">Computing</span>
-                                    <h4 class="student-item-title mt-1" style="font-size: 1.05rem;">Database Systems Revision</h4>
-                                    <p class="student-item-subtitle"><i class="bi bi-clock me-1"></i> 6:00 PM &bull; Online &bull; Microsoft Teams</p>
+                                    <span class="<?= $badge ?>"<?= scheduleBadgeStyle($badge) ?>><?= htmlspecialchars($s['faculty'] ?: 'Computing') ?></span>
+                                    <h4 class="student-item-title mt-1" style="font-size: 1.05rem;"><?= htmlspecialchars($s['title']) ?></h4>
+                                    <p class="student-item-subtitle"><i class="bi <?= $isPhysical ? 'bi-geo-alt' : 'bi-clock' ?> me-1"></i> <?= date('D j M Y', $s['ts']) ?> &bull; <?= date('g:i A', $s['ts']) ?> &bull; <?= htmlspecialchars($place) ?><?= $s['is_host'] ? '' : ' &bull; Host: ' . htmlspecialchars($s['host_name']) ?></p>
                                 </div>
                                 <div class="d-flex align-items-center gap-3">
-                                    <span class="text-success fw-bold small">Attending</span>
+                                    <?php if ($s['is_host'] && $s['status'] === 'Review'): ?>
+                                        <span class="text-warning-emphasis fw-bold small">Hosting &middot; Awaiting approval</span>
+                                    <?php elseif ($s['is_host']): ?>
+                                        <span class="text-primary fw-bold small">Hosting</span>
+                                    <?php else: ?>
+                                        <span class="text-success fw-bold small">Attending</span>
+                                    <?php endif; ?>
                                     <div class="dropdown">
-                                        <button class="btn btn-sm btn-link text-muted p-0" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
+                                        <button class="btn btn-sm btn-link text-muted p-0" data-bs-toggle="dropdown" aria-label="Session actions"><i class="bi bi-three-dots"></i></button>
                                         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" style="border-radius: 8px;">
-                                            <li><a class="dropdown-item small open-session-modal" href="javascript:void(0)" data-session-id="1">View Details</a></li>
-                                            <li><a class="dropdown-item small text-danger" href="javascript:void(0)">Leave Session</a></li>
+                                            <li><a class="dropdown-item small" href="../session-details.php?id=<?= (int)$s['id'] ?>">View Details</a></li>
+                                            <?php if ($s['is_host']): ?>
+                                                <li><a class="dropdown-item small text-danger" href="javascript:void(0)" data-schedule-action="cancel" data-id="<?= (int)$s['id'] ?>">Cancel Session</a></li>
+                                            <?php else: ?>
+                                                <li><a class="dropdown-item small text-danger" href="javascript:void(0)" data-schedule-action="leave" data-id="<?= (int)$s['id'] ?>">Leave Session</a></li>
+                                            <?php endif; ?>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Session Item 2: Algorithms: Final Exam Problem Solving (Hosting) -->
-                        <div class="student-card mb-3 p-3 session-item-card" data-day="24">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="student-date-badge student-date-dark" style="background-color: #0B1B2B;">
-                                    <span class="student-date-num">24</span>
-                                    <span class="student-date-month">MAY</span>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <span class="student-badge-computing">Computing</span>
-                                    <h4 class="student-item-title mt-1" style="font-size: 1.05rem;">Algorithms: Final Exam Problem Solving</h4>
-                                    <p class="student-item-subtitle"><i class="bi bi-clock me-1"></i> 6:30 PM &bull; Online &bull; Zoom</p>
-                                </div>
-                                <div class="d-flex align-items-center gap-3">
-                                    <span class="text-primary fw-bold small">Hosting</span>
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-link text-muted p-0" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
-                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" style="border-radius: 8px;">
-                                            <li><a class="dropdown-item small open-session-modal" href="javascript:void(0)" data-session-id="2">View Details</a></li>
-                                            <li><a class="dropdown-item small text-danger" href="javascript:void(0)">Cancel Session</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Session Item 3: Marketing Case Review -->
-                        <div class="student-card mb-3 p-3 session-item-card" data-day="26">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="student-date-badge student-date-light">
-                                    <span class="student-date-num">26</span>
-                                    <span class="student-date-month">MAY</span>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <span class="student-badge-business">Business</span>
-                                    <h4 class="student-item-title mt-1" style="font-size: 1.05rem;">Marketing Case Review</h4>
-                                    <p class="student-item-subtitle"><i class="bi bi-geo-alt me-1"></i> 4:00 PM &bull; Campus &bull; Learning Commons</p>
-                                </div>
-                                <div class="d-flex align-items-center gap-3">
-                                    <span class="text-success fw-bold small">Attending</span>
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-link text-muted p-0" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
-                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" style="border-radius: 8px;">
-                                            <li><a class="dropdown-item small open-session-modal" href="javascript:void(0)" data-session-id="3">View Details</a></li>
-                                            <li><a class="dropdown-item small text-danger" href="javascript:void(0)">Leave Session</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <?php endforeach; ?>
                     </div>
                 </div>
             </div>
@@ -250,80 +271,39 @@ $page_title = 'My schedule';
                 <div class="student-card mb-4 p-4">
                     <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
                         <div>
-                            <h4 class="student-card-title mb-1" style="font-size: 1.1rem;">Past Study Sessions Archive</h4>
-                            <p class="student-item-subtitle mb-0">Access notes, summaries, and downloadable PDF material from completed sessions.</p>
+                            <h4 class="student-card-title mb-1" style="font-size: 1.1rem;">Past Study Sessions</h4>
+                            <p class="student-item-subtitle mb-0">Sessions you hosted or attended.</p>
                         </div>
-                        <span class="badge bg-secondary-subtle text-secondary px-3 py-2 fw-semibold">3 Completed</span>
+                        <span class="badge bg-secondary-subtle text-secondary px-3 py-2 fw-semibold"><?= count($pastSessions) ?> Completed</span>
                     </div>
 
-                    <!-- Past Session 1 -->
-                    <div class="p-3 rounded border bg-light mb-3">
+                    <?php if (empty($pastSessions)): ?>
+                        <p class="text-secondary text-center mb-0 py-3">No past sessions yet.</p>
+                    <?php endif; ?>
+                    <?php foreach ($pastSessions as $i => $s):
+                        $badge = scheduleFacultyBadge($s['faculty']);
+                        $place = trim(($s['location_details'] ?? '') !== '' ? $s['location_details'] : ($s['format_type'] ?: 'Online'));
+                    ?>
+                    <div class="p-3 rounded border bg-light <?= $i === count($pastSessions) - 1 ? 'mb-0' : 'mb-3' ?>">
                         <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                             <div class="d-flex align-items-center gap-3">
                                 <div class="student-date-badge" style="background:#475569; color:#fff;">
-                                    <span class="student-date-num">12</span>
-                                    <span class="student-date-month">MAY</span>
+                                    <span class="student-date-num"><?= date('d', $s['ts']) ?></span>
+                                    <span class="student-date-month"><?= strtoupper(date('M', $s['ts'])) ?></span>
                                 </div>
                                 <div>
-                                    <span class="student-badge-computing">Computing</span>
-                                    <h5 class="fw-bold text-dark mt-1 mb-1" style="font-size: 1rem;">OOP in Java: Inheritance, Polymorphism & Design Patterns</h5>
-                                    <p class="text-secondary small mb-0"><i class="bi bi-person me-1"></i>Hosted by Sahan Dissanayake &bull; 5:00 PM &bull; Microsoft Teams</p>
+                                    <span class="<?= $badge ?>"<?= scheduleBadgeStyle($badge) ?>><?= htmlspecialchars($s['faculty'] ?: 'Computing') ?></span>
+                                    <h5 class="fw-bold text-dark mt-1 mb-1" style="font-size: 1rem;"><?= htmlspecialchars($s['title']) ?></h5>
+                                    <p class="text-secondary small mb-0"><i class="bi bi-person me-1"></i>Hosted by <?= $s['is_host'] ? 'you' : htmlspecialchars($s['host_name']) ?> &bull; <?= date('j M Y, g:i A', $s['ts']) ?> &bull; <?= htmlspecialchars($place) ?></p>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center gap-2">
-                                <span class="badge bg-success-subtle text-success fw-bold px-2 py-1"><i class="bi bi-check2-circle me-1"></i>Attended</span>
-                                <button type="button" class="student-btn-green py-1 px-3 download-material-btn" data-title="OOP in Java Design Patterns Notes" data-faculty="Computing" data-format="PDF" style="font-size: 0.85rem;">
-                                    <i class="bi bi-file-earmark-pdf me-1"></i>Download Notes (PDF)
-                                </button>
+                                <span class="badge bg-success-subtle text-success fw-bold px-2 py-1"><i class="bi bi-check2-circle me-1"></i><?= $s['is_host'] ? 'Hosted' : 'Attended' ?></span>
+                                <a href="../session-details.php?id=<?= (int)$s['id'] ?>" class="student-btn-outline py-1 px-3 text-decoration-none" style="font-size: 0.85rem;">View details</a>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Past Session 2 -->
-                    <div class="p-3 rounded border bg-light mb-3">
-                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="student-date-badge" style="background:#475569; color:#fff;">
-                                    <span class="student-date-num">08</span>
-                                    <span class="student-date-month">MAY</span>
-                                </div>
-                                <div>
-                                    <span class="student-badge-business">Business</span>
-                                    <h5 class="fw-bold text-dark mt-1 mb-1" style="font-size: 1rem;">Macroeconomics: Monetary Policy & Inflation Revision</h5>
-                                    <p class="text-secondary small mb-0"><i class="bi bi-person me-1"></i>Hosted by Nisansala Jayawardena &bull; 3:30 PM &bull; Learning Commons</p>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="badge bg-success-subtle text-success fw-bold px-2 py-1"><i class="bi bi-check2-circle me-1"></i>Attended</span>
-                                <button type="button" class="student-btn-green py-1 px-3 download-material-btn" data-title="Macroeconomics Monetary Policy Revision" data-faculty="Business" data-format="PDF" style="font-size: 0.85rem;">
-                                    <i class="bi bi-file-earmark-pdf me-1"></i>Download Notes (PDF)
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Past Session 3 -->
-                    <div class="p-3 rounded border bg-light mb-0">
-                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="student-date-badge" style="background:#475569; color:#fff;">
-                                    <span class="student-date-num">02</span>
-                                    <span class="student-date-month">MAY</span>
-                                </div>
-                                <div>
-                                    <span class="student-badge-engineering" style="background:#F5F3FF; color:#7C3AED; font-weight:700; font-size:0.75rem; padding:2px 8px; border-radius:6px;">Engineering</span>
-                                    <h5 class="fw-bold text-dark mt-1 mb-1" style="font-size: 1rem;">Electrical Circuit Analysis: Mesh & Nodal Methods</h5>
-                                    <p class="text-secondary small mb-0"><i class="bi bi-person me-1"></i>Hosted by Dinuka Mendis &bull; 6:00 PM &bull; Zoom</p>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="badge bg-success-subtle text-success fw-bold px-2 py-1"><i class="bi bi-check2-circle me-1"></i>Attended</span>
-                                <button type="button" class="student-btn-green py-1 px-3 download-material-btn" data-title="Electrical Circuit Analysis Worked Solutions" data-faculty="Engineering" data-format="PDF" style="font-size: 0.85rem;">
-                                    <i class="bi bi-file-earmark-pdf me-1"></i>Download Notes (PDF)
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
 

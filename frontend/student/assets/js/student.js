@@ -1503,8 +1503,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const form = e.target;
         const title = document.getElementById('csTitle')?.value.trim() || form.querySelector('input[type="text"]')?.value.trim() || 'Study Session';
         const faculty = document.getElementById('csFaculty')?.value || 'Computing';
-        const dateVal = document.getElementById('csDate')?.value || form.querySelector('input[type="date"]')?.value || '2025-05-28';
-        const timeVal = document.getElementById('csTime')?.value || form.querySelector('input[type="time"]')?.value || '18:30';
+        // Never substitute a made-up date: the student must choose one (and it cannot be in the past)
+        const dateVal = document.getElementById('csDate')?.value || form.querySelector('input[type="date"]')?.value || '';
+        const timeVal = document.getElementById('csTime')?.value || form.querySelector('input[type="time"]')?.value || '';
+        const todayStr = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+        if (!dateVal || !timeVal) {
+            showStudentToast('Please choose a date and start time for the session.', 'danger');
+            return;
+        }
+        if (dateVal < todayStr) {
+            showStudentToast('The session date cannot be in the past.', 'danger');
+            return;
+        }
         const durationVal = document.getElementById('csDuration')?.value || '90 mins';
         const formatVal = document.getElementById('csFormat')?.value || form.querySelectorAll('input[type="text"]')[1]?.value || 'Online &bull; Microsoft Teams';
 

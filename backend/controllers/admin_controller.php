@@ -607,6 +607,19 @@ switch ($action) {
                 $stmt->bind_param("ii", $capacity, $id);
                 $stmt->execute();
             }
+            // New date/time from the admin edit box ("2026-12-05T18:30" or "2026-12-05 18:30")
+            $newDateRaw = trim((string)($input['session_date'] ?? ''));
+            if ($newDateRaw !== '') {
+                $dt = DateTime::createFromFormat('!Y-m-d\TH:i', $newDateRaw) ?: DateTime::createFromFormat('!Y-m-d H:i', $newDateRaw);
+                if (!$dt || (int)$dt->format('Y') < 2020 || (int)$dt->format('Y') > 2100) {
+                    echo json_encode(['success' => false, 'message' => 'Please enter a valid date and time.']);
+                    break;
+                }
+                $newDate = $dt->format('Y-m-d H:i:00');
+                $stmt = $conn->prepare("UPDATE study_sessions SET session_date = ? WHERE id = ?");
+                $stmt->bind_param("si", $newDate, $id);
+                $stmt->execute();
+            }
             if ($title !== '' && mb_strlen($title) <= 200) {
                 $stmt = $conn->prepare("UPDATE study_sessions SET title = ? WHERE id = ?");
                 $stmt->bind_param("si", $title, $id);

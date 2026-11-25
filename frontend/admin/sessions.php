@@ -161,7 +161,7 @@ if (isset($conn) && $conn && !$conn->connect_error) {
                                 $cap = max(1, (int)($sess['capacity'] ?? 24));
                                 $pill = $enrolled >= $cap ? 'pill-red' : ($enrolled >= $cap * 0.75 ? 'pill-amber' : 'pill-green');
                             ?>
-                                <tr data-session-id="<?= (int)$sess['id'] ?>" data-row-status="<?= htmlspecialchars(strtolower($sess['status'] ?? 'scheduled')) ?>">
+                                <tr data-session-id="<?= (int)$sess['id'] ?>" data-session-datetime="<?= $ts ? date('Y-m-d\TH:i', $ts) : '' ?>" data-row-status="<?= htmlspecialchars(strtolower($sess['status'] ?? 'scheduled')) ?>">
                                     <td>
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="table-item-icon"><i class="bi bi-calendar-event"></i></div>

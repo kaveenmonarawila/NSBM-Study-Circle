@@ -359,7 +359,7 @@ $page_title = 'My schedule';
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <label class="form-label small fw-bold">Date</label>
-                            <input type="date" id="csDate" class="form-control" value="2025-05-28" required>
+                            <input type="date" id="csDate" class="form-control" value="<?= date('Y-m-d') ?>" min="<?= date('Y-m-d') ?>" required>
                         </div>
                         <div class="col-6">
                             <label class="form-label small fw-bold">Time</label>

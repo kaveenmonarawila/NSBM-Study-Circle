@@ -8,6 +8,10 @@
 // To rename the site, change only this value.
 if (!defined('SITE_NAME')) define('SITE_NAME', 'Study Circle');
 
+// Dates and "today" use Sri Lanka time (the hosting server may run on UTC)
+if (!defined('SITE_TIMEZONE')) define('SITE_TIMEZONE', 'Asia/Colombo');
+date_default_timezone_set(SITE_TIMEZONE);
+
 // Base URL detected from the current request (works on XAMPP sub-folders and on InfinityFree)
 if (!defined('SITE_URL')) {
     $siteScheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')

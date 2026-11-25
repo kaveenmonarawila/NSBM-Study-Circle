@@ -1342,26 +1342,37 @@
                         icon: 'bi-calendar2-week text-primary',
                         label: 'Edit session schedule',
                         action: () => {
+                            const escAttr = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+                            const currentDT = tr.dataset.sessionDatetime || ''; // e.g. 2026-12-05T18:30
                             openRecordModal(
                                 'Edit study session',
                                 sessName,
                                 `<div class="mb-3">
                                     <label class="admin-form-label">Session title</label>
-                                    <input type="text" id="editSessTitle" class="admin-form-control" value="${sessName}">
+                                    <input type="text" id="editSessTitle" class="admin-form-control" maxlength="200" value="${escAttr(sessName)}">
                                 </div>
                                 <div>
-                                    <label class="admin-form-label">Date &amp; Time</label>
-                                    <input type="text" id="editSessTime" class="admin-form-control" value="${dateTimeCell?.textContent.trim() || ''}">
+                                    <label class="admin-form-label">Date &amp; start time</label>
+                                    <input type="datetime-local" id="editSessTime" class="admin-form-control" value="${escAttr(currentDT)}">
                                 </div>`,
                                 (modalEl, bsModal) => {
                                     const newT = modalEl.querySelector('#editSessTitle')?.value.trim();
                                     const newDT = modalEl.querySelector('#editSessTime')?.value.trim();
-                                    const titleSpan = tr.querySelector('.fw-bold.text-dark');
-                                    if (newT && titleSpan) titleSpan.textContent = newT;
-                                    if (newDT && dateTimeCell) dateTimeCell.textContent = newDT;
+                                    const payload = { title: newT || sessName };
+                                    if (newDT && newDT !== currentDT) payload.session_date = newDT;
                                     bsModal.hide();
-                                    postSession('moderate_session', { old_title: sessName, title: newT || sessName })
-                                        .then(() => showAdminToast(`Updated session "${newT || sessName}".`))
+                                    postSession('moderate_session', payload)
+                                        .then(() => {
+                                            const titleSpan = tr.querySelector('.fw-bold.text-dark');
+                                            if (newT && titleSpan) titleSpan.textContent = newT;
+                                            if (payload.session_date && dateTimeCell) {
+                                                const d = new Date(payload.session_date);
+                                                dateTimeCell.textContent = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+                                                    + ' · ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                                                tr.dataset.sessionDatetime = payload.session_date;
+                                            }
+                                            showAdminToast(`Updated session "${newT || sessName}".`);
+                                        })
                                         .catch((err) => showAdminToast(`Could not update "${sessName}": ${err.message}`, 'danger'));
                                 }
                             );

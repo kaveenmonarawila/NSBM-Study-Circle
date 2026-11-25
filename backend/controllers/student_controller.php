@@ -486,6 +486,17 @@ switch ($action) {
             echo json_encode(['success' => false, 'message' => 'Please choose a valid session date.']);
             exit();
         }
+        // Sri Lanka "today" (see SITE_TIMEZONE in app_config.php)
+        require_once __DIR__ . '/../config/app_config.php';
+        $todayStr = date('Y-m-d');
+        if ($dateVal < $todayStr) {
+            echo json_encode(['success' => false, 'message' => 'The session date cannot be in the past. Please choose today or a later date.']);
+            exit();
+        }
+        if ($dateVal > date('Y-m-d', strtotime('+1 year'))) {
+            echo json_encode(['success' => false, 'message' => 'Please choose a date within the next 12 months.']);
+            exit();
+        }
         $timeRaw = trim((string)($input['time'] ?? ''));
         $startPart = trim(preg_split('/\s*[-–—]\s*|\s+to\s+/i', $timeRaw)[0] ?? '');
         $timeTs = $startPart !== '' ? strtotime('2000-01-01 ' . $startPart) : false;

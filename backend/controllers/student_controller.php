@@ -524,6 +524,67 @@ switch ($action) {
         echo json_encode(['success' => false, 'message' => 'Could not save the session. Please try again.']);
         break;
 
+    case 'reserve_session':
+        // Reserve or cancel a place: {"session_id": 12, "reserve": true|false}
+        $sessId = (int)($input['session_id'] ?? 0);
+        $wantReserve = filter_var($input['reserve'] ?? true, FILTER_VALIDATE_BOOLEAN);
+
+        $q = $conn->prepare("SELECT id, host_id, capacity, enrolled_count, status FROM study_sessions WHERE id = ?");
+        $q->bind_param("i", $sessId);
+        $q->execute();
+        $sess = $q->get_result()->fetch_assoc();
+        if (!$sess || !in_array($sess['status'], ['Scheduled'], true)) {
+            echo json_encode(['success' => false, 'message' => 'This session is not open for reservations.']);
+            exit();
+        }
+        if ((int)$sess['host_id'] === $userId) {
+            echo json_encode(['success' => false, 'message' => 'You are the host of this session.']);
+            exit();
+        }
+
+        if ($wantReserve) {
+            // Only take a seat if one is free (single atomic UPDATE prevents overbooking)
+            $chk = $conn->prepare("SELECT 1 FROM study_session_attendees WHERE session_id = ? AND user_id = ?");
+            $chk->bind_param("ii", $sessId, $userId);
+            $chk->execute();
+            if (!$chk->get_result()->fetch_row()) {
+                $seat = $conn->prepare("UPDATE study_sessions SET enrolled_count = enrolled_count + 1 WHERE id = ? AND enrolled_count < capacity");
+                $seat->bind_param("i", $sessId);
+                $seat->execute();
+                if ($seat->affected_rows < 1) {
+                    echo json_encode(['success' => false, 'message' => 'Sorry, this session is full.']);
+                    exit();
+                }
+                $ins = $conn->prepare("INSERT IGNORE INTO study_session_attendees (session_id, user_id) VALUES (?, ?)");
+                $ins->bind_param("ii", $sessId, $userId);
+                $ins->execute();
+                if ($ins->affected_rows < 1) {
+                    // Reserved in parallel by another tab: give the seat back
+                    $conn->query("UPDATE study_sessions SET enrolled_count = GREATEST(enrolled_count - 1, 0) WHERE id = " . $sessId);
+                }
+            }
+        } else {
+            $del = $conn->prepare("DELETE FROM study_session_attendees WHERE session_id = ? AND user_id = ?");
+            $del->bind_param("ii", $sessId, $userId);
+            $del->execute();
+            if ($del->affected_rows > 0) {
+                $conn->query("UPDATE study_sessions SET enrolled_count = GREATEST(enrolled_count - 1, 0) WHERE id = " . $sessId);
+            }
+        }
+
+        $r = $conn->prepare("SELECT enrolled_count, capacity FROM study_sessions WHERE id = ?");
+        $r->bind_param("i", $sessId);
+        $r->execute();
+        $now = $r->get_result()->fetch_assoc();
+        echo json_encode([
+            'success' => true,
+            'reserved' => $wantReserve,
+            'enrolled_count' => (int)$now['enrolled_count'],
+            'capacity' => (int)$now['capacity'],
+            'message' => $wantReserve ? 'Place reserved! It is saved to your schedule.' : 'Reservation cancelled. Your place has been released.'
+        ]);
+        break;
+
     case 'delete_session':
         // Students can only cancel sessions they host
         $sessId = (int)($input['session_id'] ?? 0);

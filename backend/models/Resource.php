@@ -146,7 +146,9 @@ class ResourceModel {
             $resources[] = $this->decorateLinkFields($row);
         }
 
-        return !empty($resources) ? $resources : $this->filterFallbackResources($subject, $format, $year, $search, $sort);
+        // Database answered: return its real result, even when nothing matches
+        // (sample data is only used above when the database is unreachable)
+        return $resources;
     }
 
     /**
@@ -204,12 +206,17 @@ class ResourceModel {
             }
         }
 
-        // Fallback to in-memory dataset
-        $all = $this->getAllFallbackResources();
-        foreach ($all as $item) {
+        // Database is working but this resource does not exist: say so
+        // (never show a different, built-in sample resource instead)
+        if ($this->conn && !$this->conn->connect_error) {
+            return null;
+        }
+
+        // Database unreachable: built-in sample data (exact id only)
+        foreach ($this->getAllFallbackResources() as $item) {
             if ((int)$item['id'] === $id) return $item;
         }
-        return $all[0];
+        return null;
     }
 
     /**

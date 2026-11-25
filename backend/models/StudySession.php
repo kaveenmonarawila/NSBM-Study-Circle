@@ -40,7 +40,8 @@ class StudySessionModel {
             $sessions[] = $row;
         }
 
-        return !empty($sessions) ? $sessions : $this->getFallbackSessions();
+        // Database answered: return its real result, even when nothing matches
+        return $sessions;
     }
 
     public function getFallbackSessions() {

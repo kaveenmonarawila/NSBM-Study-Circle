@@ -89,7 +89,8 @@ class StudyGroupModel {
             $groups[] = $this->formatGroupData($row);
         }
 
-        return !empty($groups) ? $groups : $this->filterFallbackGroups($category, $search);
+        // Database answered: return its real result, even when nothing matches
+        return $groups;
     }
 
     /**
@@ -109,7 +110,9 @@ class StudyGroupModel {
         $stmt->execute();
         $result = $stmt->get_result();
         if (!$result || $result->num_rows === 0) {
-            return $this->getFallbackGroupDetails($id);
+            // Database is working but this group does not exist: say so
+            // (never show a different, built-in sample group instead)
+            return null;
         }
 
         $group = $this->formatGroupData($result->fetch_assoc());

@@ -444,20 +444,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // 10. Seat Reservation & Create Session Handlers
     // ------------------------------------------------------------------------
     if (reserveBtn) {
-        reserveBtn.addEventListener('click', () => {
-            const isReserved = reserveBtn.classList.contains('reserved');
-            if (!isReserved) {
-                reserveBtn.classList.add('reserved');
-                reserveBtn.textContent = 'Cancel Reservation';
-                if (capacityDisplay) capacityDisplay.textContent = '19 of 24 places reserved';
-                if (attendingCountDisplay) attendingCountDisplay.textContent = '19 students have reserved a place';
-                showSessionToast('Place reserved! A confirmation with meeting link has been sent.');
-            } else {
-                reserveBtn.classList.remove('reserved');
-                reserveBtn.textContent = 'Reserve your place';
-                if (capacityDisplay) capacityDisplay.textContent = '18 of 24 places reserved';
-                if (attendingCountDisplay) attendingCountDisplay.textContent = '18 students have reserved a place';
-                showSessionToast('Reservation cancelled. Your place has been released.');
+        // Saves the reservation in the database (student_controller.php?action=reserve_session)
+        reserveBtn.addEventListener('click', async () => {
+            const sessionId = parseInt(reserveBtn.dataset.sessionId || '0', 10);
+            if (!sessionId) {
+                showSessionToast('This is a sample session and cannot be reserved.', false);
+                return;
+            }
+            const wantReserve = !reserveBtn.classList.contains('reserved');
+            reserveBtn.disabled = true;
+            try {
+                const res = await fetch('../backend/controllers/student_controller.php?action=reserve_session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: sessionId, reserve: wantReserve })
+                });
+                if (res.status === 401) {
+                    window.location.href = 'login.php?error=' + encodeURIComponent('Please log in to reserve a place.');
+                    return;
+                }
+                const data = await readJson(res);
+                if (!data || !data.success) {
+                    showSessionToast((data && data.message) || 'Could not update your reservation.', false);
+                    return;
+                }
+                reserveBtn.classList.toggle('reserved', data.reserved);
+                reserveBtn.textContent = data.reserved ? 'Cancel Reservation' : 'Reserve your place';
+                const left = Math.max(0, data.capacity - data.enrolled_count);
+                if (capacityDisplay) capacityDisplay.textContent = `${data.enrolled_count} of ${data.capacity} places reserved` + (left > 0 && left <= 5 ? ` (${left} seat${left === 1 ? '' : 's'} left)` : (left === 0 ? ' (full)' : ''));
+                if (attendingCountDisplay) attendingCountDisplay.textContent = `${data.enrolled_count} students have reserved a place`;
+                showSessionToast(data.message);
+            } catch (err) {
+                if (!(err && err.nonJson)) showSessionToast('Connection error. Your reservation was not changed.', false);
+            } finally {
+                reserveBtn.disabled = false;
             }
         });
     }

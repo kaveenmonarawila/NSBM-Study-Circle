@@ -104,7 +104,110 @@ $sessionsData = [
     ]
 ];
 
-$session = $sessionsData[$sessionId] ?? $sessionsData[1];
+// ----------------------------------------------------------------------------
+// Load the REAL session from the database by id. The samples above are only
+// used if the database is unreachable (e.g. local preview without MySQL).
+// ----------------------------------------------------------------------------
+require_once __DIR__ . '/../backend/config/db_config.php';
+
+$viewerId = (int)($_SESSION['user_id'] ?? 0);
+$viewerRole = $_SESSION['role'] ?? '';
+$session = null;
+$sessionFromDb = false;
+$isReserved = false;
+$isHost = false;
+$attendeeInitials = [];
+
+$initialsOf = function ($name) {
+    $parts = preg_split('/\s+/', trim((string)$name)) ?: [];
+    $ini = '';
+    foreach (array_slice($parts, 0, 2) as $p) { $ini .= mb_strtoupper(mb_substr($p, 0, 1)); }
+    return $ini !== '' ? $ini : 'S';
+};
+
+if (isset($conn) && $conn && !$conn->connect_error) {
+    $st = $conn->prepare("
+        SELECT ss.*, u.name AS host_name, u.degree_program AS host_role
+        FROM study_sessions ss
+        LEFT JOIN users u ON ss.host_id = u.id
+        WHERE ss.id = ? LIMIT 1
+    ");
+    if ($st) {
+        $st->bind_param("i", $sessionId);
+        $st->execute();
+        $row = $st->get_result()->fetch_assoc();
+
+        // Sessions on hold / cancelled are only visible to their host and admins
+        $publicStatus = in_array($row['status'] ?? '', ['Scheduled', 'Completed'], true);
+        if (!$row || (!$publicStatus && $viewerRole !== 'admin' && (int)$row['host_id'] !== $viewerId)) {
+            header('Location: sessions.php');
+            exit();
+        }
+
+        $ts = strtotime($row['session_date']);
+        $endTs = $ts + 60 * max(15, (int)($row['duration_mins'] ?? 90));
+        $enrolled = (int)$row['enrolled_count'];
+        $cap = max(1, (int)$row['capacity']);
+        $left = max(0, $cap - $enrolled);
+
+        // Agenda: one topic per line (falls back to a generic outline)
+        $topics = [];
+        foreach (preg_split('/\R/', trim((string)($row['agenda'] ?? ''))) as $i => $line) {
+            if (trim($line) !== '') $topics[] = ['num' => sprintf('%02d', count($topics) + 1), 'text' => trim($line)];
+        }
+        if (!$topics) {
+            $topics = [
+                ['num' => '01', 'text' => 'Introductions and goals for the session'],
+                ['num' => '02', 'text' => 'Work through the main topic together'],
+                ['num' => '03', 'text' => 'Open questions and next steps'],
+            ];
+        }
+
+        $session = [
+            'id' => (int)$row['id'],
+            'title' => $row['title'],
+            'faculty' => $row['faculty'] ?: 'Computing',
+            'day' => date('j', $ts),
+            'day_name' => date('l', $ts),
+            'month_year' => date('F Y', $ts),
+            'time' => date('g:i A', $ts) . ' – ' . date('g:i A', $endTs),
+            'format' => $row['location_details'] ?: ($row['format_type'] ?: 'Online'),
+            'capacity_str' => "$enrolled of $cap places reserved" . ($left > 0 && $left <= 5 ? " ($left seat" . ($left === 1 ? "" : "s") . " left)" : ($left === 0 ? ' (full)' : '')),
+            'attending_count' => $enrolled,
+            'capacity' => $cap,
+            'host_initials' => $initialsOf($row['host_name'] ?? 'Student'),
+            'host_name' => $row['host_name'] ?: 'Student host',
+            'host_role' => $row['host_role'] ?: 'Session host',
+            'description' => trim((string)$row['description']) !== '' ? $row['description'] : 'A peer-led study session. Bring your questions and notes.',
+            'topics' => $topics,
+            'what_to_bring' => 'Your notes, lecture slides and any questions you would like to go through.',
+            'status' => $row['status'],
+        ];
+        $sessionFromDb = true;
+        $isHost = $viewerId > 0 && (int)$row['host_id'] === $viewerId;
+
+        // Real attendees (first few avatars) and whether the viewer has reserved
+        $at = $conn->prepare("SELECT a.user_id, u.name FROM study_session_attendees a LEFT JOIN users u ON u.id = a.user_id WHERE a.session_id = ? ORDER BY a.reserved_at ASC");
+        if ($at) {
+            $at->bind_param("i", $sessionId);
+            $at->execute();
+            $ar = $at->get_result();
+            while ($a = $ar->fetch_assoc()) {
+                if ((int)$a['user_id'] === $viewerId) $isReserved = true;
+                if (count($attendeeInitials) < 3) $attendeeInitials[] = $initialsOf($a['name'] ?? 'Student');
+            }
+        }
+    }
+}
+
+if (!$session) {
+    // Database unreachable: show a built-in sample (never silently swap in a different session)
+    if (!isset($sessionsData[$sessionId])) {
+        header('Location: sessions.php');
+        exit();
+    }
+    $session = $sessionsData[$sessionId];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -197,9 +300,12 @@ $session = $sessionsData[$sessionId] ?? $sessionsData[1];
                 <h2 class="session-section-heading" style="font-size: 1.1rem;">Who's attending</h2>
                 <div class="attending-summary-box">
                     <div class="attending-avatars-stack">
-                        <span class="attendee-avatar-circle">NP</span>
-                        <span class="attendee-avatar-circle attendee-blue">KS</span>
-                        <span class="attendee-avatar-circle attendee-orange">AF</span>
+                        <?php
+                        $avatarClasses = ['', ' attendee-blue', ' attendee-orange'];
+                        $avatars = $sessionFromDb ? $attendeeInitials : ['NP', 'KS', 'AF'];
+                        foreach ($avatars as $i => $ini): ?>
+                            <span class="attendee-avatar-circle<?= $avatarClasses[$i % 3] ?>"><?= htmlspecialchars($ini) ?></span>
+                        <?php endforeach; ?>
                     </div>
                     <span class="attending-text-bold" id="attendingCountDisplay">
                         <?php echo (int)$session['attending_count']; ?> students have reserved a place
@@ -242,9 +348,13 @@ $session = $sessionsData[$sessionId] ?? $sessionsData[1];
                     </div>
 
                     <!-- Reserve Place Button -->
-                    <?php if ($isLoggedIn): ?>
-                        <button type="button" class="btn-reserve-place" id="reservePlaceBtn">
-                            Reserve your place
+                    <?php if ($isLoggedIn && $isHost): ?>
+                        <button type="button" class="btn-reserve-place" disabled>You are hosting this session</button>
+                    <?php elseif ($isLoggedIn): ?>
+                        <?php $isFull = $sessionFromDb && !$isReserved && (int)$session['attending_count'] >= (int)$session['capacity']; ?>
+                        <button type="button" class="btn-reserve-place<?= $isReserved ? ' reserved' : '' ?>" id="reservePlaceBtn"
+                                data-session-id="<?= (int)$session['id'] ?>" <?= $isFull ? 'disabled' : '' ?>>
+                            <?= $isReserved ? 'Cancel Reservation' : ($isFull ? 'Session is full' : 'Reserve your place') ?>
                         </button>
                     <?php else: ?>
                         <button type="button" class="btn-reserve-place" onclick="promptLoginRequired('session_book')">
